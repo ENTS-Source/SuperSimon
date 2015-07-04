@@ -9,6 +9,10 @@ A communication protocol for a "Simon Says" game developed by [ENTS](http://ents
 - `Command` - A protocol action for a target to complete or respond to
 - `Sequence` - An order of commands to demonstrate a state of the system
 
+### Serial Communication
+
+The Raspberry Pi is expecting 9600 Baud 8N1 communication. Any connected client should use the same communication setup.
+
 ### Basic overview
 
 A command is formatted as follows for the protocol:
