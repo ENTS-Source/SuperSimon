@@ -1,0 +1,8 @@
+pi@raspberrypi ~/rpirtscts $ git clone git://github.com/mholling/rpirtscts.git
+pi@raspberrypi ~/rpirtscts $ cd rpirtscts
+pi@raspberrypi ~/rpirtscts $ make
+pi@raspberrypi ~/rpirtscts $ sudo ./rpirtscts on
+pi@raspberrypi ~/rpirtscts $ stty -F /dev/ttyAMA0 crtscts
+
+
+Python:  Serial('/dev/ttyAMA0', rtscts=True, baudrate=9600)
