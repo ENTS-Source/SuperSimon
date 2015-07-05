@@ -41,6 +41,7 @@
             this.gpCommunication = new System.Windows.Forms.GroupBox();
             this.cbPort = new System.Windows.Forms.ComboBox();
             this.btnSpConfigure = new System.Windows.Forms.Button();
+            this.lbSpConnectionState = new System.Windows.Forms.Label();
             groupBox1 = new System.Windows.Forms.GroupBox();
             label1 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
@@ -123,13 +124,14 @@
             // 
             // gpCommunication
             // 
+            this.gpCommunication.Controls.Add(this.lbSpConnectionState);
             this.gpCommunication.Controls.Add(this.btnSpConfigure);
             this.gpCommunication.Controls.Add(this.cbPort);
             this.gpCommunication.Controls.Add(label3);
             this.gpCommunication.Controls.Add(label2);
             this.gpCommunication.Location = new System.Drawing.Point(159, 13);
             this.gpCommunication.Name = "gpCommunication";
-            this.gpCommunication.Size = new System.Drawing.Size(226, 76);
+            this.gpCommunication.Size = new System.Drawing.Size(282, 76);
             this.gpCommunication.TabIndex = 5;
             this.gpCommunication.TabStop = false;
             this.gpCommunication.Text = "Communication";
@@ -158,18 +160,29 @@
             this.cbPort.FormattingEnabled = true;
             this.cbPort.Location = new System.Drawing.Point(42, 16);
             this.cbPort.Name = "cbPort";
-            this.cbPort.Size = new System.Drawing.Size(178, 21);
+            this.cbPort.Size = new System.Drawing.Size(127, 21);
             this.cbPort.TabIndex = 2;
             // 
             // btnSpConfigure
             // 
-            this.btnSpConfigure.Location = new System.Drawing.Point(145, 47);
+            this.btnSpConfigure.Location = new System.Drawing.Point(201, 47);
             this.btnSpConfigure.Name = "btnSpConfigure";
             this.btnSpConfigure.Size = new System.Drawing.Size(75, 23);
             this.btnSpConfigure.TabIndex = 3;
             this.btnSpConfigure.Text = "Configure";
             this.btnSpConfigure.UseVisualStyleBackColor = true;
             this.btnSpConfigure.Click += new System.EventHandler(this.btnSpConfigure_Click);
+            // 
+            // lbSpConnectionState
+            // 
+            this.lbSpConnectionState.AutoSize = true;
+            this.lbSpConnectionState.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbSpConnectionState.ForeColor = System.Drawing.Color.Red;
+            this.lbSpConnectionState.Location = new System.Drawing.Point(109, 52);
+            this.lbSpConnectionState.Name = "lbSpConnectionState";
+            this.lbSpConnectionState.Size = new System.Drawing.Size(91, 13);
+            this.lbSpConnectionState.TabIndex = 4;
+            this.lbSpConnectionState.Text = "Not connected";
             // 
             // Master
             // 
@@ -205,6 +218,7 @@
         private System.Windows.Forms.Button btnSpConfigure;
         private System.Windows.Forms.ComboBox cbPort;
         private System.Windows.Forms.GroupBox gpCommunication;
+        private System.Windows.Forms.Label lbSpConnectionState;
     }
 }
 

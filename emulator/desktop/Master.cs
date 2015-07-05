@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SuperSimonEmulator.Commands;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,8 +15,10 @@ namespace SuperSimonEmulator
     public partial class Master : Form
     {
         private delegate void delVoidInt(int i);
+        private delegate void delVoidCommand(Command cmd);
 
         private List<GamePad> _gamePads = new List<GamePad>();
+        private Command _currentCommand;
 
         public Master()
         {
@@ -33,14 +36,44 @@ namespace SuperSimonEmulator
         {
             while (spTeensy.BytesToRead > 0)
             {
-                int b = spTeensy.ReadByte();
+                byte b = (byte)spTeensy.ReadByte();
                 Invoke(new delVoidInt(AppendByteToSerialLog), b);
+
+                if (_currentCommand == null)
+                {
+                    _currentCommand = CommandRegistry.FindCommand(b);
+                    if (_currentCommand == null)
+                    {
+                        Console.WriteLine("Failed to find command for ID: " + b+", ignoring byte.");
+                        continue;
+                    }
+                }
+
+                var result = _currentCommand.ConsumeByte(b);
+                if (result == ConsumeResult.InvalidByte)
+                    Console.WriteLine("Command " + _currentCommand.CommandId + " did not accept byte: " + b + ", ignoring byte.");
+                else if (result == ConsumeResult.NotConsumed)
+                    Console.WriteLine("Command " + _currentCommand.CommandId + " did not consume byte: " + b + ", ignoring byte.");
+
+                if (!_currentCommand.ExpectingMoreBytes)
+                {
+                    Invoke(new delVoidCommand(HandleCommand), _currentCommand);
+                    _currentCommand = null;
+                }
             }
         }
 
         private void AppendByteToSerialLog(int b)
         {
             tbLog.AppendText(b.ToString());
+        }
+
+        private void HandleCommand(Command command)
+        {
+            // TODO: Actually handle command
+            string address = command is AddressedCommand ? ((AddressedCommand)command).TargetAddress.ToString() : "<not addressed>";
+            string payloadInfo = command is PayloadCommand ? "(Length=" + ((PayloadCommand)command).Length + ", Actual=" + ((PayloadCommand)command).Payload.Length + ")" : "<not carrier>";
+            Console.WriteLine("Received command to handle: " + command.CommandId + ". address = " + address + ", payload = " + payloadInfo);
         }
 
         private void Master_VisibleChanged(object sender, EventArgs e)
@@ -57,6 +90,11 @@ namespace SuperSimonEmulator
             spTeensy.Open();
             gbNewPad.Enabled = true;
             gpCommunication.Text = "Communication (Connected, " + spTeensy.PortName + ")";
+            lbSpConnectionState.Text = "Connected";
+            lbSpConnectionState.ForeColor = Color.DarkGreen;
+
+            tbLog.Clear();
+            _currentCommand = null; // Dispose of any data 
         }
 
         private void btnNewPad_Click(object sender, EventArgs e)
