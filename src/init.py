@@ -29,9 +29,12 @@ pygame.display.set_caption("ENTS Super Simon Game")
 #pygame.display.toggle_fullscreen()
 
 # Font definitions
-regularFont = pygame.font.SysFont("monospace", 25)
-largeFont = pygame.font.SysFont("monospace", 45)
-extraLargeFont = pygame.font.SysFont("monospace", 90)
+robotoRegularPath = "fonts/Roboto-Regular.ttf"
+smallFont = pygame.font.Font(robotoRegularPath, 12)
+regularFont = pygame.font.Font(robotoRegularPath, 25)
+largeFont = pygame.font.Font(robotoRegularPath, 45)
+large2Font = pygame.font.Font(robotoRegularPath, 65)
+extraLargeFont = pygame.font.Font(robotoRegularPath, 90)
 
 # ------ SCREEN INIT ------
 print("Rendering major screen...")
@@ -75,7 +78,7 @@ plX = plStartX
 plY = lbMargin + lbMargin + lbHeight
 availableWidth = (float)(width - plMargin) + 3.0
 availabeHeight = (float)(height - plY - (plMargin * 2))
-perRow = math.floor(plMaxWidth * players)
+perRow = players #math.floor(plMaxWidth * players)
 rows = players / (float)(perRow)
 plWidth = (availableWidth - (plMargin * perRow) - (plMargin / 2)) / perRow
 plHeight = (availabeHeight - (plMargin * rows) - (plMargin * 2)) / rows
@@ -105,22 +108,30 @@ while(playersDisplayed < players):
     # P3 = Playing
     # P4 = Game Over
     subMessage = None
+    subMessage1 = None
     scoreLbl = None
     if(playersDisplayed == 0):
-        subMessage = regularFont.render("Press the center button to join", 1, PRIMARY_TEXT_COLOR)
+        subMessage = regularFont.render("not yet joined", 1, PRIMARY_TEXT_COLOR)
+        subMessage1 = smallFont.render("press the center button to join", 1, PRIMARY_TEXT_COLOR)
     elif(playersDisplayed == 1):
-        scoreLbl = extraLargeFont.render("Welcome!", 1, WHITE)
-        subMessage = regularFont.render("Game starts in 5 seconds", 1, PRIMARY_TEXT_COLOR)
+        #scoreLbl = extraLargeFont.render("Welcome!", 1, WHITE)
+        subMessage = regularFont.render("starting in 5s", 1, PRIMARY_TEXT_COLOR)
     elif(playersDisplayed == 2):
         subMessage = regularFont.render("Round 41", 1, PRIMARY_TEXT_COLOR)
-        scoreLbl = extraLargeFont.render("112233", 1, SCORE_TEXT_COLOR)
+        scoreLbl = large2Font.render("112233", 1, SCORE_TEXT_COLOR)
     elif(playersDisplayed == 3):
-        subMessage = regularFont.render("Final score: 9176 (98th/150)", 1, SCORE_TEXT_COLOR)
-        scoreLbl = extraLargeFont.render("YOU WON!", 1, WINNER_TEXT_COLOR)
+        subMessage = regularFont.render("9176 (98th)", 1, SCORE_TEXT_COLOR)
+        scoreLbl = extraLargeFont.render("1st", 1, WINNER_TEXT_COLOR)
     if(subMessage is not None):
         x = plX + center_text(subMessage, plWidth)
         y = (plY + plHeight) - subMessage.get_rect().height - plMargin
+        if(subMessage1 is not None):
+            y -= subMessage1.get_rect().height + 5 # 5px buffer
+            sx = plX + center_text(subMessage1, plWidth)
+            sy = (plY + plHeight) - subMessage1.get_rect().height - plMargin
+            screen.blit(subMessage1, (sx, sy))
         screen.blit(subMessage, (x, y))
+
     if(scoreLbl is not None):
         x = plX + center_text(scoreLbl, plWidth)
         y = plY + center_text_y(scoreLbl, plHeight)
