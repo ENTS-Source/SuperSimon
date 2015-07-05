@@ -41,6 +41,7 @@ The following commands are supported by the protocol:
 | `0000 0111` | No          | No          | To Pi     | Not joined                 |
 | `0000 1000` | No          | No          | To Pi     | Joined                     |
 | `0000 1001` | Yes         | No          | To Client | Discover                   |
+| `1111 0000` | Yes         | Yes         | Any       | Echo                       |
 
 #### Payload specifications for commands
 
@@ -74,6 +75,17 @@ Payload explanation (in order):
 - `0000 1100` - 12 milliseconds
 
 If the user failed to complete the sequence then `-1` (decimal, 2's compliment) should be used for the timing information for the pi to know. For example, if the sequence is 5 buttons and the user fails to complete the sequence on button 2, then buttons 3, 4, and 5 should all have the time information of `-1`. **The payload must contain the complete button sequence sent for the original game sequence.**
+
+##### Echo (`1111 0000`)
+
+The payload for this command is simply data to be echoed back. The first byte of the payload is the desired target address that was sent by the Pi so that the protocol does not collide with another device (or cause the same device to fall into an infinite send loop).
+
+For example, if the raw payload (represented as numbers) was `9 1 7 1`, then the client should respond with `9 1 7 1` again to address `9` using the same command information.
+
+Example:
+
+- Client receives `1111 0000 0000 0000 <length bytes> 1010 1010 <more data>`
+- Client sends `1111 0000 1010 1010 <length bytes> 1010 1010 <more data>`
 
 ### Sequences
 
