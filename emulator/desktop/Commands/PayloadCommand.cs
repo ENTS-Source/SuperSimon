@@ -16,7 +16,7 @@ namespace SuperSimonEmulator.Commands
         /// <summary>
         /// Gets the length of the payload. Returns null if not yet determined
         /// </summary>
-        public int? Length { get; private set; }
+        public int? Length { get; protected set; }
 
         /// <summary>
         /// Gets the known payload for this command. Never returns null, although the resulting array size
@@ -24,7 +24,11 @@ namespace SuperSimonEmulator.Commands
         /// matches the defined length. If no length has been determined then this will return a 0-length
         /// array.
         /// </summary>
-        public byte[] Payload { get { return _payload.ToArray(); } }
+        public byte[] Payload
+        {
+            get { return _payload.ToArray(); }
+            protected set { _payload = new List<byte>(value); }
+        }
 
         /// <summary>
         /// Gets whether or not the payload has been fully read
@@ -57,6 +61,16 @@ namespace SuperSimonEmulator.Commands
                 return used ? ConsumeResult.Consumed : ConsumeResult.NotConsumed;
             }
             return baseResult;
+        }
+
+        /// <summary>
+        /// Adds a series of bytes to the payload
+        /// </summary>
+        /// <param name="b">The bytes to add</param>
+        protected void AppendToPayload(params byte[] b)
+        {
+            _payload.AddRange(b);
+            Length += b.Length;
         }
 
         private void ConvertLength()

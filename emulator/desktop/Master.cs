@@ -1,4 +1,5 @@
 ﻿using SuperSimonEmulator.Commands;
+using SuperSimonEmulator.Commands.Concrete;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -65,7 +66,7 @@ namespace SuperSimonEmulator
 
         private void AppendByteToSerialLog(int b)
         {
-            tbLog.AppendText(b.ToString());
+            tbLog.AppendText("[" + b + "]");
         }
 
         private void HandleCommand(Command command)
@@ -74,6 +75,9 @@ namespace SuperSimonEmulator
             string address = command is AddressedCommand ? ((AddressedCommand)command).TargetAddress.ToString() : "<not addressed>";
             string payloadInfo = command is PayloadCommand ? "(Length=" + ((PayloadCommand)command).Length + ", Actual=" + ((PayloadCommand)command).Payload.Length + ")" : "<not carrier>";
             Console.WriteLine("Received command to handle: " + command.CommandId + ". address = " + address + ", payload = " + payloadInfo);
+
+            if (command is IResponsiveCommand)
+                SendCommand(((IResponsiveCommand)command).Response());
         }
 
         private void Master_VisibleChanged(object sender, EventArgs e)
@@ -112,6 +116,30 @@ namespace SuperSimonEmulator
             _gamePads.Add(pad);
 
             nudAddress.Value++;
+        }
+
+        private void SendCommand(Command command)
+        {
+            var bytes = new List<byte>();
+            
+            bytes.Add(command.CommandId);
+
+            if (command is AddressedCommand)
+                bytes.Add(((AddressedCommand)command).TargetAddress.Value);
+
+            if (command is PayloadCommand)
+            {
+                PayloadCommand payloadCommand = (PayloadCommand)command;
+                byte[] intBytes = BitConverter.GetBytes(payloadCommand.Length.Value);
+                if (BitConverter.IsLittleEndian)
+                    Array.Reverse(intBytes);
+                bytes.AddRange(intBytes);
+
+                bytes.AddRange(payloadCommand.Payload);
+            }
+
+            byte[] data = bytes.ToArray();
+            spTeensy.Write(data, 0, data.Length);
         }
     }
 }

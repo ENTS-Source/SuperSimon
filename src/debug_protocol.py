@@ -1,0 +1,156 @@
+# These methods are intended to be copy/pasted into the IDLE client
+# for debugging.
+
+def millis():
+    return int(round(time() * 1000))
+
+
+def intToBytes(i):
+    return struct.pack('>I', i)
+
+
+def readInt():
+    lStr = ""
+    lStr += port.read()
+    lStr += port.read()
+    lStr += port.read()
+    lStr += port.read()
+    return struct.unpack(">L", lStr)[0]
+
+
+def rts():
+    GPIO.output(11, GPIO.HIGH)
+
+
+def cts():
+    sleep(0.01) # Just to ensure we don't chop off data
+    GPIO.output(11, GPIO.LOW)
+
+
+def sendAck():
+    print("Sending ACK...")
+    rts()
+    port.write(chr(0))
+    cts()
+    print("ACK sent!")
+
+
+def sendGameInfo(addr, sLen):
+    print("Sending game sequence...")
+    rts()
+    port.write(chr(1))
+    port.write(chr(addr))
+    port.write(intToBytes(sLen))
+    for i in range(0, sLen):
+        s = random.randint(1, 5)
+        print("S[" + str(i) + "] = " + str(s))
+        port.write(chr(s))
+    cts()
+    print("Game sequence sent! Waiting for ACK...")
+    start = millis()
+    r = port.read()
+    end = millis()
+    if r != chr(0):
+        print("Unexpected response character: " + str(ord(r)))
+    else:
+        print("Received ACK in " + str(end - start) + "ms")
+
+
+def startGame(addr):
+    print("Sending start game command...")
+    rts()
+    port.write(chr(2))
+    port.write(chr(addr))
+    cts()
+    # No response
+    print("Start game sent!")
+
+
+def requestGameState(addr):
+    print("Sending request for game state...")
+    rts()
+    port.write(chr(3))
+    port.write(chr(addr))
+    cts()
+    print("Game state request sent! Waiting for response...")
+    start = millis()
+    r = port.read()
+    end = millis()
+    print("Got response in " + str(end - start) + "ms")
+    if r == chr(4):
+        print("Game not yet complete")
+    elif r == chr(5):
+        print("Game completed, gathering data about game")
+        a = port.read() # Ignored byte
+        l = readInt()
+        print("Address receive = " + str(ord(a)) + ", expecting " + str(l) + " bytes of game data")
+        for i in range(0, l):
+            b = port.read()
+        # TODO: Dump information?
+        print("Game data read. Not displayed for readability.")
+    else:
+        print("Unknown response: " + str(r))
+
+
+def isJoining(addr):
+    print("Sending join state request...")
+    rts()
+    port.write(chr(6))
+    port.write(chr(addr))
+    cts()
+    print("Join state request sent! Waiting for response...")
+    start = millis()
+    r = port.read()
+    end = millis()
+    print("Got response in " + str(end - start) + "ms")
+    if r == chr(7):
+        print("Not joined")
+    elif r == chr(8):
+        print("Joined")
+    else:
+        print("Unknown response: " + str(ord(r)))
+
+
+def discover(addr):
+    print("Sending discover...")
+    rts()
+    port.write(chr(9))
+    port.write(chr(addr))
+    cts()
+    print("Discover sent! Waiting for response...")
+    start = millis()
+    r = port.read()
+    end = millis()
+    if r == chr(0):
+        print("Discovered in " + str(end - start) + "ms")
+    else:
+        print("Unknown response: " + str(ord(r)))
+
+
+def echo(addr, raddr):
+    print("Sending echo...")
+    rts()
+    port.write(chr(240))
+    port.write(chr(addr))
+    port.write(intToBytes(2))
+    port.write(chr(raddr))
+    port.write(chr(112))
+    cts()
+    print("Echo sent! Waiting for response...")
+    start = millis()
+    r = port.read()
+    end = millis()
+    print("Got response in " + str(end - start) + "ms")
+    if r == chr(240):
+        print("Got echo back, reading data...")
+        a = port.read()
+        l = readInt()
+        d1 = port.read()
+        d2 = port.read()
+        print("Response to address " + str(ord(a)))
+        print("  Length = " + str(l))
+        print("  D1 = " + str(ord(d1)))
+        print("  D2 = " + str(ord(d2)))
+        print("")
+    else:
+        print("Unknown response: " + str(ord(r)))

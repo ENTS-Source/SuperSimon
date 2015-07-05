@@ -9,7 +9,7 @@ namespace SuperSimonEmulator.Commands
         /// <summary>
         /// Gets the address that has been targetted. Null if not yet targetted.
         /// </summary>
-        public byte? TargetAddress { get; private set; }
+        public byte? TargetAddress { get; protected set; }
 
         public override bool ExpectingMoreBytes { get { return base.ExpectingMoreBytes || TargetAddress == null; } }
 

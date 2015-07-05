@@ -76,6 +76,10 @@ Payload explanation (in order):
 
 If the user failed to complete the sequence then `-1` (decimal, 2's compliment) should be used for the timing information for the pi to know. For example, if the sequence is 5 buttons and the user fails to complete the sequence on button 2, then buttons 3, 4, and 5 should all have the time information of `-1`. **The payload must contain the complete button sequence sent for the original game sequence.**
 
+The address field for this command is not important as it is ignored by all parties. It may be anything, but it is required to be in line with the protocol.
+
+The time in milliseconds is a big-endian short (16 bit number).
+
 ##### Echo (`1111 0000`)
 
 The payload for this command is simply data to be echoed back. The first byte of the payload is the desired target address that was sent by the Pi so that the protocol does not collide with another device (or cause the same device to fall into an infinite send loop).
