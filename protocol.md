@@ -21,7 +21,7 @@ A command is formatted as follows for the protocol:
 | ------- | ------- | ------- | --------- |
 | 8 bits  | 8 bits  | 32 bits | <n> bytes |
 
-If a payload is present, the length will always represent the payload length in bytes. If the payload is not present, the length will not be present. For example, if the payload size is 4 bytes, the length will be the decimal number `4`.
+If a payload is present, the length will always represent the payload length in bytes. If the payload is not present, the length will not be present. For example, if the payload size is 4 bytes, the length will be the decimal number `4`. The length is represented as a big-endian integer.
 
 This protocol works off an all-data model where there is no parity, start bits, or stop bits. Each byte is 8 bits long and the protocol is intended to be read 1 byte (8 bits) at a time.
 
@@ -35,7 +35,7 @@ The following commands are supported by the protocol:
 | `0000 0001` | Yes         | Yes         | To Client | Game board information     |
 | `0000 0010` | No          | No          | To Client | Start game                 |
 | `0000 0011` | Yes         | No          | To Client | Request current game state |
-| `0000 0100` | No          | No          | To Pi     | "Game not yet finished     |
+| `0000 0100` | No          | No          | To Pi     | "Game not yet finished"    |
 | `0000 0101` | Yes         | Yes         | To Pi     | Game completed             |
 | `0000 0110` | Yes         | No          | To Client | Request join state         |
 | `0000 0111` | No          | No          | To Pi     | Not joined                 |
@@ -149,4 +149,4 @@ The following is a sample of the potential order for the Pi to complete sequence
 4. Pi starts `in-game` sequence
 5. Pi starts `pre-game` sequence
 6. Pi starts `game` sequence
-7. Pi starts `in-game` sequence 
+7. Pi starts `in-game` sequence
