@@ -47,19 +47,9 @@
     <Compile Include="Commands\AddressedCommand.cs" />
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\CommandRegistry.cs" />
-    <Compile Include="Commands\Concrete\AcknowledgeCommand.cs" />
-    <Compile Include="Commands\Concrete\DiscoverCommand.cs" />
-    <Compile Include="Commands\Concrete\EchoCommand.cs" />
-    <Compile Include="Commands\Concrete\GameBoardInformationCommand.cs" />
-    <Compile Include="Commands\Concrete\GameCompletedCommand.cs" />
-    <Compile Include="Commands\Concrete\GameNotFinishedCommand.cs" />
-    <Compile Include="Commands\Concrete\JoinedCommand.cs" />
-    <Compile Include="Commands\Concrete\NotJoinedCommand.cs" />
-    <Compile Include="Commands\Concrete\RequestGameStateCommand.cs" />
-    <Compile Include="Commands\Concrete\RequestJoinStateCommand.cs" />
-    <Compile Include="Commands\Concrete\StartGameCommand.cs" />
     <Compile Include="Commands\IResponsiveCommand.cs" />
     <Compile Include="Commands\PayloadCommand.cs" />
+    <Compile Include="Commands\SimonCommands.cs" />
     <Compile Include="GamePad.cs">
       <SubType>Form</SubType>
     </Compile>
