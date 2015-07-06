@@ -45,7 +45,7 @@ namespace SuperSimonEmulator
                     _currentCommand = CommandRegistry.FindCommand(b);
                     if (_currentCommand == null)
                     {
-                        Console.WriteLine("Failed to find command for ID: " + b+", ignoring byte.");
+                        Console.WriteLine("Failed to find command for ID: " + b + ", ignoring byte.");
                         continue;
                     }
                 }
@@ -71,14 +71,19 @@ namespace SuperSimonEmulator
 
         private void HandleCommand(Command command)
         {
-            // TODO: Actually handle command
             string address = command is AddressedCommand ? ((AddressedCommand)command).TargetAddress.ToString() : "<not addressed>";
             string payloadInfo = command is PayloadCommand ? "(Length=" + ((PayloadCommand)command).Length + ", Actual=" + ((PayloadCommand)command).Payload.Length + ")" : "<not carrier>";
-            Console.WriteLine("Received command to handle: " + command.CommandId + ". address = " + address + ", payload = " + payloadInfo);
+            Console.WriteLine("Received command to handle: " + command.CommandId + " (" + command.GetType().Name + "). address = " + address + ", payload = " + payloadInfo);
 
             IEnumerable<GamePad> pads = new List<GamePad>();
             if (command is AddressedCommand)
                 pads = _gamePads.Where(p => p.Address == ((AddressedCommand)command).TargetAddress);
+
+            // Special case: StartGameCommand is broadcasted to all clients
+            // TODO: Make a special marker interface for broadcasted commands?
+            if (command is StartGameCommand)
+                pads = _gamePads.ToList();
+
             foreach (var gamePad in pads)
                 gamePad.HandleCommand(command);
 
@@ -127,7 +132,7 @@ namespace SuperSimonEmulator
         private void SendCommand(Command command)
         {
             var bytes = new List<byte>();
-            
+
             bytes.Add(command.CommandId);
 
             if (command is AddressedCommand)
@@ -144,7 +149,7 @@ namespace SuperSimonEmulator
                 bytes.AddRange(payloadCommand.Payload);
             }
 
-            foreach(byte b in bytes)
+            foreach (byte b in bytes)
                 Invoke(new delVoidIntBool(AppendByteToSerialLog), b, false); // false = outbound
 
             byte[] data = bytes.ToArray();
