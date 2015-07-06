@@ -31,19 +31,20 @@ def readShort():
 
 
 def rts():
-    GPIO.output(11, GPIO.HIGH)
+    #GPIO.output(11, GPIO.HIGH)
+    return
 
 
 def cts():
-    sleep(0.01) # Just to ensure we don't chop off data
-    GPIO.output(11, GPIO.LOW)
+    #sleep(0.01) # Just to ensure we don't chop off data
+    #GPIO.output(11, GPIO.LOW)
+    return
 
 
 def sendAck():
     print("Sending ACK...")
     rts()
     port.write(chr(0))
-    cts()
     print("ACK sent!")
 
 
@@ -148,14 +149,15 @@ def discover(addr):
         print("Unknown response: " + str(ord(r)))
 
 
-def echo(addr, raddr):
+def echo(addr, raddr, sendBytes = 2):
     print("Sending echo...")
     rts()
     port.write(chr(240))
     port.write(chr(addr))
-    port.write(intToBytes(2))
+    port.write(intToBytes(sendBytes))
     port.write(chr(raddr))
-    port.write(chr(112))
+    for i in range(0, sendBytes - 1):
+        port.write(chr(random.randint(1, 200)))
     cts()
     print("Echo sent! Waiting for response...")
     start = millis()
@@ -167,11 +169,11 @@ def echo(addr, raddr):
         a = port.read()
         l = readInt()
         d1 = port.read()
-        d2 = port.read()
+        for i in range(0, sendBytes - 1):
+            port.read()
         print("Response to address " + str(ord(a)))
         print("  Length = " + str(l))
         print("  D1 = " + str(ord(d1)))
-        print("  D2 = " + str(ord(d2)))
         print("")
     else:
         print("Unknown response: " + str(ord(r)))
