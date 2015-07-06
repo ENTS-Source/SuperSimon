@@ -17,6 +17,12 @@ def readInt():
     lStr += port.read()
     return struct.unpack(">L", lStr)[0]
 
+def readShort():
+    lStr = ""
+    lStr += port.read()
+    lStr += port.read()
+    return struct.unpack(">H", lStr)[0]
+
 
 def rts():
     GPIO.output(11, GPIO.HIGH)
@@ -84,10 +90,20 @@ def requestGameState(addr):
         a = port.read() # Ignored byte
         l = readInt()
         print("Address receive = " + str(ord(a)) + ", expecting " + str(l) + " bytes of game data")
-        for i in range(0, l):
-            b = port.read()
-        # TODO: Dump information?
-        print("Game data read. Not displayed for readability.")
+        expectingButton = True
+        lastButton = None
+        i = 0
+        while i < l:
+            if expectingButton:
+                lastButton = ord(port.read())
+                expectingButton = False
+                i = i + 1
+            else:
+                ms = readShort()
+                expectingButton = True
+                i = i + 2 # Cause shorts are 2 bytes
+                print("Button " + str(lastButton) + " took " + str(ms) + "ms to press")
+        print("Game data read")
     else:
         print("Unknown response: " + str(r))
 

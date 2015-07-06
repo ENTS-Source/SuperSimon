@@ -5,9 +5,10 @@ namespace SuperSimonEmulator.Commands.Concrete
     {
         public RequestJoinStateCommand() : base(6) { } // 0000 0110
 
-        public Command Response()
+        public Command Response(GamePad pad)
         {
-            return new NotJoinedCommand(); // TODO: Actual response - game pad?
+            if (pad.JoinedGame) return new JoinedCommand();
+            return new NotJoinedCommand();
         }
     }
 }

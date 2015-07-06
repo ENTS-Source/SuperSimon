@@ -76,8 +76,14 @@ namespace SuperSimonEmulator
             string payloadInfo = command is PayloadCommand ? "(Length=" + ((PayloadCommand)command).Length + ", Actual=" + ((PayloadCommand)command).Payload.Length + ")" : "<not carrier>";
             Console.WriteLine("Received command to handle: " + command.CommandId + ". address = " + address + ", payload = " + payloadInfo);
 
+            IEnumerable<GamePad> pads = new List<GamePad>();
+            if (command is AddressedCommand)
+                pads = _gamePads.Where(p => p.Address == ((AddressedCommand)command).TargetAddress);
+            foreach (var gamePad in pads)
+                gamePad.HandleCommand(command);
+
             if (command is IResponsiveCommand)
-                SendCommand(((IResponsiveCommand)command).Response());
+                SendCommand(((IResponsiveCommand)command).Response(pads.FirstOrDefault()));
         }
 
         private void Master_VisibleChanged(object sender, EventArgs e)

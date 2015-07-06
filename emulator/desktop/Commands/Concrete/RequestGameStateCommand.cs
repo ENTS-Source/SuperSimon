@@ -5,9 +5,10 @@ namespace SuperSimonEmulator.Commands.Concrete
     {
         public RequestGameStateCommand() : base(3) { } // 0000 0011
 
-        public Command Response()
+        public Command Response(GamePad pad)
         {
-            return new GameNotFinishedCommand(); // TODO: Actual response - game pad?
+            if (!pad.CurrentGameComplete) return new GameNotFinishedCommand();
+            return pad.CreateCompletedCommand();
         }
     }
 }

@@ -69,6 +69,7 @@ namespace SuperSimonEmulator.Commands
         /// <param name="b">The bytes to add</param>
         protected void AppendToPayload(params byte[] b)
         {
+            if (Length == null) Length = 0;
             _payload.AddRange(b);
             Length += b.Length;
         }

@@ -5,7 +5,7 @@ namespace SuperSimonEmulator.Commands.Concrete
     {
         public GameBoardInformationCommand() : base(1) { } // 0000 0001
 
-        public Command Response()
+        public Command Response(GamePad pad)
         {
             return new AcknowledgeCommand();
         }

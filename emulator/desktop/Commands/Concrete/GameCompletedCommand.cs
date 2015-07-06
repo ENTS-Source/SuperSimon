@@ -6,6 +6,12 @@ namespace SuperSimonEmulator.Commands.Concrete
     {
         public GameCompletedCommand() : base(5) { } // 0000 0101
 
+        public GameCompletedCommand(byte targetAddress)
+            : base(5)
+        {
+            TargetAddress = targetAddress;
+        }
+
         public void AddTiming(byte buttonId, short timeToPressMs)
         {
             AppendToPayload(buttonId);
