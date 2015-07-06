@@ -1,6 +1,12 @@
 # These methods are intended to be copy/pasted into the IDLE client
 # for debugging.
 
+import random
+from time import sleep, time
+from serial import Serial
+import RPi.GPIO as GPIO
+import struct
+
 def millis():
     return int(round(time() * 1000))
 
