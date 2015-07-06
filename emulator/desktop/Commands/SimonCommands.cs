@@ -104,11 +104,11 @@ namespace SuperSimonEmulator.Commands
     }
 
     // `0xF0` / `240`, `1111 0000`
-    public class EchoCommand : PayloadCommand
+    public class EchoCommand : PayloadCommand, IResponsiveCommand
     {
         public EchoCommand() : base(0xF0) { }
 
-        public EchoCommand Response()
+        public Command Response(GamePad pad)
         {
             return new EchoCommand()
             {
