@@ -16,7 +16,7 @@ void setup(){
   
   HOST.begin(9600);
   COM.begin(9600);
-  COM.transmitterEnable(12)
+  COM.transmitterEnable(12);
 }
 
 void loop(){
