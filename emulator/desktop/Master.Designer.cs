@@ -33,7 +33,8 @@
             System.Windows.Forms.Label label1;
             System.Windows.Forms.Label label2;
             System.Windows.Forms.Label label3;
-            this.tbLog = new System.Windows.Forms.TextBox();
+            System.Windows.Forms.GroupBox groupBox2;
+            this.tbComLogIn = new System.Windows.Forms.TextBox();
             this.spTeensy = new System.IO.Ports.SerialPort(this.components);
             this.gbNewPad = new System.Windows.Forms.GroupBox();
             this.nudAddress = new System.Windows.Forms.NumericUpDown();
@@ -42,37 +43,39 @@
             this.cbPort = new System.Windows.Forms.ComboBox();
             this.btnSpConfigure = new System.Windows.Forms.Button();
             this.lbSpConnectionState = new System.Windows.Forms.Label();
+            this.tbComLogOut = new System.Windows.Forms.TextBox();
             groupBox1 = new System.Windows.Forms.GroupBox();
             label1 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
             label3 = new System.Windows.Forms.Label();
+            groupBox2 = new System.Windows.Forms.GroupBox();
             groupBox1.SuspendLayout();
             this.gbNewPad.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudAddress)).BeginInit();
             this.gpCommunication.SuspendLayout();
+            groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
-            groupBox1.Controls.Add(this.tbLog);
-            groupBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            groupBox1.Location = new System.Drawing.Point(0, 95);
+            groupBox1.Controls.Add(this.tbComLogIn);
+            groupBox1.Location = new System.Drawing.Point(12, 95);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new System.Drawing.Size(585, 131);
+            groupBox1.Size = new System.Drawing.Size(284, 137);
             groupBox1.TabIndex = 3;
             groupBox1.TabStop = false;
-            groupBox1.Text = "Raw Communication";
+            groupBox1.Text = "Raw Communication (Inbound)";
             // 
-            // tbLog
+            // tbComLogIn
             // 
-            this.tbLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbLog.Font = new System.Drawing.Font("Lucida Console", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbLog.Location = new System.Drawing.Point(3, 16);
-            this.tbLog.Multiline = true;
-            this.tbLog.Name = "tbLog";
-            this.tbLog.ReadOnly = true;
-            this.tbLog.Size = new System.Drawing.Size(579, 112);
-            this.tbLog.TabIndex = 0;
+            this.tbComLogIn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbComLogIn.Font = new System.Drawing.Font("Lucida Console", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbComLogIn.Location = new System.Drawing.Point(3, 16);
+            this.tbComLogIn.Multiline = true;
+            this.tbComLogIn.Name = "tbComLogIn";
+            this.tbComLogIn.ReadOnly = true;
+            this.tbComLogIn.Size = new System.Drawing.Size(278, 118);
+            this.tbComLogIn.TabIndex = 0;
             // 
             // spTeensy
             // 
@@ -184,11 +187,33 @@
             this.lbSpConnectionState.TabIndex = 4;
             this.lbSpConnectionState.Text = "Not connected";
             // 
+            // groupBox2
+            // 
+            groupBox2.Controls.Add(this.tbComLogOut);
+            groupBox2.Location = new System.Drawing.Point(302, 95);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Size = new System.Drawing.Size(285, 137);
+            groupBox2.TabIndex = 4;
+            groupBox2.TabStop = false;
+            groupBox2.Text = "Raw Communication (Outbound)";
+            // 
+            // tbComLogOut
+            // 
+            this.tbComLogOut.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbComLogOut.Font = new System.Drawing.Font("Lucida Console", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbComLogOut.Location = new System.Drawing.Point(3, 16);
+            this.tbComLogOut.Multiline = true;
+            this.tbComLogOut.Name = "tbComLogOut";
+            this.tbComLogOut.ReadOnly = true;
+            this.tbComLogOut.Size = new System.Drawing.Size(279, 118);
+            this.tbComLogOut.TabIndex = 0;
+            // 
             // Master
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(585, 226);
+            this.ClientSize = new System.Drawing.Size(599, 244);
+            this.Controls.Add(groupBox2);
             this.Controls.Add(this.gpCommunication);
             this.Controls.Add(this.gbNewPad);
             this.Controls.Add(groupBox1);
@@ -204,6 +229,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudAddress)).EndInit();
             this.gpCommunication.ResumeLayout(false);
             this.gpCommunication.PerformLayout();
+            groupBox2.ResumeLayout(false);
+            groupBox2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -211,7 +238,7 @@
         #endregion
 
         private System.IO.Ports.SerialPort spTeensy;
-        private System.Windows.Forms.TextBox tbLog;
+        private System.Windows.Forms.TextBox tbComLogIn;
         private System.Windows.Forms.GroupBox gbNewPad;
         private System.Windows.Forms.Button btnNewPad;
         private System.Windows.Forms.NumericUpDown nudAddress;
@@ -219,6 +246,7 @@
         private System.Windows.Forms.ComboBox cbPort;
         private System.Windows.Forms.GroupBox gpCommunication;
         private System.Windows.Forms.Label lbSpConnectionState;
+        private System.Windows.Forms.TextBox tbComLogOut;
     }
 }
 

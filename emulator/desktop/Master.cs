@@ -15,7 +15,7 @@ namespace SuperSimonEmulator
 {
     public partial class Master : Form
     {
-        private delegate void delVoidInt(int i);
+        private delegate void delVoidIntBool(int i, bool b);
         private delegate void delVoidCommand(Command cmd);
 
         private List<GamePad> _gamePads = new List<GamePad>();
@@ -38,7 +38,7 @@ namespace SuperSimonEmulator
             while (spTeensy.BytesToRead > 0)
             {
                 byte b = (byte)spTeensy.ReadByte();
-                Invoke(new delVoidInt(AppendByteToSerialLog), b);
+                Invoke(new delVoidIntBool(AppendByteToSerialLog), b, true); // true = inbound
 
                 if (_currentCommand == null)
                 {
@@ -64,9 +64,9 @@ namespace SuperSimonEmulator
             }
         }
 
-        private void AppendByteToSerialLog(int b)
+        private void AppendByteToSerialLog(int b, bool inbound)
         {
-            tbLog.AppendText("[" + b + "]");
+            (inbound ? tbComLogIn : tbComLogOut).AppendText("[" + b + "]");
         }
 
         private void HandleCommand(Command command)
@@ -103,7 +103,7 @@ namespace SuperSimonEmulator
             lbSpConnectionState.Text = "Connected";
             lbSpConnectionState.ForeColor = Color.DarkGreen;
 
-            tbLog.Clear();
+            tbComLogIn.Clear();
             _currentCommand = null; // Dispose of any data 
         }
 
@@ -143,6 +143,9 @@ namespace SuperSimonEmulator
 
                 bytes.AddRange(payloadCommand.Payload);
             }
+
+            foreach(byte b in bytes)
+                Invoke(new delVoidIntBool(AppendByteToSerialLog), b, false); // false = outbound
 
             byte[] data = bytes.ToArray();
             spTeensy.Write(data, 0, data.Length);
