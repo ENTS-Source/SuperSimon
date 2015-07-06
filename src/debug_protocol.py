@@ -68,11 +68,10 @@ def sendGameInfo(addr, sLen):
         print("Received ACK in " + str(end - start) + "ms")
 
 
-def startGame(addr):
+def startGame():
     print("Sending start game command...")
     rts()
     port.write(chr(2))
-    port.write(chr(addr))
     cts()
     # No response
     print("Start game sent!")
