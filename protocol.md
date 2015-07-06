@@ -11,7 +11,7 @@ A communication protocol for a "Simon Says" game developed by [ENTS](http://ents
 
 ### Serial Communication
 
-The Raspberry Pi is expecting 9600 Baud 8N1 communication. Any connected client should use the same communication setup.
+The Raspberry Pi is expecting 9600/8N1 communication. Any connected client should use the same communication setup.
 
 ### Basic overview
 
@@ -23,64 +23,60 @@ A command is formatted as follows for the protocol:
 
 If a payload is present, the length will always represent the payload length in bytes. If the payload is not present, the length will not be present. For example, if the payload size is 4 bytes, the length will be the decimal number `4`. The length is represented as a big-endian integer.
 
-This protocol works off an all-data model where there is no parity, start bits, or stop bits. Each byte is 8 bits long and the protocol is intended to be read 1 byte (8 bits) at a time.
-
 ### Command specification
 
 The following commands are supported by the protocol:
 
-| Command     | Has Address | Has Payload | Direction | Description                |
-| ----------- | ----------- | ----------- | --------- | -------------------------- |
-| `0000 0000` | No          | No          | Any       | Acknowledge                |
-| `0000 0001` | Yes         | Yes         | To Client | Game board information     |
-| `0000 0010` | No          | No          | To Client | Start game                 |
-| `0000 0011` | Yes         | No          | To Client | Request current game state |
-| `0000 0100` | No          | No          | To Pi     | "Game not yet finished"    |
-| `0000 0101` | Yes         | Yes         | To Pi     | Game completed             |
-| `0000 0110` | Yes         | No          | To Client | Request join state         |
-| `0000 0111` | No          | No          | To Pi     | Not joined                 |
-| `0000 1000` | No          | No          | To Pi     | Joined                     |
-| `0000 1001` | Yes         | No          | To Client | Discover                   |
-| `1111 0000` | Yes         | Yes         | Any       | Echo                       |
+| Command                      | Address?    | Payload?    | Direction | Description                |
+| ---------------------------- | ----------- | ----------- | --------- | -------------------------- |
+| `0000 0000` / `0x00` / `0`   | No          | No          | Any       | Acknowledge                |
+| `0000 0001` / `0x01` / `1`   | Yes         | Yes         | To Client | Game board information     |
+| `0000 0010` / `0x02` / `2`   | No          | No          | To Client | Start game                 |
+| `0000 0011` / `0x03` / `3`   | Yes         | No          | To Client | Request current game state |
+| `0000 0100` / `0x04` / `4`   | No          | No          | To Pi     | "Game not yet finished"    |
+| `0000 0101` / `0x05` / `5`   | Yes         | Yes         | To Pi     | Game completed             |
+| `0000 0110` / `0x06` / `6`   | Yes         | No          | To Client | Request join state         |
+| `0000 0111` / `0x07` / `7`   | No          | No          | To Pi     | Not joined                 |
+| `0000 1000` / `0x08` / `8`   | No          | No          | To Pi     | Joined                     |
+| `0000 1001` / `0x09` / `9`   | Yes         | No          | To Client | Discover                   |
+| `1111 0000` / `0xF0` / `240` | Yes         | Yes         | Any       | Echo                       |
 
 #### Payload specifications for commands
 
 Each command that supports a payload may represent the data however it pleases. Because of this, each supporting command has been documented below.
 
-##### Game board information (`0000 0001`)
+##### Game board information (`0x01`)
 
 Each byte (8 bits) represents a button number that must be requested. The order of the buttons is the order the buttons must be pressed in.
 
-Example payload: `0000 0001 0000 0010 0000 0001` for  the button sequence `1 - 2 - 1`.
+Example payload: `0x01 0x02 0x01` for  the button sequence `1 - 2 - 1`.
 
-##### Game results (`0000 0101`)
+##### Game results (`0x05`)
 
-The payload format is 1 byte for the button number, then 2 bytes for the time (in milliseconds) that the user took to press the button. Below is an example of the payload that would be found (times are not to realistic expectations).
+The payload format is 1 byte for the button number, then 2 bytes for the time (in milliseconds, big-endian) that the user took to press the button. Below is an example of the payload that would be found (times are not to realistic expectations).
 
 | Button | Time to press |
 | ------ | ------------- |
-| 1      | 10ms          |
-| 2      | 8ms           |
-| 1      | 12ms          |
+| 1      | 1454m         |
+| 3      | 657ms         |
+| 3      | 378ms         |
 
-Raw payload: `0000 0001 0000 1010 0000 0010 0000 1000 0000 0001 0000 1100`
+Raw payload: `0x01 0x05 0xAE 0x03 0x02 0x91 0x03 0x01 0x7A`
 
 Payload explanation (in order):
 
-- `0000 0001` - Button 1
-- `0000 1010` - 10 milliseconds
-- `0000 0010` - Button 2
-- `0000 1000` - 8 milliseconds
-- `0000 0001` - Button 1
-- `0000 1100` - 12 milliseconds
+- `0x01` - Button 1
+- `0x05 0xAE` - 1454 milliseconds
+- `0x01` - Button 3
+- `0x02 0x91` - 657 milliseconds
+- `0x01` - Button 3
+- `0x01 0x7A` - 378 milliseconds
 
-If the user failed to complete the sequence then `-1` (decimal, 2's compliment) should be used for the timing information for the pi to know. For example, if the sequence is 5 buttons and the user fails to complete the sequence on button 2, then buttons 3, 4, and 5 should all have the time information of `-1`. **The payload must contain the complete button sequence sent for the original game sequence.**
+If the user failed to complete the sequence then `0xFF 0xFF` should be used for the timing information. For example, if the sequence is 5 buttons and the user fails to complete the sequence on button 2, then buttons 3, 4, and 5 should all have time information of `0xFF 0xFF`. **The payload must contain the complete button sequence sent for the original game sequence.**
 
 The address field for this command is not important as it is ignored by all parties. It may be anything, but it is required to be in line with the protocol.
 
-The time in milliseconds is a big-endian short (16 bit number).
-
-##### Echo (`1111 0000`)
+##### Echo (`0xF0`)
 
 The payload for this command is simply data to be echoed back. The first byte of the payload is the desired target address that was sent by the Pi so that the protocol does not collide with another device (or cause the same device to fall into an infinite send loop).
 
@@ -88,12 +84,12 @@ For example, if the raw payload (represented as numbers) was `9 1 7 1`, then the
 
 Example:
 
-- Client receives `1111 0000 0000 0000 <length bytes> 1010 1010 <more data>`
-- Client sends `1111 0000 1010 1010 <length bytes> 1010 1010 <more data>`
+- Client receives `0xF0 0x00 <length bytes> 0xAA <more data>`
+- Client sends `0xF0 0xAA <length bytes> 0xAA <more data>`
 
 ### Sequences
 
-The protocol works off of sequences of commands to describe an action or state within the system. The below assumes that at least 2 clients (addressed as `0000 0000` and `0000 0001`) are connected to the system.
+The protocol works off of sequences of commands to describe an action or state within the system. The below assumes that at least 2 clients (addressed as `0x00` and `0x01`) are connected to the system.
 
 In general, the following rules are applied to all sequences:
 
@@ -112,11 +108,11 @@ The discover sequence is used by the Raspberry Pi to determine which clients are
 
 Below is an example of the sequence:
 
-1. Pi sends `Discover` (`0000 1001`) to address `0000 0000`
-2. Pi waits up to the maximum timeout for `Acknowledge` (`0000 0000`). If the client fails to respond, the Pi will assume the client is not on the system
-3. Pi sends `Discover` (`0000 1001`) to address `0000 0001`
-4. Pi waits up to the maximum timeout for `Acknowledge` (`0000 0000`). If the client fails to respond, the Pi will assume the client is not on the system
-5. Pi repeats steps 1-4 for addresses `0000 0010` to `1111 1111`
+1. Pi sends `Discover` (`0x09`) to address `0x00`
+2. Pi waits up to the maximum timeout for `Acknowledge` (`0x00`). If the client fails to respond, the Pi will assume the client is not on the system
+3. Pi sends `Discover` (`0x09`) to address `0x01`
+4. Pi waits up to the maximum timeout for `Acknowledge` (`0x00`). If the client fails to respond, the Pi will assume the client is not on the system
+5. Pi repeats steps 1-4 for addresses `0x02` to `0xFF`
 
 #### Pre-game sequence
 
@@ -124,10 +120,10 @@ This sequence occurs before a game has been started. This sequence is used by th
 
 Below is an example of the sequence:
 
-1. Pi sends `is joined?` (`0000 0110`) to address `0000 0000`
-2. Pi waits up to the maximum timeout for `Not joined` (`0000 1000`) or `Joined` (`0000 01111`). If the client fails to respond, the Pi will assume the client is not on the system
-3. Pi sends `is joined?` (`0000 0110`) to address `0000 0001`
-4. Pi waits up to the maximum timeout for `Not joined` (`0000 1000`) or `Joined` (`0000 01111`). If the client fails to respond, the Pi will assume the client is not on the system
+1. Pi sends `is joined?` (`0x06`) to address `0x00`
+2. Pi waits up to the maximum timeout for `Not joined` (`0x08`) or `Joined` (`0x07`). If the client fails to respond, the Pi will assume the client is not on the system
+3. Pi sends `is joined?` (`0x06`) to address `0x01`
+4. Pi waits up to the maximum timeout for `Not joined` (`0x08`) or `Joined` (`0x07`). If the client fails to respond, the Pi will assume the client is not on the system
 5. Pi repeats steps 1-4 for any address for any amount of time
 
 #### Game sequence
@@ -136,12 +132,12 @@ This sequence is for when a game is about to start and for starting the game.
 
 Below is an example of the sequence:
 
-1. Pi sends `Game information` (`0000 0001`) to address `0000 0000`
-2. Pi waits up to the maximum timeout for `Acknowledge` (`0000 0000`). If the client fails to respond, the Pi will assume the client has left the system and is no longer present
-3. Pi sends `Game information` (`0000 0001`) to address `0000 0001`
-4. Pi waits up to the maximum timeout for `Acknowledge` (`0000 0000`). If the client fails to respond, the Pi will assume the client has left the system and is no longer present
-5. Pi repeats steps 1-4 for addresses `0000 0010` to `1111 1111`
-6. Pi sends `Start game` (`0000 0010`) to address `0000 0000` (no client responds)
+1. Pi sends `Game information` (`0x01`) to address `0x00`
+2. Pi waits up to the maximum timeout for `Acknowledge` (`0x00`). If the client fails to respond, the Pi will assume the client has left the system and is no longer present
+3. Pi sends `Game information` (`0x01`) to address `0x01`
+4. Pi waits up to the maximum timeout for `Acknowledge` (`0x00`). If the client fails to respond, the Pi will assume the client has left the system and is no longer present
+5. Pi repeats steps 1-4 for addresses `0x02` to `0xFF`
+6. Pi sends `Start game` (`0x02`) (no client responds - broadcast start)
 
 #### In-game sequence
 
@@ -149,11 +145,11 @@ This sequence is for when a game is currently in progress. The Pi will not re-re
 
 Below is an example of the sequence:
 
-1. Pi sends `Game result request` (`0000 0011`) to address `0000 0000`
-2. Pi waits up to the maximum timeout for `Game results` (`0000 0101`) or `Game not complete` (`0000 0100`). If the client fails to respond, the Pi will assume the client has left the system
-3. Pi sends `Game result request` (`0000 0011`) to address `0000 0001`
-4. Pi waits up to the maximum timeout for `Game results` (`0000 0101`) or `Game not complete` (`0000 0100`). If the client fails to respond, the Pi will assume the client has left the system
-5. Pi repeats steps 1-4 for any address that has not sent a `Game result` (`0000 0101`) response
+1. Pi sends `Game result request` (`0x03`) to address `0x00`
+2. Pi waits up to the maximum timeout for `Game results` (`0x05`) or `Game not complete` (`0x04`). If the client fails to respond, the Pi will assume the client has left the system
+3. Pi sends `Game result request` (`0x03`) to address `0x01`
+4. Pi waits up to the maximum timeout for `Game results` (`0x05`) or `Game not complete` (`0x04`). If the client fails to respond, the Pi will assume the client has left the system
+5. Pi repeats steps 1-4 for any address that has not sent a `Game result` (`0x05`) response
 
 ### Example game sequence
 
