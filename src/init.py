@@ -28,13 +28,18 @@ screen = pygame.display.set_mode(size)
 pygame.display.set_caption("ENTS Super Simon Game")
 #pygame.display.toggle_fullscreen()
 
+# Font paths
+fontEntsCondensedItalicPath = "fonts/LeagueGothic-CondensedItalic.otf"
+fontEntsCondensedRegularPath = "fonts/LeagueGothic-CondensedRegular.otf"
+fontEntsItalicPath = "fonts/LeagueGothic-Italic.otf"
+fontEntsRegularPath = "fonts/LeagueGothic-Regular.otf"
+
 # Font definitions
-robotoRegularPath = "fonts/Roboto-Regular.ttf"
-smallFont = pygame.font.Font(robotoRegularPath, 12)
-regularFont = pygame.font.Font(robotoRegularPath, 25)
-largeFont = pygame.font.Font(robotoRegularPath, 45)
-large2Font = pygame.font.Font(robotoRegularPath, 65)
-extraLargeFont = pygame.font.Font(robotoRegularPath, 90)
+smallFont = pygame.font.Font(fontEntsRegularPath, 12)
+regularFont = pygame.font.Font(fontEntsRegularPath, 25)
+largeFont = pygame.font.Font(fontEntsRegularPath, 45)
+large2Font = pygame.font.Font(fontEntsRegularPath, 65)
+extraLargeFont = pygame.font.Font(fontEntsRegularPath, 90)
 
 # ------ SCREEN INIT ------
 print("Rendering major screen...")
