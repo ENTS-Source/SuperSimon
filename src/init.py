@@ -36,34 +36,53 @@ fontEntsRegularPath = "fonts/LeagueGothic-Regular.otf"
 
 # Font definitions
 smallFont = pygame.font.Font(fontEntsRegularPath, 12)
-regularFont = pygame.font.Font(fontEntsRegularPath, 25)
-largeFont = pygame.font.Font(fontEntsRegularPath, 45)
-large2Font = pygame.font.Font(fontEntsRegularPath, 65)
+regularFont = pygame.font.Font(fontEntsRegularPath, 45)
+largeFont = pygame.font.Font(fontEntsRegularPath, 65)
 extraLargeFont = pygame.font.Font(fontEntsRegularPath, 90)
+superLargeFont = pygame.font.Font(fontEntsRegularPath, 110)
+headerFont = pygame.font.Font(fontEntsRegularPath, 160)
+subHeaderFont = pygame.font.Font(fontEntsRegularPath, 55)
 
 # ------ SCREEN INIT ------
 print("Rendering major screen...")
 players = 4 # TODO: Allow this to change (re-render display)
 screen.fill(BACKGROUND_COLOR)
 
+# ENTS Logo & title
+entsLogo = pygame.image.load("images/logo.png").convert_alpha()
+headerX = 5
+headerY = 5
+headerH = 150
+headerMargin = 15
+logoW = 119
+logoH = 150
+screen.blit(entsLogo, (headerX, headerY, logoW, logoH))
+headerLbl = headerFont.render("ENTS SuperSimon", 1, PRIMARY_HEADER_TEXT_COLOR)
+screen.blit(headerLbl, (headerX + logoW + headerMargin, -headerMargin)) # Negative Y because of the font
+
 # Leaderboard section (boxes at top of screen)
 lbPlayers = 5
 lbMargin = 10
 lbWidth = (width - (lbPlayers * lbMargin) - lbMargin) / lbPlayers
 lbHeight = 75
+lbY = lbMargin + headerH + headerMargin
+
+leaderboardLbl = subHeaderFont.render("Top " + str(lbPlayers) + " scores:", 1, HEADER_TEXT_COLOR)
+screen.blit(leaderboardLbl, (headerX, lbY))
+lbY += leaderboardLbl.get_rect().height + lbMargin
 
 for i in range(0, lbPlayers):
     # Rectangle
     x = i * lbWidth
     x += i * lbMargin
-    rect = (x + lbMargin, lbMargin, lbWidth, lbHeight)
+    rect = (x + lbMargin, lbY, lbWidth, lbHeight)
     AAfilledRoundedRect(screen, rect, WIDGET_BACKGROUND_COLOR1, 0.2)
 
     # Rank text
     rankLbl = regularFont.render("#" + str(i + 1), 1, MUTED_TEXT_COLOR)
     area = rankLbl.get_rect()
     rankX = (x + lbWidth + (lbMargin / 2)) - area.width
-    rankY = (lbHeight + (lbMargin / 2)) - area.height
+    rankY = (lbY + lbHeight) - area.height
     screen.blit(rankLbl, (rankX, rankY))
 
     # Score text
@@ -71,7 +90,7 @@ for i in range(0, lbPlayers):
     score = random.randint(5000, 90000)
     scoreLbl = largeFont.render(str(score), 1, SCORE_TEXT_COLOR)
     scoreX = x + lbMargin + (lbMargin / 2)
-    scoreY = lbMargin
+    scoreY = lbY
     screen.blit(scoreLbl, (scoreX, scoreY))
 
 # Players section (boxes for player info)
@@ -80,7 +99,10 @@ plMargin = 10
 plMaxWidth = 0.50 # 50% of the screen
 plStartX = plMargin
 plX = plStartX
-plY = lbMargin + lbMargin + lbHeight
+plY = lbY + lbMargin + lbHeight
+playersLbl = subHeaderFont.render("Current game:", 1, HEADER_TEXT_COLOR)
+screen.blit(playersLbl, (headerX, plY))
+plY += playersLbl.get_rect().height + plMargin
 availableWidth = (float)(width - plMargin) + 3.0
 availabeHeight = (float)(height - plY - (plMargin * 2))
 perRow = players #math.floor(plMaxWidth * players)
@@ -116,17 +138,17 @@ while(playersDisplayed < players):
     subMessage1 = None
     scoreLbl = None
     if(playersDisplayed == 0):
-        subMessage = regularFont.render("not yet joined", 1, PRIMARY_TEXT_COLOR)
-        subMessage1 = smallFont.render("press the center button to join", 1, PRIMARY_TEXT_COLOR)
+        subMessage = largeFont.render("not yet joined", 1, PRIMARY_TEXT_COLOR)
+        subMessage1 = regularFont.render("press the center button to join", 1, PRIMARY_TEXT_COLOR)
     elif(playersDisplayed == 1):
         #scoreLbl = extraLargeFont.render("Welcome!", 1, WHITE)
-        subMessage = regularFont.render("starting in 5s", 1, PRIMARY_TEXT_COLOR)
+        subMessage = largeFont.render("starting in 5s", 1, PRIMARY_TEXT_COLOR)
     elif(playersDisplayed == 2):
-        subMessage = regularFont.render("Round 41", 1, PRIMARY_TEXT_COLOR)
-        scoreLbl = large2Font.render("112233", 1, SCORE_TEXT_COLOR)
+        subMessage = largeFont.render("Round 41", 1, PRIMARY_TEXT_COLOR)
+        scoreLbl = superLargeFont.render("112233", 1, SCORE_TEXT_COLOR)
     elif(playersDisplayed == 3):
-        subMessage = regularFont.render("9176 (98th)", 1, SCORE_TEXT_COLOR)
-        scoreLbl = extraLargeFont.render("1st", 1, WINNER_TEXT_COLOR)
+        subMessage = largeFont.render("9176 (98th)", 1, SCORE_TEXT_COLOR)
+        scoreLbl = superLargeFont.render("1st", 1, WINNER_TEXT_COLOR)
     if(subMessage is not None):
         x = plX + center_text(subMessage, plWidth)
         y = (plY + plHeight) - subMessage.get_rect().height - plMargin
@@ -154,6 +176,7 @@ while(playersDisplayed < players):
 
 
 pygame.display.flip()
+#pygame.image.save(screen, "temp.png")
 # ------ END SCREEN INIT ------
 
 fps = 20 # Should be plenty for us
