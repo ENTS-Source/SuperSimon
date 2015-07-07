@@ -196,5 +196,5 @@ while running:
             print("Exiting...")
             sys.exit()
     #screen.fill((0, 255, 0))
-    #pygame.display.flip()
+    pygame.display.flip()
     sleep(loopTime)
