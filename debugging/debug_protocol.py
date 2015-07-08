@@ -23,6 +23,7 @@ def readInt():
     lStr += port.read()
     return struct.unpack(">L", lStr)[0]
 
+
 def readShort():
     lStr = ""
     lStr += port.read()
@@ -32,6 +33,10 @@ def readShort():
 
 def rts():
     #GPIO.output(11, GPIO.HIGH)
+    port.write(chr(222)) # 0xDE
+    port.write(chr(173)) # 0xAD
+    port.write(chr(190)) # 0xBE
+    port.write(chr(239)) # 0xEF
     return
 
 

@@ -19,6 +19,8 @@ Each command will start with a 4 byte magic value. This magic value is always se
 
 `0xDE 0xAD 0xBE 0xEF`
 
+Only the Pi will send the magic information - clients should never send it.
+
 A command is formatted as follows for the protocol:
 
 | Command | Address | Length  | Payload   |

@@ -24,8 +24,8 @@ namespace SuperSimonEmulator
             Color.FromArgb(170, 0, 0),          // Pad 1 (red)
             Color.FromArgb(59, 170, 0),         // Pad 2 (green)
             Color.FromArgb(255, 255, 255),      // Pad 3 (white)
-            Color.FromArgb(224, 220, 0),        // Pad 4 (yellow)
-            Color.FromArgb(14, 0, 170)          // Pad 5 (blue)
+            Color.FromArgb(14, 0, 170),         // Pad 4 (blue)
+            Color.FromArgb(224, 220, 0)         // Pad 5 (yellow)
         };
 
         public int Address { get; private set; }

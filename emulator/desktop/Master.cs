@@ -13,6 +13,9 @@ namespace SuperSimonEmulator
         private delegate void delVoidIntBool(int i, bool b);
         private delegate void delVoidCommand(Command cmd);
 
+        private byte[] _magicSequence = { 0xDE, 0xAD, 0xBE, 0xEF };
+        private int _magicSequenceIndex = 0;
+
         private List<GamePad> _gamePads = new List<GamePad>();
         private Command _currentCommand;
 
@@ -37,6 +40,14 @@ namespace SuperSimonEmulator
 
                 if (_currentCommand == null)
                 {
+                    if(_magicSequenceIndex < _magicSequence.Length)
+                    {
+                        if(b != _magicSequence[_magicSequenceIndex])
+                            continue; // Ignore byte: Unexpected
+                        _magicSequenceIndex++;
+                        continue; // Don't handle the byte
+                    }
+                    Console.WriteLine("Magic value read successfully");
                     _currentCommand = CommandRegistry.FindCommand(b);
                     if (_currentCommand == null)
                     {
@@ -55,6 +66,7 @@ namespace SuperSimonEmulator
                 {
                     Invoke(new delVoidCommand(HandleCommand), _currentCommand);
                     _currentCommand = null;
+                    _magicSequenceIndex = 0;
                 }
             }
         }
