@@ -15,6 +15,7 @@ namespace SuperSimonEmulator.Commands
 
         public Command Response(GamePad pad)
         {
+            if (pad == null) return null;
             return new AcknowledgeCommand();
         }
     }
@@ -106,6 +107,7 @@ namespace SuperSimonEmulator.Commands
 
         public Command Response(GamePad pad)
         {
+            if (pad == null) return null;
             return new EchoCommand()
             {
                 TargetAddress = Payload[0],

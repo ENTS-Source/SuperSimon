@@ -45,6 +45,12 @@ def cts():
     #GPIO.output(11, GPIO.LOW)
     return
 
+def readMagic():
+    port.read()
+    port.read()
+    port.read()
+    port.read()
+
 
 def sendAck():
     print("Sending ACK...")
@@ -162,10 +168,14 @@ def echo(addr, raddr, sendBytes = 2):
     port.write(intToBytes(sendBytes))
     port.write(chr(raddr))
     for i in range(0, sendBytes - 1):
-        port.write(chr(random.randint(1, 200)))
+        r = random.randint(1, 200)
+        c = chr(r)
+        port.write(c)
+        print("Out = " + str(r))
     cts()
     print("Echo sent! Waiting for response...")
     start = millis()
+    readMagic()
     r = port.read()
     end = millis()
     print("Got response in " + str(end - start) + "ms")
@@ -173,9 +183,11 @@ def echo(addr, raddr, sendBytes = 2):
         print("Got echo back, reading data...")
         a = port.read()
         l = readInt()
+        print("Expecting " + str(l) + " bytes back")
         d1 = port.read()
         for i in range(0, sendBytes - 1):
-            port.read()
+            v = port.read()
+            print("Read " + str(ord(v)))
         print("Response to address " + str(ord(a)))
         print("  Length = " + str(l))
         print("  D1 = " + str(ord(d1)))

@@ -19,7 +19,7 @@ Each command will start with a 4 byte magic value. This magic value is always se
 
 `0xDE 0xAD 0xBE 0xEF`
 
-Only the Pi will send the magic information - clients should never send it.
+All commands, including responses, should send the magic value
 
 A command is formatted as follows for the protocol:
 
@@ -28,6 +28,8 @@ A command is formatted as follows for the protocol:
 | 8 bits  | 8 bits  | 32 bits | <n> bytes |
 
 If a payload is present, the length will always represent the payload length in bytes. If the payload is not present, the length will not be present. For example, if the payload size is 4 bytes, the length will be the decimal number `4`. The length is represented as a big-endian integer.
+
+The Pi should never send more than 250 bytes total for any command, although the client is expected to be able to send the complete range for the length field of a command.
 
 ### Command specification
 
@@ -45,6 +47,7 @@ The following commands are supported by the protocol:
 | `0000 0111` / `0x07` / `7`   | No          | No          | To Pi     | Not joined                 |
 | `0000 1000` / `0x08` / `8`   | No          | No          | To Pi     | Joined                     |
 | `0000 1001` / `0x09` / `9`   | Yes         | No          | To Client | Discover                   |
+| `0000 1010` / `0x0A` / `10`  | Yes         | No          | To Client | End game now               |
 | `1111 0000` / `0xF0` / `240` | Yes         | Yes         | Any       | Echo                       |
 
 #### Payload specifications for commands
@@ -156,6 +159,8 @@ Below is an example of the sequence:
 3. Pi sends `Game result request` (`0x03`) to address `0x01`
 4. Pi waits up to the maximum timeout for `Game results` (`0x05`) or `Game not complete` (`0x04`). If the client fails to respond, the Pi will assume the client has left the system
 5. Pi repeats steps 1-4 for any address that has not sent a `Game result` (`0x05`) response
+
+The Pi may send an "End game now" (`0x0A`) to any address to terminate the game. This can happen at any point during the "in game" sequence.
 
 ### Example game sequence
 

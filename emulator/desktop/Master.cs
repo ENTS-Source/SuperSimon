@@ -138,6 +138,7 @@ namespace SuperSimonEmulator
 
         private void SendCommand(Command command)
         {
+            if (command == null) return;
             var bytes = new List<byte>();
 
             bytes.Add(command.CommandId);
