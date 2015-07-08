@@ -1,6 +1,8 @@
 ## SuperSimon Protocol
 A communication protocol for a "Simon Says" game developed by [ENTS](http://ents.ca). This communication protocol is intended to be used between a Raspberry Pi and Teensy (as a client). A raw version (that may be outdated) can be found [here](https://gist.github.com/turt2live/5d5c14111c8e7933a21f) as a text file.
 
+*DEV NOTE:* Timing won't work, needs to be reviewed.
+
 ### Definitions
 
 - `Game` - A round where the user must press a sequence of buttons in the specified order
@@ -160,7 +162,7 @@ Below is an example of the sequence:
 4. Pi waits up to the maximum timeout for `Game results` (`0x05`) or `Game not complete` (`0x04`). If the client fails to respond, the Pi will assume the client has left the system
 5. Pi repeats steps 1-4 for any address that has not sent a `Game result` (`0x05`) response
 
-The Pi may send an "End game now" (`0x0A`) to any address to terminate the game. This can happen at any point during the "in game" sequence.
+The Pi may send an "End game now" (`0x0A`) to any address to terminate the game. This can happen at any point during the "in game" sequence. If the client receives an "End game now" (`0x0A`) command then it must respond with an "Acknowledge" (`0x00`).
 
 ### Example game sequence
 
