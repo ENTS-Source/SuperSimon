@@ -15,6 +15,10 @@ The Raspberry Pi is expecting 9600/8N1 communication. Any connected client shoul
 
 ### Basic overview
 
+Each command will start with a 4 byte magic value. This magic value is always sent before the start of a new command. The magic value is as follows:
+
+`0xDE 0xAD 0xBE 0xEF`
+
 A command is formatted as follows for the protocol:
 
 | Command | Address | Length  | Payload   |
