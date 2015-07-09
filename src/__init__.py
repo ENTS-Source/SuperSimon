@@ -34,7 +34,6 @@ game = SuperSimon(config.protocol)
 # Now we can start up the display with a disover sequence
 print("Discovering initial clients...")
 game.discoverClients()
-game.checkJoins()
 
 # Start rendering screen
 import sys
