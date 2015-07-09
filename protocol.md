@@ -1,7 +1,5 @@
 ## SuperSimon Protocol
-A communication protocol for a "Simon Says" game developed by [ENTS](http://ents.ca). This communication protocol is intended to be used between a Raspberry Pi and Teensy (as a client). A raw version (that may be outdated) can be found [here](https://gist.github.com/turt2live/5d5c14111c8e7933a21f) as a text file.
-
-*DEV NOTE:* Timing won't work, needs to be reviewed.
+A communication protocol for a "Simon Says" game developed by [ENTS](http://ents.ca). This communication protocol is intended to be used between a Raspberry Pi and Teensy (as a client). A raw version (that is outdated) can be found [here](https://gist.github.com/turt2live/5d5c14111c8e7933a21f) as a text file.
 
 ### Definitions
 
@@ -21,7 +19,13 @@ Each command will start with a 4 byte magic value. This magic value is always se
 
 `0xDE 0xAD 0xBE 0xEF`
 
-All commands, including responses, should send the magic value
+All commands, including responses, should send the magic value.
+
+#### Timing
+
+The communications rely on timeouts to assume that clients are either not responsive or not compliant. If bytes are sent farther than 50ms apart then the previous data may be scraped. For example, if the Pi sends 3 bytes of data then takes >50ms to send a fourth byte, then the fourth byte is the start of a new sequence (the other 3 bytes are garbage).
+
+#### Command format
 
 A command is formatted as follows for the protocol:
 
