@@ -5,7 +5,7 @@ setup(name='ents-supersimon',
       description='ENTS SuperSimon master game controller',
       url='https://github.com/turt2live/ENTS-SuperSimon',
       install_requires=[
-          'RPi.GPIO',
+          #'RPi.GPIO',
           'configobj'
       ],
       zip_safe=False)

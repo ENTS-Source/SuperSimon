@@ -36,7 +36,7 @@ print("Discovering initial clients...")
 game.discoverClients()
 game.checkJoins()
 
-# Start rendering scenes
+# Start rendering screen
 import sys
 from time import sleep
 from renderScreen import render
