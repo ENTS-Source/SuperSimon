@@ -34,11 +34,16 @@ game = SuperSimon(config.protocol)
 # Now we can start up the display with a disover sequence
 print("Discovering initial clients...")
 game.discoverClients()
+game.checkJoins()
 
 # Start rendering scenes
 import sys
 from time import sleep
+from renderScreen import render
+from gameManager import GameManager
+manager = GameManager(game)
 fps = 20
+scoreList = [] # TODO: Sorted?
 print("Starting game loop...")
 gameRunning = True
 while(gameRunning):
@@ -54,4 +59,5 @@ while(gameRunning):
             game.exit()
             print("Exiting...")
             sys.exit()
+    render(screen, manager)
     sleep(fps / 60.0)

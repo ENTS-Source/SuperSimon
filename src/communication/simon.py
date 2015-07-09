@@ -2,6 +2,7 @@
 from serial import Serial
 from threading import Thread
 from utils import *
+from player import Player
 
 class SuperSimon:
     def __init__(self, configuration):
@@ -9,9 +10,15 @@ class SuperSimon:
         self.__initPort()
         self.__operating = False
         self.__readDumpTimeout = 50 # ms
+        self.players = []
 
     def __initPort(self):
         self.__port = Serial(self.__conf.device, baudrate=9600)
+
+    def checkJoins(self):
+        joiningThread = Thread(target=self.__protocolJoinState)
+        joiningThread.daemon = True
+        joiningThread.start()
 
     def discoverClients(self):
         discoverThread = Thread(target=self.__protocolDiscover)
@@ -20,6 +27,14 @@ class SuperSimon:
 
     def exit(self):
         self.__port.close()
+
+    def __findOrCreatePlayer(self, address):
+        for player in self.players:
+            if player.address == address:
+                return player
+        player = Player(address)
+        self.players.append(player)
+        return player
 
     # ==========================================================================
     # BELOW HERE ARE THE PROTOCOL HELPERS / THREAD TARGETS
@@ -39,7 +54,22 @@ class SuperSimon:
             maximumDiscover = min(self.__conf.discoverMaximum, 255)
         for addr in range(0, maximumDiscover):
             discovered = self.__protocolSendDiscover(addr)
+            player = self.__findOrCreatePlayer(addr)
+            player.online = discovered
             print("Address " + str(addr) + " discovered = " + str(discovered))
+        self.__protocolEndTurn()
+
+    def __protocolJoinState(self):
+        self.__protocolRequestTurn()
+        for player in self.players:
+            if player.online and not player.joined:
+                joined = self.__protocolRequestJoinState(player.address)
+                if joined is None:
+                    player.online = False
+                    print("Address " + str(player.address) + " has been considered as offline")
+                else:
+                    player.joined = joined
+                    print("Address " + str(player.address) + " joined = " + str(joined))
         self.__protocolEndTurn()
 
     # ==========================================================================
@@ -81,6 +111,16 @@ class SuperSimon:
         if b != '\x00':
             raise ValueError("Failed to read acknowledge: Invalid byte received (got " + str(b) + ")")
 
+    def __protocolReadJoinResponse(self):
+        self.__protocolReadMagic()
+        b = self.__protocolRead()
+        if b == '\x07':
+            return False
+        elif b == '\x08':
+            return True
+        else:
+            raise ValueError("Failed to read join response: Invalid byte received (got " + str(b) + ")")
+
     def __protocolSendDiscover(self, address):
         self.__protocolSendMagic()
         self.__port.write('\x09')
@@ -92,7 +132,21 @@ class SuperSimon:
             self.__protocolReadAck()
         except ValueError as e:
             print(str(e))
-            # Failed to respond
             received = False
         self.__port.timeout = previousTimeout
         return received
+
+    def __protocolRequestJoinState(self, address):
+        self.__protocolSendMagic()
+        self.__port.write('\x06')
+        self.__port.write(chr(address))
+        previousTimeout = self.__port.timeout
+        self.__port.timeout = 50 / 1000.0 # 50ms timeout
+        joining = None
+        try:
+            joining = self.__protocolReadJoinResponse()
+        except ValueError as e:
+            print(str(e))
+            joining = None
+        self.__port.timeout = previousTimeout
+        return joining
