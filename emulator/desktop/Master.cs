@@ -141,6 +141,12 @@ namespace SuperSimonEmulator
             if (command == null) return;
             var bytes = new List<byte>();
 
+            // Start with the magic sequence
+            bytes.Add(0xDE);
+            bytes.Add(0xAD);
+            bytes.Add(0xBE);
+            bytes.Add(0xEF);
+
             bytes.Add(command.CommandId);
 
             if (command is AddressedCommand)

@@ -96,6 +96,7 @@ namespace SuperSimonEmulator.Commands
 
         public Command Response(GamePad pad)
         {
+            if (pad == null) return null;
             return new AcknowledgeCommand();
         }
     }
