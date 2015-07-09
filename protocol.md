@@ -119,7 +119,7 @@ In general, the following rules are applied to all sequences:
 
 #### Discover sequence
 
-The discover sequence is used by the Raspberry Pi to determine which clients are within the system. The Pi may use this information to reduce load on the system in other sequences. The Pi will never skip any addresses in this sequence.
+The discover sequence is used by the Raspberry Pi to determine which clients are within the system. The Pi may use this information to reduce load on the system in other sequences. The Pi will never skip any addresses in this sequence. If the client does not respond correctly within 50ms then the Pi assumes it is not online.
 
 Below is an example of the sequence:
 
