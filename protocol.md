@@ -131,7 +131,7 @@ Below is an example of the sequence:
 
 #### Pre-game sequence
 
-This sequence occurs before a game has been started. This sequence is used by the Pi to determine who is going to be participating in the game. The Pi may repeat this sequence many times over any duration to continue to find clients. The Pi may also re-request the join state of a client multiple times.
+This sequence occurs before a game has been started. This sequence is used by the Pi to determine who is going to be participating in the game. The Pi may repeat this sequence many times over any duration to continue to find clients. This Pi will not re-request the join state of a client that has already joined. The client must respond to the Pi's request for the join state within 50ms in order for it to be considered.
 
 Below is an example of the sequence:
 
@@ -139,7 +139,7 @@ Below is an example of the sequence:
 2. Pi waits up to the maximum timeout for `Not joined` (`0x08`) or `Joined` (`0x07`). If the client fails to respond, the Pi will assume the client is not on the system
 3. Pi sends `is joined?` (`0x06`) to address `0x01`
 4. Pi waits up to the maximum timeout for `Not joined` (`0x08`) or `Joined` (`0x07`). If the client fails to respond, the Pi will assume the client is not on the system
-5. Pi repeats steps 1-4 for any address for any amount of time
+5. Pi repeats steps 1-4 for any address not joined
 
 #### Game sequence
 
