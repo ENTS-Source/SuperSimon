@@ -21,7 +21,7 @@ screenSize = sWidth, sHeight = displayInfo.current_w, displayInfo.current_h
 
 # Creation of the screen object
 print("Setting up graphical interface...")
-screen = pygame.display.set_mode(screenSize)
+screen = pygame.display.set_mode(screenSize, 0, 32)
 pygame.display.set_caption("ENTS SuperSimon Game")
 if config.game.fullscreen:
     pygame.display.toggle_fullscreen()
