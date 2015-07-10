@@ -23,7 +23,7 @@ All commands, including responses, should send the magic value.
 
 #### Timing
 
-The communications rely on timeouts to assume that clients are either not responsive or not compliant. If bytes are sent farther than 50ms apart then the previous data may be scraped. For example, if the Pi sends 3 bytes of data then takes >50ms to send a fourth byte, then the fourth byte is the start of a new sequence (the other 3 bytes are garbage).
+The communications rely on timeouts to assume that clients are either not responsive or not compliant. If bytes are sent farther than 150ms apart then the previous data may be scraped. For example, if the Pi sends 3 bytes of data then takes >50ms to send a fourth byte, then the fourth byte is the start of a new sequence (the other 3 bytes are garbage).
 
 #### Command format
 
@@ -119,7 +119,7 @@ In general, the following rules are applied to all sequences:
 
 #### Discover sequence
 
-The discover sequence is used by the Raspberry Pi to determine which clients are within the system. The Pi may use this information to reduce load on the system in other sequences. The Pi will never skip any addresses in this sequence. If the client does not respond correctly within 50ms then the Pi assumes it is not online.
+The discover sequence is used by the Raspberry Pi to determine which clients are within the system. The Pi may use this information to reduce load on the system in other sequences. The Pi will never skip any addresses in this sequence. If the client does not respond correctly within 150ms then the Pi assumes it is not online.
 
 Below is an example of the sequence:
 
