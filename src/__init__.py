@@ -21,7 +21,8 @@ screenSize = sWidth, sHeight = displayInfo.current_w, displayInfo.current_h
 
 # Creation of the screen object
 print("Setting up graphical interface...")
-screen = pygame.display.set_mode(screenSize, 0, 32)
+screen = pygame.display.set_mode(screenSize, pygame.DOUBLEBUF, 32)
+screen.set_alpha(None)
 pygame.display.set_caption("ENTS SuperSimon Game")
 if config.game.fullscreen:
     pygame.display.toggle_fullscreen()
@@ -41,7 +42,6 @@ from time import sleep
 from renderScreen import render
 from gameManager import GameManager
 manager = GameManager(game)
-fps = 20
 
 # State variables for game stuffs
 from communication.utils import *
@@ -70,5 +70,5 @@ while(gameRunning):
         manager.tick(now - lastTick)
         lastTick = now
     end = millis()
-    print("Took " + str(end - start) + "ms to do game loop. Sleeping for " + str(fps / 60.0) + "s...")
-    sleep(fps / 60.0)
+    print("Took " + str(end - start) + "ms to do game loop. Sleeping for 100ms...")
+    sleep(0.1)

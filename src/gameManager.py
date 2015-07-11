@@ -1,5 +1,5 @@
 from communication.utils import *
-from basicTimer import Timer as BasicTimer
+from basicTimer import BasicTimer
 import math
 
 class GameManager:

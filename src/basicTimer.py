@@ -1,6 +1,6 @@
 from communication.utils import *
 
-class Timer:
+class BasicTimer:
     def __init__(self, resetVal):
         self.__resetTo = resetVal
         self.__value = self.__resetTo

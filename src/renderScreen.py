@@ -1,5 +1,6 @@
 # This is in it's own file because it is very long. I should really move this out
-# to other methods, but instead I won't bother just yet.
+# to other methods, but instead I won't bother just yet. Also this does a lot more
+# than it probably should... so there's that.
 
 PLAYER_STATE_NOT_JOINED = 1
 PLAYER_STATE_JOINED = 2
@@ -31,7 +32,7 @@ def render(screen, gameManager):
     blit_header(screen)
     blit_leaderboard(screen, gameManager)
     blit_players(screen, gameManager)
-    pygame.display.flip() # Actually render things to the screen
+    pygame.display.flip()
 
 def blit_header(screen):
     x = margin
@@ -109,13 +110,13 @@ def blit_players(screen, gameManager):
             subMessage2 = PLAYER_SUBTEXT1_FONT.render("starting in " + str(gameManager.getTimeToStart()) + "s", 1, PRIMARY_TEXT_COLOR)
         elif state == PLAYER_STATE_PLAYING:
             message = PLAYER_MAJOR_FONT.render(str(player.score), 1, SCORE_TEXT_COLOR)
-            subMessage2 = PLAYER_SUBTEXT1_FONT.render("Round " + str(player.roundNumber))
+            subMessage2 = PLAYER_SUBTEXT1_FONT.render("Round " + str(player.roundNumber), 1, PRIMARY_TEXT_COLOR)
         elif state == PLAYER_STATE_GAME_OVER:
             color = LOSER_TEXT_COLOR
             if player.localRank == 1:
                 color = WINNER_TEXT_COLOR
             message = PLAYER_MAJOR_FONT.render(rankStr(player.localRank), 1, color)
-            subMessage2 = PLAYER_SUBTEXT1_FONT.render(str(player.score) + " (" + rankStr(player.globalRank) + ")")
+            subMessage2 = PLAYER_SUBTEXT1_FONT.render(str(player.score) + " (" + rankStr(player.globalRank) + ")", 1, SCORE_TEXT_COLOR)
         elif state == PLAYER_STATE_OFFLINE:
             message = PLAYER_MAJOR_FONT.render("OFFLINE", 1, DEEP_RED)
 
