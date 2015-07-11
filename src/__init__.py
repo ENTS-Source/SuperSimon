@@ -39,9 +39,10 @@ game.discoverClients()
 # Prepare for game loop
 import sys
 from time import sleep
-from renderScreen import render
+from screenRenderer import ScreenRenderer
 from gameManager import GameManager
 manager = GameManager(game)
+renderer = ScreenRenderer(screen, manager)
 
 # State variables for game stuffs
 from communication.utils import *
@@ -50,6 +51,7 @@ lastTick = millis()
 # Start game loop
 print("Starting game loop...")
 gameRunning = True
+maxRenderTime = 0
 while(gameRunning):
     start = millis()
     for event in pygame.event.get():
@@ -64,11 +66,15 @@ while(gameRunning):
             game.exit()
             print("Exiting...")
             sys.exit()
-    render(screen, manager)
+    renderer.tick()
     now = millis()
     if now - lastTick >= 500:
         manager.tick(now - lastTick)
         lastTick = now
     end = millis()
-    print("Took " + str(end - start) + "ms to do game loop. Sleeping for 100ms...")
+    rtime = end - start
+    if rtime > maxRenderTime:
+        maxRenderTime = rtime
+        print("!! NEW MAXIMUM RENDER TIME: " + str(maxRenderTime) + "ms")
+    print("Took " + str(end - start) + "ms (max = " + str(maxRenderTime) + "ms) to do game loop. Sleeping for 100ms...")
     sleep(0.1)

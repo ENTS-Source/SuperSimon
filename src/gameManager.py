@@ -6,7 +6,8 @@ class GameManager:
     def __init__(self, game):
         self.__game = game
         self.__lastDiscover = millis()
-        self.leaderboard = [50, 40, 30, 20, 10] # TODO: Actually implement a leaderboard
+        # Size can not change at runtime - whatever it is here is what we're stuck with
+        self.leaderboard = [0, 0, 0, 0, 0] # TODO: Actually implement a leaderboard
         self.__starting = False
         self.__acceptingJoins = True
         self.__sequence = []
@@ -26,6 +27,9 @@ class GameManager:
         self.__gameTimer.tick(delta)
         now = millis()
         if now - self.__lastDiscover >= 5000:
+            # TODO: Remove debug code
+            for i in range(0, len(self.leaderboard)):
+                self.leaderboard[i] += 5
             self.__lastDiscover = now
             self.__game.discoverClients()
         if self.__acceptingJoins:
