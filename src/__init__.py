@@ -35,14 +35,19 @@ game = SuperSimon(config.protocol)
 print("Discovering initial clients...")
 game.discoverClients()
 
-# Start rendering screen
+# Prepare for game loop
 import sys
 from time import sleep
 from renderScreen import render
 from gameManager import GameManager
 manager = GameManager(game)
 fps = 20
-scoreList = [] # TODO: Sorted?
+
+# State variables for game stuffs
+from communication.utils import *
+lastTick = millis()
+
+# Start game loop
 print("Starting game loop...")
 gameRunning = True
 while(gameRunning):
@@ -59,4 +64,8 @@ while(gameRunning):
             print("Exiting...")
             sys.exit()
     render(screen, manager)
+    now = millis()
+    if now - lastTick >= 500:
+        manager.tick(now - lastTick)
+        lastTick = now
     sleep(fps / 60.0)

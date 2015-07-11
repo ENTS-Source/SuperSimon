@@ -4,12 +4,13 @@ from threading import Thread
 from utils import *
 from player import Player
 
+# TODO: Need to add byte dumping (last byte > 150ms? Dump buffer)
 class SuperSimon:
     def __init__(self, configuration):
         self.__conf = configuration
         self.__initPort()
         self.__operating = False
-        self.__readDumpTimeout = 50 # ms
+        self.__readDumpTimeout = 150 # ms
         self.players = []
 
     def __initPort(self):
@@ -66,6 +67,7 @@ class SuperSimon:
                 joined = self.__protocolRequestJoinState(player.address)
                 if joined is None:
                     player.online = False
+                    player.reset()
                     print("Address " + str(player.address) + " has been considered as offline")
                 else:
                     player.joined = joined
@@ -126,7 +128,7 @@ class SuperSimon:
         self.__port.write('\x09')
         self.__port.write(chr(address))
         previousTimeout = self.__port.timeout
-        self.__port.timeout = 50 / 1000.0 # 50ms timeout
+        self.__port.timeout = 150 / 1000.0 # 150ms timeout
         received = True
         try:
             self.__protocolReadAck()

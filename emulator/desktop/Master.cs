@@ -116,6 +116,7 @@ namespace SuperSimonEmulator
             lbSpConnectionState.ForeColor = Color.DarkGreen;
 
             tbComLogIn.Clear();
+            tbComLogOut.Clear();
             _currentCommand = null; // Dispose of any data 
         }
 
