@@ -51,6 +51,7 @@ lastTick = millis()
 print("Starting game loop...")
 gameRunning = True
 while(gameRunning):
+    start = millis()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             print("Close requested")
@@ -68,4 +69,6 @@ while(gameRunning):
     if now - lastTick >= 500:
         manager.tick(now - lastTick)
         lastTick = now
+    end = millis()
+    print("Took " + str(end - start) + "ms to do game loop. Sleeping for " + str(fps / 60.0) + "s...")
     sleep(fps / 60.0)
