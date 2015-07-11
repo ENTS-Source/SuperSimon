@@ -17,7 +17,11 @@ import os
 os.environ['SDL_VIDEO_WINDOW_POS'] = "0,0" # Starts window at (0, 0)
 pygame.init()
 displayInfo = pygame.display.Info()
-screenSize = sWidth, sHeight = displayInfo.current_w, displayInfo.current_h
+offset = 0
+# Just so that the bottom of the screen can be seen
+if not config.game.fullscreen:
+    offset = 100
+screenSize = sWidth, sHeight = displayInfo.current_w, displayInfo.current_h - offset
 
 # Creation of the screen object
 print("Setting up graphical interface...")
@@ -52,6 +56,7 @@ lastTick = millis()
 print("Starting game loop...")
 gameRunning = True
 maxRenderTime = 0
+timesOver1s = 0
 while(gameRunning):
     start = millis()
     for event in pygame.event.get():
@@ -68,13 +73,16 @@ while(gameRunning):
             sys.exit()
     renderer.tick()
     now = millis()
-    if now - lastTick >= 500:
+    if now - lastTick >= 200:
         manager.tick(now - lastTick)
         lastTick = now
     end = millis()
     rtime = end - start
     if rtime > maxRenderTime:
-        maxRenderTime = rtime
+        if rtime > 1000:
+            timesOver1s += 1
+        else:
+            maxRenderTime = rtime
         print("!! NEW MAXIMUM RENDER TIME: " + str(maxRenderTime) + "ms")
-    print("Took " + str(end - start) + "ms (max = " + str(maxRenderTime) + "ms) to do game loop. Sleeping for 100ms...")
+    print("Took " + str(end - start) + "ms (max (<1000ms) = " + str(maxRenderTime) + "ms, times over 1s = " + str(timesOver1s) + ") to do game loop. Sleeping for 100ms...")
     sleep(0.1)
