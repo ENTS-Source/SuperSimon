@@ -74,7 +74,7 @@ class SuperSimon:
             discovered = self.__protocolSendDiscover(addr)
             player = self.__findOrCreatePlayer(addr)
             player.online = discovered
-            print("Address " + str(addr) + " discovered = " + str(discovered))
+            #print("Address " + str(addr) + " discovered = " + str(discovered))
         self.__protocolEndTurn()
 
     def __protocolJoinState(self):
@@ -88,12 +88,14 @@ class SuperSimon:
                     print("Address " + str(player.address) + " has been considered as offline")
                 else:
                     player.joined = joined
-                    print("Address " + str(player.address) + " joined = " + str(joined))
+                    #print("Address " + str(player.address) + " joined = " + str(joined))
         self.__protocolEndTurn()
 
     def __protocolGameInfoRequest(self, address):
-        self.__protocolRequestTurn()
         player = self.__findOrCreatePlayer(address)
+        if player.checkingGameInfo: return
+        player.checkingGameInfo = True # Before protocol lockout to avoid duplicate locks
+        self.__protocolRequestTurn()
         gameInfo = None
         try:
             gameInfo = self.__protocolRequestGameInfo(address)
@@ -107,14 +109,16 @@ class SuperSimon:
             player.roundCompleted = True
             # TODO: Share game info
         self.__protocolEndTurn()
+        player.checkingGameInfo = False
 
     def __protocolSendSequence(self, address, sequence):
         self.__protocolRequestTurn()
+        player = self.__findOrCreatePlayer(address)
+        print("Sending sequence to player " + str(address))
         try:
             self.__protocolSendGameInfo(address, sequence)
         except ValueError as e:
             print(str(e))
-            player = self.__findOrCreatePlayer(address)
             player.online = False
             player.reset()
             print("Address " + str(address) + " has been considered offline")
@@ -254,8 +258,18 @@ class SuperSimon:
         self.__protocolSendMagic()
         self.__port.write('\x03')
         self.__port.write(chr(address))
+        previousTimeout = self.__port.timeout
+        self.__port.timeout = 150 / 1000.0 # 150ms timeout
         # ValueError is caught by calling code
-        return self.__protocolReadGameInfoRequest()
+        val = None
+        err = None
+        try:
+            val = self.__protocolReadGameInfoRequest()
+        except ValueError as e:
+            err = e
+        self.__port.timeout = previousTimeout
+        if err: raise err
+        return val
 
     def __protocolSendGameInfo(self, address, sequence):
         self.__protocolSendMagic()

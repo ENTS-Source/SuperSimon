@@ -15,3 +15,4 @@ class Player:
         self.globalRank = 0
         self.score = 0
         self.lastGameInfo = None
+        self.checkingGameInfo = False

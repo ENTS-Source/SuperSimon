@@ -73,22 +73,26 @@ class GameManager:
                 for player in self.getPlayers():
                     if not player.online: continue
                     if player.gameOver: continue
-                    self.__game.checkGameInfo(player.address)
+                    if not player.checkingGameInfo:
+                        self.__game.checkGameInfo(player.address)
                     if player.roundCompleted:
                         self.__analyzeGameInfo(player)
                     if not player.gotSequence:
                         self.__sendSequence(player)
                     if not player.gameOver:
                         gameOver = False
+                if gameOver:
+                    print("GAME OVER")
 
     def __sendSequence(self, player):
         # TODO: Add forced game over
         sequence = []
         for i in range(0, player.roundNumber):
             sequence.append(self.__sequence[i])
+        print(str(len(sequence)))
+        player.gotSequence = True
         self.__game.sendSequence(player.address, sequence)
         self.__game.startGame()
-        player.gotSequence = True
 
     def __analyzeGameInfo(self, player):
         gameInfo = player.lastGameInfo

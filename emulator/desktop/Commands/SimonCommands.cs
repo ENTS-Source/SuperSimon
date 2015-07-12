@@ -72,6 +72,7 @@ namespace SuperSimonEmulator.Commands
 
         public Command Response(GamePad pad)
         {
+            if (pad == null) return null;
             if (pad.JoinedGame) return new JoinedCommand();
             return new NotJoinedCommand();
         }
