@@ -114,7 +114,6 @@ class SuperSimon:
     def __protocolSendSequence(self, address, sequence):
         self.__protocolRequestTurn()
         player = self.__findOrCreatePlayer(address)
-        print("Sending sequence to player " + str(address))
         try:
             self.__protocolSendGameInfo(address, sequence)
         except ValueError as e:

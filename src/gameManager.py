@@ -89,7 +89,6 @@ class GameManager:
         sequence = []
         for i in range(0, player.roundNumber):
             sequence.append(self.__sequence[i])
-        print(str(len(sequence)))
         player.gotSequence = True
         self.__game.sendSequence(player.address, sequence)
         self.__game.startGame()
