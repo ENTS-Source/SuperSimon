@@ -27,9 +27,6 @@ class GameManager:
         self.__gameTimer.tick(delta)
         now = millis()
         if now - self.__lastDiscover >= 5000:
-            # TODO: Remove debug code
-            for i in range(0, len(self.leaderboard)):
-                self.leaderboard[i] += 5
             self.__lastDiscover = now
             self.__game.discoverClients()
         if self.__acceptingJoins:
