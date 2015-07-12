@@ -3,6 +3,7 @@ from serial import Serial
 from threading import Thread
 from utils import *
 from player import Player
+from time import sleep
 import struct
 
 # TODO: Need to add byte dumping (last byte > 150ms? Dump buffer)
@@ -63,6 +64,7 @@ class SuperSimon:
         self.__port.flush()
 
     def __protocolEndTurn(self):
+        sleep(0.01) # Sleep for 10ms to allow things to calm down
         self.__operating = False
 
     def __protocolDiscover(self):

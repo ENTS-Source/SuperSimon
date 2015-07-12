@@ -108,6 +108,11 @@ class GameManager:
 
     def __analyzeGameInfo(self, player):
         gameInfo = player.lastGameInfo
+        # HACK: There's a timing issue somewhere in the code, but this works to correct it...
+        if len(gameInfo) != player.roundNumber:
+            print("Game info doesn't match round number for player " + str(player.address)+", ignoring data")
+            player.roundCompleted = False # We've now analyzed it
+            return
         gameOver = False
         totalScore = 0.0
         totalTime = 0
