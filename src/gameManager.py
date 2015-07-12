@@ -19,7 +19,7 @@ class GameManager:
         self.__starting = False
         self.__acceptingJoins = True
         self.__gameTimer = BasicTimer(5000)
-        self.__gameOverTimer = BasicTimer(15000)
+        self.__gameOverTimer = BasicTimer(10000)
         self.__playing = False
         self.__gameOver = False
         self.__createSequence()
