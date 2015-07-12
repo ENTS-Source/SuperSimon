@@ -19,7 +19,9 @@ class GameManager:
         self.__starting = False
         self.__acceptingJoins = True
         self.__gameTimer = BasicTimer(5000)
+        self.__gameOverTimer = BasicTimer(15000)
         self.__playing = False
+        self.__gameOver = False
         self.__createSequence()
 
     def getPlayers(self):
@@ -39,11 +41,13 @@ class GameManager:
 
     def tick(self, delta):
         self.__gameTimer.tick(delta)
+        self.__gameOverTimer.tick(delta)
         now = millis()
         if now - self.__lastDiscover >= 5000:
             self.__lastDiscover = now
             self.__game.discoverClients()
         if now - self.__lastGameAction >= 500:
+            self.__lastGameAction = now
             if self.__acceptingJoins:
                 self.__game.checkJoins()
             if not self.__starting and not self.__playing:
@@ -68,7 +72,7 @@ class GameManager:
                         player.globalRank = 0
                         player.roundCompleted = False
                         player.gotSequence = False
-            if self.__playing:
+            if self.__playing and not self.__gameOverTimer.isStarted():
                 gameOver = True
                 for player in self.getPlayers():
                     if not player.online: continue
@@ -82,7 +86,16 @@ class GameManager:
                     if not player.gameOver:
                         gameOver = False
                 if gameOver:
-                    print("GAME OVER")
+                    self.__gameOverTimer.start()
+                    self.__gameOver = True
+                    self.__playing = False
+            if self.__gameOver and not self.__gameOverTimer.isStarted():
+                for player in self.getPlayers():
+                    wasOnline = player.online
+                    player.reset()
+                    player.online = wasOnline
+                self.__acceptingJoins = True
+                self.__gameOver = False
 
     def __sendSequence(self, player):
         # TODO: Add forced game over
