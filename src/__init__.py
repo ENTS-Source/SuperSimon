@@ -84,5 +84,5 @@ while(gameRunning):
         else:
             maxRenderTime = rtime
         print("!! NEW MAXIMUM RENDER TIME: " + str(maxRenderTime) + "ms")
-    print("Took " + str(end - start) + "ms (max (<1000ms) = " + str(maxRenderTime) + "ms, times over 1s = " + str(timesOver1s) + ") to do game loop. Sleeping for 100ms...")
+    #print("Took " + str(end - start) + "ms (max (<1000ms) = " + str(maxRenderTime) + "ms, times over 1s = " + str(timesOver1s) + ") to do game loop. Sleeping for 100ms...")
     sleep(0.1)

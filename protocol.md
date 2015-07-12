@@ -154,6 +154,8 @@ Below is an example of the sequence:
 5. Pi repeats steps 1-4 for addresses `0x02` to `0xFF`
 6. Pi sends `Start game` (`0x02`) (no client responds - broadcast start)
 
+If the client receives a `Start game` (`0x02`) command while still in a game, the client may ignore it.
+
 #### In-game sequence
 
 This sequence is for when a game is currently in progress. The Pi will not re-request any information from any completed clients but will request information from clients that have not completed the game.

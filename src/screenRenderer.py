@@ -48,6 +48,9 @@ class ScreenRenderer:
         self.__screen.blit(self.__headerLbl, (x + w + self.__margin, -self.__margin)) # Negative because of the font
 
     def __renderLeaderboardBackground(self):
+        x = self.__margin
+        y = self.__headerHeight + self.__margin
+        self.__screen.blit(self.__leaderboardLbl, (x, y))
         for i in range(0, len(self.__gameManager.leaderboard)):
             r = self.__getLbRect(i)
             x = r[0]
@@ -151,7 +154,9 @@ class ScreenRenderer:
             message = None
             subMessage1 = None
             subMessage2 = None
-            if state == PLAYER_STATE_NOT_JOINED:
+            if state == PLAYER_STATE_NOT_JOINED and self.__gameManager.isGameInProgress():
+                subMessage2 = PLAYER_SUBTEXT1_FONT.render("not playing", 1, MUTED_TEXT_COLOR)
+            elif state == PLAYER_STATE_NOT_JOINED and not self.__gameManager.isGameInProgress():
                 subMessage1 = PLAYER_SUBTEXT1_FONT.render("not yet joined", 1, PRIMARY_TEXT_COLOR)
                 subMessage2 = PLAYER_SUBTEXT2_FONT.render("press the center button to join", 1, PRIMARY_TEXT_COLOR)
             elif state == PLAYER_STATE_JOINED:
@@ -222,16 +227,16 @@ class ScreenRenderer:
             d = self.__drawLeaderboardScore(i, (i * r[2]) + r[0], r[1])
             for a in d: dirty.append(a)
         e1 = millis()
-        print("Took " + str(e1 - start) + "ms to render leaderboard")
+        #print("Took " + str(e1 - start) + "ms to render leaderboard")
         d = self.__renderPlayers()
         for a in d: dirty.append(a)
         e2 = millis()
-        print("Took " + str(e2 - e1) + "ms to render player area")
+        #print("Took " + str(e2 - e1) + "ms to render player area")
         s1 = millis()
         pygame.display.update(dirty)
         end = millis()
-        print("Took " + str(end - s1) + "ms do update")
-        print("Took " + str(end - start) + "ms to render scene")
+        #print("Took " + str(end - s1) + "ms do update")
+        #print("Took " + str(end - start) + "ms to render scene")
 
 class ScreenLeaderboard:
     def __init__(self):
