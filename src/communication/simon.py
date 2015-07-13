@@ -111,7 +111,6 @@ class SuperSimon:
         if gameInfo is not None:
             player.lastGameInfo = gameInfo
             player.roundCompleted = True
-            # TODO: Share game info
         self.__protocolEndTurn()
         player.checkingGameInfo = False
 

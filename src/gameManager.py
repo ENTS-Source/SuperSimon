@@ -59,6 +59,7 @@ class GameManager:
                         break
             if self.__starting and not self.__gameTimer.isStarted():
                 self.__starting = False
+                self.__gameTimer.reset()
                 self.__playing = True
                 self.__acceptingJoins = False
                 for player in self.getPlayers():
@@ -77,12 +78,12 @@ class GameManager:
                 for player in self.getPlayers():
                     if not player.online: continue
                     if player.gameOver: continue
+                    if not player.checkingGameInfo:
+                        self.__game.checkGameInfo(player.address)
                     if player.roundCompleted:
                         self.__analyzeGameInfo(player)
                     if not player.gotSequence:
                         self.__sendSequence(player)
-                    if not player.checkingGameInfo:
-                        self.__game.checkGameInfo(player.address)
                     if not player.gameOver:
                         gameOver = False
                 if gameOver:
