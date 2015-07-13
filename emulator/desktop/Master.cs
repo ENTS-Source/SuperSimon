@@ -11,9 +11,12 @@ namespace SuperSimonEmulator
     public partial class Master : Form
     {
         private delegate void delVoidIntBool(int i, bool b);
+        private delegate void delVoidBool(bool b);
         private delegate void delVoidCommand(Command cmd);
 
         private byte[] _magicSequence = { 0xDE, 0xAD, 0xBE, 0xEF };
+        private byte[] _respMagicSequence = { 0xCA, 0xFE, 0xBA, 0xBE };
+        private byte[] _currentSequence = null;
         private int _magicSequenceIndex = 0;
 
         private List<GamePad> _gamePads = new List<GamePad>();
@@ -40,9 +43,16 @@ namespace SuperSimonEmulator
 
                 if (_currentCommand == null)
                 {
-                    if(_magicSequenceIndex < _magicSequence.Length)
+                    if (_currentSequence == null)
                     {
-                        if(b != _magicSequence[_magicSequenceIndex])
+                        if (b == _magicSequence[0])
+                            _currentSequence = _magicSequence;
+                        else
+                            _currentSequence = _respMagicSequence;
+                    }
+                    if (_magicSequenceIndex < _currentSequence.Length)
+                    {
+                        if (b != _currentSequence[_magicSequenceIndex])
                             continue; // Ignore byte: Unexpected
                         _magicSequenceIndex++;
                         continue; // Don't handle the byte
@@ -64,8 +74,11 @@ namespace SuperSimonEmulator
 
                 if (!_currentCommand.ExpectingMoreBytes)
                 {
-                    Invoke(new delVoidCommand(HandleCommand), _currentCommand);
+                    Invoke(new delVoidBool(NewLine), true); // true = inbound
+                    if (_currentSequence != _respMagicSequence)
+                        Invoke(new delVoidCommand(HandleCommand), _currentCommand);
                     _currentCommand = null;
+                    _currentSequence = null;
                     _magicSequenceIndex = 0;
                 }
             }
@@ -73,7 +86,12 @@ namespace SuperSimonEmulator
 
         private void AppendByteToSerialLog(int b, bool inbound)
         {
-            (inbound ? tbComLogIn : tbComLogOut).AppendText("[" + b + "]");
+            (inbound ? tbComLogIn : tbComLogOut).AppendText("[" + b.ToString("X") + "]");
+        }
+
+        private void NewLine(bool inbound)
+        {
+            (inbound ? tbComLogIn : tbComLogOut).AppendText("\r\n");
         }
 
         private void HandleCommand(Command command)
@@ -143,10 +161,7 @@ namespace SuperSimonEmulator
             var bytes = new List<byte>();
 
             // Start with the magic sequence
-            bytes.Add(0xDE);
-            bytes.Add(0xAD);
-            bytes.Add(0xBE);
-            bytes.Add(0xEF);
+            bytes.AddRange(_respMagicSequence);
 
             bytes.Add(command.CommandId);
 
@@ -166,9 +181,36 @@ namespace SuperSimonEmulator
 
             foreach (byte b in bytes)
                 Invoke(new delVoidIntBool(AppendByteToSerialLog), b, false); // false = outbound
+            Invoke(new delVoidBool(NewLine), false); // false = outbound
 
             byte[] data = bytes.ToArray();
             spTeensy.Write(data, 0, data.Length);
+        }
+
+        private void btnClearInbound_Click(object sender, EventArgs e)
+        {
+            tbComLogIn.Clear();
+        }
+
+        private void btnClearOutbound_Click(object sender, EventArgs e)
+        {
+            tbComLogOut.Clear();
+        }
+
+        private void btnCopyInbound_Click(object sender, EventArgs e)
+        {
+            tbComLogIn.SelectAll();
+            tbComLogIn.Copy();
+            tbComLogIn.Select(tbComLogIn.Text.Length, 0);
+            MessageBox.Show("Copied to clipboard!");
+        }
+
+        private void btnCopyOutbound_Click(object sender, EventArgs e)
+        {
+            tbComLogOut.SelectAll();
+            tbComLogOut.Copy();
+            tbComLogOut.Select(tbComLogOut.Text.Length, 0);
+            MessageBox.Show("Copied to clipboard!");
         }
     }
 }

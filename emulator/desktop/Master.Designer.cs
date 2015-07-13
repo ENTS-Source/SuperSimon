@@ -35,29 +35,35 @@
             System.Windows.Forms.Label label3;
             System.Windows.Forms.GroupBox groupBox2;
             this.tbComLogIn = new System.Windows.Forms.TextBox();
+            this.tbComLogOut = new System.Windows.Forms.TextBox();
             this.spTeensy = new System.IO.Ports.SerialPort(this.components);
             this.gbNewPad = new System.Windows.Forms.GroupBox();
-            this.nudAddress = new System.Windows.Forms.NumericUpDown();
             this.btnNewPad = new System.Windows.Forms.Button();
+            this.nudAddress = new System.Windows.Forms.NumericUpDown();
             this.gpCommunication = new System.Windows.Forms.GroupBox();
-            this.cbPort = new System.Windows.Forms.ComboBox();
-            this.btnSpConfigure = new System.Windows.Forms.Button();
             this.lbSpConnectionState = new System.Windows.Forms.Label();
-            this.tbComLogOut = new System.Windows.Forms.TextBox();
+            this.btnSpConfigure = new System.Windows.Forms.Button();
+            this.cbPort = new System.Windows.Forms.ComboBox();
+            this.btnCopyInbound = new System.Windows.Forms.Button();
+            this.btnClearInbound = new System.Windows.Forms.Button();
+            this.btnClearOutbound = new System.Windows.Forms.Button();
+            this.btnCopyOutbound = new System.Windows.Forms.Button();
             groupBox1 = new System.Windows.Forms.GroupBox();
             label1 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
             label3 = new System.Windows.Forms.Label();
             groupBox2 = new System.Windows.Forms.GroupBox();
             groupBox1.SuspendLayout();
+            groupBox2.SuspendLayout();
             this.gbNewPad.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudAddress)).BeginInit();
             this.gpCommunication.SuspendLayout();
-            groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            groupBox1.Controls.Add(this.btnClearInbound);
+            groupBox1.Controls.Add(this.btnCopyInbound);
             groupBox1.Controls.Add(this.tbComLogIn);
             groupBox1.Location = new System.Drawing.Point(12, 95);
             groupBox1.Name = "groupBox1";
@@ -68,31 +74,14 @@
             // 
             // tbComLogIn
             // 
-            this.tbComLogIn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbComLogIn.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.tbComLogIn.Font = new System.Drawing.Font("Lucida Console", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbComLogIn.Location = new System.Drawing.Point(3, 16);
+            this.tbComLogIn.Location = new System.Drawing.Point(3, 48);
             this.tbComLogIn.Multiline = true;
             this.tbComLogIn.Name = "tbComLogIn";
             this.tbComLogIn.ReadOnly = true;
-            this.tbComLogIn.Size = new System.Drawing.Size(278, 118);
+            this.tbComLogIn.Size = new System.Drawing.Size(278, 86);
             this.tbComLogIn.TabIndex = 0;
-            // 
-            // spTeensy
-            // 
-            this.spTeensy.PortName = "COM6";
-            this.spTeensy.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.spTeensy_DataReceived);
-            // 
-            // gbNewPad
-            // 
-            this.gbNewPad.Controls.Add(this.btnNewPad);
-            this.gbNewPad.Controls.Add(this.nudAddress);
-            this.gbNewPad.Controls.Add(label1);
-            this.gbNewPad.Location = new System.Drawing.Point(12, 12);
-            this.gbNewPad.Name = "gbNewPad";
-            this.gbNewPad.Size = new System.Drawing.Size(140, 77);
-            this.gbNewPad.TabIndex = 4;
-            this.gbNewPad.TabStop = false;
-            this.gbNewPad.Text = "New game pad";
             // 
             // label1
             // 
@@ -102,42 +91,6 @@
             label1.Size = new System.Drawing.Size(48, 13);
             label1.TabIndex = 0;
             label1.Text = "Address:";
-            // 
-            // nudAddress
-            // 
-            this.nudAddress.Location = new System.Drawing.Point(61, 18);
-            this.nudAddress.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.nudAddress.Name = "nudAddress";
-            this.nudAddress.Size = new System.Drawing.Size(64, 20);
-            this.nudAddress.TabIndex = 1;
-            // 
-            // btnNewPad
-            // 
-            this.btnNewPad.Location = new System.Drawing.Point(10, 44);
-            this.btnNewPad.Name = "btnNewPad";
-            this.btnNewPad.Size = new System.Drawing.Size(115, 23);
-            this.btnNewPad.TabIndex = 2;
-            this.btnNewPad.Text = "Create";
-            this.btnNewPad.UseVisualStyleBackColor = true;
-            this.btnNewPad.Click += new System.EventHandler(this.btnNewPad_Click);
-            // 
-            // gpCommunication
-            // 
-            this.gpCommunication.Controls.Add(this.lbSpConnectionState);
-            this.gpCommunication.Controls.Add(this.btnSpConfigure);
-            this.gpCommunication.Controls.Add(this.cbPort);
-            this.gpCommunication.Controls.Add(label3);
-            this.gpCommunication.Controls.Add(label2);
-            this.gpCommunication.Location = new System.Drawing.Point(159, 13);
-            this.gpCommunication.Name = "gpCommunication";
-            this.gpCommunication.Size = new System.Drawing.Size(282, 76);
-            this.gpCommunication.TabIndex = 5;
-            this.gpCommunication.TabStop = false;
-            this.gpCommunication.Text = "Communication";
             // 
             // label2
             // 
@@ -157,24 +110,81 @@
             label3.TabIndex = 1;
             label3.Text = "Using 9600/8N1";
             // 
-            // cbPort
+            // groupBox2
             // 
-            this.cbPort.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbPort.FormattingEnabled = true;
-            this.cbPort.Location = new System.Drawing.Point(42, 16);
-            this.cbPort.Name = "cbPort";
-            this.cbPort.Size = new System.Drawing.Size(127, 21);
-            this.cbPort.TabIndex = 2;
+            groupBox2.Controls.Add(this.btnClearOutbound);
+            groupBox2.Controls.Add(this.tbComLogOut);
+            groupBox2.Controls.Add(this.btnCopyOutbound);
+            groupBox2.Location = new System.Drawing.Point(302, 95);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Size = new System.Drawing.Size(285, 137);
+            groupBox2.TabIndex = 4;
+            groupBox2.TabStop = false;
+            groupBox2.Text = "Raw Communication (Outbound)";
             // 
-            // btnSpConfigure
+            // tbComLogOut
             // 
-            this.btnSpConfigure.Location = new System.Drawing.Point(201, 47);
-            this.btnSpConfigure.Name = "btnSpConfigure";
-            this.btnSpConfigure.Size = new System.Drawing.Size(75, 23);
-            this.btnSpConfigure.TabIndex = 3;
-            this.btnSpConfigure.Text = "Configure";
-            this.btnSpConfigure.UseVisualStyleBackColor = true;
-            this.btnSpConfigure.Click += new System.EventHandler(this.btnSpConfigure_Click);
+            this.tbComLogOut.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.tbComLogOut.Font = new System.Drawing.Font("Lucida Console", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbComLogOut.Location = new System.Drawing.Point(3, 48);
+            this.tbComLogOut.Multiline = true;
+            this.tbComLogOut.Name = "tbComLogOut";
+            this.tbComLogOut.ReadOnly = true;
+            this.tbComLogOut.Size = new System.Drawing.Size(279, 86);
+            this.tbComLogOut.TabIndex = 0;
+            // 
+            // spTeensy
+            // 
+            this.spTeensy.PortName = "COM6";
+            this.spTeensy.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.spTeensy_DataReceived);
+            // 
+            // gbNewPad
+            // 
+            this.gbNewPad.Controls.Add(this.btnNewPad);
+            this.gbNewPad.Controls.Add(this.nudAddress);
+            this.gbNewPad.Controls.Add(label1);
+            this.gbNewPad.Location = new System.Drawing.Point(12, 12);
+            this.gbNewPad.Name = "gbNewPad";
+            this.gbNewPad.Size = new System.Drawing.Size(140, 77);
+            this.gbNewPad.TabIndex = 4;
+            this.gbNewPad.TabStop = false;
+            this.gbNewPad.Text = "New game pad";
+            // 
+            // btnNewPad
+            // 
+            this.btnNewPad.Location = new System.Drawing.Point(10, 44);
+            this.btnNewPad.Name = "btnNewPad";
+            this.btnNewPad.Size = new System.Drawing.Size(115, 23);
+            this.btnNewPad.TabIndex = 2;
+            this.btnNewPad.Text = "Create";
+            this.btnNewPad.UseVisualStyleBackColor = true;
+            this.btnNewPad.Click += new System.EventHandler(this.btnNewPad_Click);
+            // 
+            // nudAddress
+            // 
+            this.nudAddress.Location = new System.Drawing.Point(61, 18);
+            this.nudAddress.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.nudAddress.Name = "nudAddress";
+            this.nudAddress.Size = new System.Drawing.Size(64, 20);
+            this.nudAddress.TabIndex = 1;
+            // 
+            // gpCommunication
+            // 
+            this.gpCommunication.Controls.Add(this.lbSpConnectionState);
+            this.gpCommunication.Controls.Add(this.btnSpConfigure);
+            this.gpCommunication.Controls.Add(this.cbPort);
+            this.gpCommunication.Controls.Add(label3);
+            this.gpCommunication.Controls.Add(label2);
+            this.gpCommunication.Location = new System.Drawing.Point(159, 13);
+            this.gpCommunication.Name = "gpCommunication";
+            this.gpCommunication.Size = new System.Drawing.Size(282, 76);
+            this.gpCommunication.TabIndex = 5;
+            this.gpCommunication.TabStop = false;
+            this.gpCommunication.Text = "Communication";
             // 
             // lbSpConnectionState
             // 
@@ -187,26 +197,64 @@
             this.lbSpConnectionState.TabIndex = 4;
             this.lbSpConnectionState.Text = "Not connected";
             // 
-            // groupBox2
+            // btnSpConfigure
             // 
-            groupBox2.Controls.Add(this.tbComLogOut);
-            groupBox2.Location = new System.Drawing.Point(302, 95);
-            groupBox2.Name = "groupBox2";
-            groupBox2.Size = new System.Drawing.Size(285, 137);
-            groupBox2.TabIndex = 4;
-            groupBox2.TabStop = false;
-            groupBox2.Text = "Raw Communication (Outbound)";
+            this.btnSpConfigure.Location = new System.Drawing.Point(201, 47);
+            this.btnSpConfigure.Name = "btnSpConfigure";
+            this.btnSpConfigure.Size = new System.Drawing.Size(75, 23);
+            this.btnSpConfigure.TabIndex = 3;
+            this.btnSpConfigure.Text = "Configure";
+            this.btnSpConfigure.UseVisualStyleBackColor = true;
+            this.btnSpConfigure.Click += new System.EventHandler(this.btnSpConfigure_Click);
             // 
-            // tbComLogOut
+            // cbPort
             // 
-            this.tbComLogOut.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbComLogOut.Font = new System.Drawing.Font("Lucida Console", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbComLogOut.Location = new System.Drawing.Point(3, 16);
-            this.tbComLogOut.Multiline = true;
-            this.tbComLogOut.Name = "tbComLogOut";
-            this.tbComLogOut.ReadOnly = true;
-            this.tbComLogOut.Size = new System.Drawing.Size(279, 118);
-            this.tbComLogOut.TabIndex = 0;
+            this.cbPort.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbPort.FormattingEnabled = true;
+            this.cbPort.Location = new System.Drawing.Point(42, 16);
+            this.cbPort.Name = "cbPort";
+            this.cbPort.Size = new System.Drawing.Size(127, 21);
+            this.cbPort.TabIndex = 2;
+            // 
+            // btnCopyInbound
+            // 
+            this.btnCopyInbound.Location = new System.Drawing.Point(203, 19);
+            this.btnCopyInbound.Name = "btnCopyInbound";
+            this.btnCopyInbound.Size = new System.Drawing.Size(75, 23);
+            this.btnCopyInbound.TabIndex = 1;
+            this.btnCopyInbound.Text = "Copy";
+            this.btnCopyInbound.UseVisualStyleBackColor = true;
+            this.btnCopyInbound.Click += new System.EventHandler(this.btnCopyInbound_Click);
+            // 
+            // btnClearInbound
+            // 
+            this.btnClearInbound.Location = new System.Drawing.Point(122, 19);
+            this.btnClearInbound.Name = "btnClearInbound";
+            this.btnClearInbound.Size = new System.Drawing.Size(75, 23);
+            this.btnClearInbound.TabIndex = 2;
+            this.btnClearInbound.Text = "Clear";
+            this.btnClearInbound.UseVisualStyleBackColor = true;
+            this.btnClearInbound.Click += new System.EventHandler(this.btnClearInbound_Click);
+            // 
+            // btnClearOutbound
+            // 
+            this.btnClearOutbound.Location = new System.Drawing.Point(123, 19);
+            this.btnClearOutbound.Name = "btnClearOutbound";
+            this.btnClearOutbound.Size = new System.Drawing.Size(75, 23);
+            this.btnClearOutbound.TabIndex = 4;
+            this.btnClearOutbound.Text = "Clear";
+            this.btnClearOutbound.UseVisualStyleBackColor = true;
+            this.btnClearOutbound.Click += new System.EventHandler(this.btnClearOutbound_Click);
+            // 
+            // btnCopyOutbound
+            // 
+            this.btnCopyOutbound.Location = new System.Drawing.Point(204, 19);
+            this.btnCopyOutbound.Name = "btnCopyOutbound";
+            this.btnCopyOutbound.Size = new System.Drawing.Size(75, 23);
+            this.btnCopyOutbound.TabIndex = 3;
+            this.btnCopyOutbound.Text = "Copy";
+            this.btnCopyOutbound.UseVisualStyleBackColor = true;
+            this.btnCopyOutbound.Click += new System.EventHandler(this.btnCopyOutbound_Click);
             // 
             // Master
             // 
@@ -224,13 +272,13 @@
             this.VisibleChanged += new System.EventHandler(this.Master_VisibleChanged);
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
+            groupBox2.ResumeLayout(false);
+            groupBox2.PerformLayout();
             this.gbNewPad.ResumeLayout(false);
             this.gbNewPad.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudAddress)).EndInit();
             this.gpCommunication.ResumeLayout(false);
             this.gpCommunication.PerformLayout();
-            groupBox2.ResumeLayout(false);
-            groupBox2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -247,6 +295,10 @@
         private System.Windows.Forms.GroupBox gpCommunication;
         private System.Windows.Forms.Label lbSpConnectionState;
         private System.Windows.Forms.TextBox tbComLogOut;
+        private System.Windows.Forms.Button btnClearInbound;
+        private System.Windows.Forms.Button btnCopyInbound;
+        private System.Windows.Forms.Button btnClearOutbound;
+        private System.Windows.Forms.Button btnCopyOutbound;
     }
 }
 

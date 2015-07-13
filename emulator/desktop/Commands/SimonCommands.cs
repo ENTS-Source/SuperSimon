@@ -33,6 +33,7 @@ namespace SuperSimonEmulator.Commands
 
         public Command Response(GamePad pad)
         {
+            if (pad == null) return null;
             if (!pad.CurrentGameComplete) return new GameNotFinishedCommand();
             return pad.CreateCompletedCommand();
         }

@@ -19,7 +19,9 @@ Each command will start with a 4 byte magic value. This magic value is always se
 
 `0xDE 0xAD 0xBE 0xEF`
 
-All commands, including responses, should send the magic value.
+Commands from the Pi will start with the above magic value. Responses from clients should use the following magic value:
+
+`0xCA 0xFE 0xBA 0xBE`
 
 #### Timing
 
