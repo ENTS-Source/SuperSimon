@@ -263,17 +263,16 @@ class SuperSimon:
         self.__protocolSendMagic()
         self.__port.write('\x03')
         self.__port.write(chr(address))
+        previousTimeout = self.__port.timeout
         # TODO: Re-enable timeout
-        #previousTimeout = self.__port.timeout
         #self.__port.timeout = self.__magicTimeout / 1000.0
-        # ValueError is caught by calling code
         val = None
         err = None
         try:
             val = self.__protocolReadGameInfoRequest()
         except ValueError as e:
             err = e
-        #self.__port.timeout = previousTimeout
+        self.__port.timeout = previousTimeout
         if err: raise err
         return val
 
