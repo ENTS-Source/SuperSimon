@@ -142,10 +142,10 @@ class SuperSimon:
         startTime = millis()
         v = self.__port.read()
         endTime = millis()
-        if self.__port.timeout <= 0:
-            print("Took " + str(endTime - startTime) + "ms to read byte: '" + self.__formatByte(v) + "'")
-        else:
-            print("Read '" + self.__formatByte(v) + "' in " + str(endTime - startTime) + "ms with timeout of " + str(self.__port.timeout * 1000.0) + "ms")
+        #if self.__port.timeout <= 0:
+        #    print("Took " + str(endTime - startTime) + "ms to read byte: '" + self.__formatByte(v) + "'")
+        #else:
+        #    print("Read '" + self.__formatByte(v) + "' in " + str(endTime - startTime) + "ms with timeout of " + str(self.__port.timeout * 1000.0) + "ms")
         if v == '':
             if throwEx:
                 raise ValueError("Failed to read from serial port: Timeout?")
