@@ -263,8 +263,7 @@ class SuperSimon:
         self.__port.write('\x03')
         self.__port.write(chr(address))
         previousTimeout = self.__port.timeout
-        # TODO: Re-enable timeout
-        #self.__port.timeout = self.__magicTimeout / 1000.0
+        self.__port.timeout = self.__magicTimeout / 1000.0
         val = None
         err = None
         try:

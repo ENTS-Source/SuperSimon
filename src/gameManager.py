@@ -3,10 +3,10 @@ from basicTimer import BasicTimer
 import math
 import random
 
-POINTS_PER_ROUND = 200
+POINTS_PER_ROUND = 200.0
 POINTS_PER_MS = 0.085
-POINTS_TIME_THRESHOLD = 2000
-POINTS_BONUS_THRESHOLD = 1000
+POINTS_TIME_THRESHOLD = 2000.0
+POINTS_BONUS_THRESHOLD = 1000.0
 
 # TODO: Need 'all offline' check
 class GameManager:
@@ -50,7 +50,7 @@ class GameManager:
             self.__lastGameAction = now
             if self.__acceptingJoins:
                 self.__game.checkJoins()
-            if not self.__starting and not self.__playing:
+            if not self.__starting and not self.__playing and not self.__gameOver:
                 for player in self.getPlayers():
                     if player.joined and player.online:
                         self.__starting = True
@@ -111,6 +111,7 @@ class GameManager:
         gameInfo = player.lastGameInfo
         # HACK: There's a timing issue somewhere in the code, but this works to correct it...
         if len(gameInfo) != player.roundNumber:
+            print("Expecting " + str(player.roundNumber) + " but got " + str(len(gameInfo)))
             print("Game info doesn't match round number for player " + str(player.address) + ", ignoring data")
             player.roundCompleted = False # We've now analyzed it
             return
@@ -119,6 +120,7 @@ class GameManager:
         totalTime = 0
         maximumBonusTime = POINTS_BONUS_THRESHOLD * len(gameInfo)
         for button in gameInfo:
+            print("Button " + str(button.button) + " took " + str(button.time) + "ms to press")
             if button.time == 65535:
                 gameOver = True
                 break

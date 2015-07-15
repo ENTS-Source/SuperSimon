@@ -7,11 +7,11 @@ class BasicTimer:
         self.__active = False
 
     def start(self):
-        self.__active = True
         self.reset()
+        self.__active = True
 
     def reset(self):
-        self.__value == self.__resetTo
+        self.__value = self.__resetTo
 
     def isStarted(self):
         return self.__active
