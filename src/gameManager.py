@@ -18,8 +18,8 @@ class GameManager:
         self.leaderboard = [0, 0, 0, 0, 0] # TODO: Actually implement a leaderboard
         self.__starting = False
         self.__acceptingJoins = True
-        self.__gameTimer = BasicTimer(5000)
-        self.__gameOverTimer = BasicTimer(10000)
+        self.__gameTimer = BasicTimer(3000)
+        self.__gameOverTimer = BasicTimer(5000)
         self.__playing = False
         self.__gameOver = False
         self.__createSequence()
