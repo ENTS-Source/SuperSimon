@@ -211,7 +211,17 @@ class ScreenRenderer:
         return dirty
 
     def __rankStr(self, rank):
-        return str(rank) # TODO: Actually implement this
+        sRank = str(rank)
+        # "eleventh", etc are special cases
+        if sRank.endswith("11"): return sRank + "th"
+        if sRank.endswith("12"): return sRank + "th"
+        if sRank.endswith("13"): return sRank + "th"
+        # ... otherwise we can use the normal if statements
+        if sRank.endswith("1"): return sRank + "st"
+        if sRank.endswith("2"): return sRank + "nd"
+        if sRank.endswith("3"): return sRank + "rd"
+        # ... default to 'th' though
+        return sRank + "th"
 
     def __getRect(self, r, d, tbuff = False):
         o = 0

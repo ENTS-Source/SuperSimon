@@ -10,12 +10,13 @@ POINTS_BONUS_THRESHOLD = 1000.0
 
 # TODO: Need 'all offline' check
 class GameManager:
-    def __init__(self, game):
+    def __init__(self, game, scoreTracker):
         self.__game = game
+        self.__scoreTracker = scoreTracker
         self.__lastDiscover = millis()
         self.__lastGameAction = millis()
         # Size can not change at runtime - whatever it is here is what we're stuck with
-        self.leaderboard = [0, 0, 0, 0, 0] # TODO: Actually implement a leaderboard
+        self.leaderboard = [0, 0, 0, 0, 0] # Placeholder for when we do actually load it
         self.__starting = False
         self.__acceptingJoins = True
         self.__gameTimer = BasicTimer(3000)
@@ -23,6 +24,11 @@ class GameManager:
         self.__playing = False
         self.__gameOver = False
         self.__createSequence()
+        self.__reloadLeaderboard()
+
+    def __reloadLeaderboard(self):
+        print("Reloading leaderboard...")
+        self.leaderboard = self.__scoreTracker.getTopScores(len(self.leaderboard))
 
     def getPlayers(self):
         return self.__game.players
@@ -137,8 +143,26 @@ class GameManager:
             player.roundCompleted = False # We've now analyzed it
             player.roundNumber += 1
             player.gotSequence = False # Indicates new round start
+            player.score += (int)(round(totalScore))
         else:
+            player.score += (int)(round(totalScore))
             print("Player " + str(player.address) + " is in game over!")
             player.gameOver = True
-            # TODO: Local and global ranks
-        player.score += (int)(round(totalScore))
+            print("Recording player score...")
+            self.__scoreTracker.recordScore(player.score)
+            self.__reloadLeaderboard()
+            print("Updating player ranks...")
+            playerScores = []
+            for player in self.getPlayers():
+                if not player.online: continue
+                if not player.gameOver: continue
+                playerScores.append(player.score)
+            for player in self.getPlayers():
+                if not player.online: continue
+                if not player.gameOver: continue
+                scoresOver = 0
+                for score in playerScores:
+                    if score > player.score:
+                        scoresOver += 1
+                player.localRank = scoresOver + 1
+                player.globalRank = self.__scoreTracker.getRank(player.score)

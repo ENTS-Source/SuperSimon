@@ -36,6 +36,11 @@ print("Starting communications...")
 from communication.simon import SuperSimon
 game = SuperSimon(config.protocol)
 
+# Begin score tracking
+print("Starting score tracker...")
+from scoreTracker import ScoreTracker
+scoreTracker = ScoreTracker()
+
 # Now we can start up the display with a disover sequence
 print("Discovering initial clients...")
 game.discoverClients()
@@ -45,7 +50,7 @@ import sys
 from time import sleep
 from screenRenderer import ScreenRenderer
 from gameManager import GameManager
-manager = GameManager(game)
+manager = GameManager(game, scoreTracker)
 renderer = ScreenRenderer(screen, manager)
 
 # State variables for game stuffs
@@ -69,6 +74,8 @@ while(gameRunning):
             pygame.quit()
             print("Shutting down communication...")
             game.exit()
+            print("Shutting down score tracker...")
+            scoreTracker.close()
             print("Exiting...")
             sys.exit()
     renderer.tick()
