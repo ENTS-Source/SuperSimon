@@ -84,6 +84,7 @@ class GameManager:
                 for player in self.getPlayers():
                     if not player.online: continue
                     if player.gameOver: continue
+                    if not player.playing: continue # Don't consider players that aren't playing
                     if not player.checkingGameInfo:
                         self.__game.checkGameInfo(player.address)
                     if player.roundCompleted:
