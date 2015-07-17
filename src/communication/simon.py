@@ -12,8 +12,8 @@ class SuperSimon:
     def __init__(self, configuration):
         self.__conf = configuration
         self.__initPort()
-        self.__readDumpTimeout = 150 # ms
-        self.__magicTimeout = 150 # ms
+        self.__readDumpTimeout = 250 # ms
+        self.__magicTimeout = 250 # ms
         self.players = []
         self.__queue = EventQueue()
 
@@ -32,8 +32,8 @@ class SuperSimon:
     def sendSequence(self, address, sequence):
         self.__queue.enqueue(self.__protocolSendSequence, [address, sequence])
 
-    def startGame(self):
-        self.__queue.enqueue(self.__protocolStartGame)
+    def startGame(self, address):
+        self.__queue.enqueue(self.__protocolStartGame, [address])
 
     def exit(self):
         print("Stopping communication...")
@@ -127,10 +127,10 @@ class SuperSimon:
             print("Address " + str(address) + " has been considered offline")
         self.__protocolEndTurn()
 
-    def __protocolStartGame(self):
+    def __protocolStartGame(self, address):
         self.__protocolRequestTurn()
         print("Sending start game...")
-        self.__protocolSendStartGame()
+        self.__protocolSendStartGame(address)
         self.__protocolEndTurn()
 
     # ==========================================================================
@@ -292,9 +292,10 @@ class SuperSimon:
         if err is not None:
             raise err
 
-    def __protocolSendStartGame(self):
+    def __protocolSendStartGame(self, address):
         self.__protocolSendMagic()
         self.__port.write('\x02')
+        self.__port.write(str(address))
 
 class PressedButton:
     def __init__(self, button, time):

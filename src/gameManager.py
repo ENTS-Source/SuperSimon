@@ -20,7 +20,7 @@ class GameManager:
         self.__starting = False
         self.__acceptingJoins = True
         self.__gameTimer = BasicTimer(3000)
-        self.__gameOverTimer = BasicTimer(5000)
+        self.__gameOverTimer = BasicTimer(3500)
         self.__playing = False
         self.__gameOver = False
         self.__createSequence()
@@ -85,12 +85,12 @@ class GameManager:
                     if not player.online: continue
                     if player.gameOver: continue
                     if not player.playing: continue # Don't consider players that aren't playing
-                    if not player.checkingGameInfo:
-                        self.__game.checkGameInfo(player.address)
                     if player.roundCompleted:
                         self.__analyzeGameInfo(player)
                     if not player.gotSequence:
                         self.__sendSequence(player)
+                    if not player.checkingGameInfo:
+                        self.__game.checkGameInfo(player.address)
                     if not player.gameOver:
                         gameOver = False
                 if gameOver:
@@ -112,7 +112,7 @@ class GameManager:
             sequence.append(self.__sequence[i])
         player.gotSequence = True
         self.__game.sendSequence(player.address, sequence)
-        self.__game.startGame()
+        self.__game.startGame(player.address)
 
     def __analyzeGameInfo(self, player):
         gameInfo = player.lastGameInfo

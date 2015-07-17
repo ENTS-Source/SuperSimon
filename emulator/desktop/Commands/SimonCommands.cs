@@ -21,7 +21,7 @@ namespace SuperSimonEmulator.Commands
     }
 
     // `0x02` / `2` / `0000 0010`
-    public class StartGameCommand : Command
+    public class StartGameCommand : AddressedCommand
     {
         public StartGameCommand() : base(0x02) { }
     }
