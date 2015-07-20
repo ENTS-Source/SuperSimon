@@ -18,9 +18,10 @@ class ScreenRenderer:
         self.__registerComponents()
         self.__margin = 10
         self.__headerHeight = 160 # Calculated - change if header code changes
-        self.__leaderboardHeight = 75 + self.__margin + self.__leaderboardLbl.get_rect().height # Calculated - change if leaderboard code changes
+        self.__leaderboardHeight = 155 + self.__margin + self.__leaderboardLbl.get_rect().height # Calculated - change if leaderboard code changes
         self.__leaderboard = ScreenLeaderboard()
         self.__players = ScreenPlayers()
+        self.__totals = ScreenTotal()
         self.__renderAll()
 
     def __registerComponents(self):
@@ -34,10 +35,26 @@ class ScreenRenderer:
     def __renderAll(self):
         self.__screen.fill(BACKGROUND_COLOR)
         self.__renderHeader()
+        self.__renderTotals()
         self.__renderLeaderboardBackground()
         self.__renderPlayerBackground()
         self.__renderPlayers()
         pygame.display.flip()
+
+    def __renderTotals(self):
+        dirty = []
+        if self.__totals.lastLbl is not None:
+            dirty.append(self.__totals.lastLbl)
+            pygame.draw.rect(self.__screen, BACKGROUND_COLOR, self.__totals.lastLbl)
+        lbl = TOTALS_FONT.render("Total players: " + str(self.__gameManager.getTotalPlayers()), 1, MUTED_TEXT_COLOR)
+        r = lbl.get_rect()
+        sr = self.__screen.get_rect()
+        pos = (sr.width - r.width - self.__margin, self.__margin)
+        rect = (pos[0], pos[1], r.width, r.height)
+        dirty.append(rect)
+        self.__screen.blit(lbl, pos)
+        self.__totals.lastLbl = rect
+        return dirty
 
     def __renderHeader(self):
         x = self.__margin
@@ -242,6 +259,10 @@ class ScreenRenderer:
         for a in d: dirty.append(a)
         e2 = millis()
         #print("Took " + str(e2 - e1) + "ms to render player area")
+        d = self.__renderTotals()
+        for a in d: dirty.append(a)
+        e2 = millis()
+        #print("Took " + str(e2 - e1) + "ms to render totals area")
         s1 = millis()
         pygame.display.update(dirty)
         end = millis()
@@ -269,6 +290,10 @@ class ScreenLeaderboard:
         else:
             self.__pastLabels[i] = lbl
             self.__pastValues[i] = val
+
+class ScreenTotal:
+    def __init__(self):
+        self.lastLbl = None
 
 class ScreenPlayers:
     def __init__(self):

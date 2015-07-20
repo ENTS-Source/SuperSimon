@@ -38,5 +38,10 @@ class ScoreTracker:
         cursor.execute("SELECT COUNT(id) AS rank FROM scores WHERE score > ?", (score,))
         return cursor.fetchone()['rank'] + 1
 
+    def getTotalPlayers(self):
+        cursor = self.__db.cursor()
+        cursor.execute("SELECT COUNT(id) AS total FROM scores");
+        return cursor.fetchone()['total']
+
     def close(self):
         self.__db.close()

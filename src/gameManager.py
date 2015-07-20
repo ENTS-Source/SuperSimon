@@ -8,7 +8,6 @@ POINTS_PER_MS = 0.085
 POINTS_TIME_THRESHOLD = 2000.0
 POINTS_BONUS_THRESHOLD = 1000.0
 
-# TODO: Need 'all offline' check
 class GameManager:
     def __init__(self, game, scoreTracker):
         self.__game = game
@@ -25,6 +24,9 @@ class GameManager:
         self.__gameOver = False
         self.__createSequence()
         self.__reloadLeaderboard()
+
+    def getTotalPlayers(self):
+        return self.__scoreTracker.getTotalPlayers()
 
     def __reloadLeaderboard(self):
         print("Reloading leaderboard...")

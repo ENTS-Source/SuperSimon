@@ -295,7 +295,7 @@ class SuperSimon:
     def __protocolSendStartGame(self, address):
         self.__protocolSendMagic()
         self.__port.write('\x02')
-        self.__port.write(str(address))
+        self.__port.write(chr(address))
 
 class PressedButton:
     def __init__(self, button, time):
