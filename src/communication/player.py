@@ -3,6 +3,7 @@ class Player:
         self.address = address
         self.reset()
 
+    # noinspection PyAttributeOutsideInit
     def reset(self):
         self.online = False
         self.joined = False

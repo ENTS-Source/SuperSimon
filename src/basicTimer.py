@@ -1,8 +1,6 @@
-from communication.utils import *
-
 class BasicTimer:
-    def __init__(self, resetVal):
-        self.__resetTo = resetVal
+    def __init__(self, reset_val):
+        self.__resetTo = reset_val
         self.__value = self.__resetTo
         self.__active = False
 
@@ -13,14 +11,15 @@ class BasicTimer:
     def reset(self):
         self.__value = self.__resetTo
 
-    def isStarted(self):
+    def is_started(self):
         return self.__active
 
-    def valueSeconds(self):
+    def value_in_seconds(self):
         return self.__value / 1000.0
 
     def tick(self, delta):
-        if not self.__active: return
+        if not self.__active:
+            return
         self.__value -= delta
         if self.__value <= 0:
             self.__active = False

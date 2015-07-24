@@ -4,6 +4,7 @@
 
 # Start by spinning up the configuration
 from config import Configuration
+
 config = Configuration()
 
 print("Game fullscreen = " + str(config.game.fullscreen))
@@ -14,7 +15,8 @@ print("Discover maximum devices = " + str(config.protocol.discoverMaximum))
 print("Preparing game setup...")
 import pygame
 import os
-os.environ['SDL_VIDEO_WINDOW_POS'] = "0,0" # Starts window at (0, 0)
+
+os.environ['SDL_VIDEO_WINDOW_POS'] = "0,0"  # Starts window at (0, 0)
 pygame.init()
 displayInfo = pygame.display.Info()
 offset = 0
@@ -34,27 +36,31 @@ if config.game.fullscreen:
 # Start loading the actual game
 print("Starting communications...")
 from communication.simon import SuperSimon
+
 game = SuperSimon(config.protocol)
 
 # Begin score tracking
 print("Starting score tracker...")
 from scoreTracker import ScoreTracker
+
 scoreTracker = ScoreTracker()
 
 # Now we can start up the display with a disover sequence
 print("Discovering initial clients...")
-game.discoverClients()
+game.discover_clients()
 
 # Prepare for game loop
 import sys
 from time import sleep
 from screenRenderer import ScreenRenderer
 from gameManager import GameManager
+
 manager = GameManager(game, scoreTracker)
 renderer = ScreenRenderer(screen, manager)
 
 # State variables for game stuffs
 from communication.utils import *
+
 lastTick = millis()
 
 # Start game loop
@@ -62,7 +68,7 @@ print("Starting game loop...")
 gameRunning = True
 maxRenderTime = 0
 timesOver1s = 0
-while(gameRunning):
+while gameRunning:
     start = millis()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -91,5 +97,5 @@ while(gameRunning):
         else:
             maxRenderTime = rtime
         print("!! NEW MAXIMUM RENDER TIME: " + str(maxRenderTime) + "ms")
-    #print("Took " + str(end - start) + "ms (max (<1000ms) = " + str(maxRenderTime) + "ms, times over 1s = " + str(timesOver1s) + ") to do game loop. Sleeping for 100ms...")
+    # print("Took " + str(end - start) + "ms (max (<1000ms) = " + str(maxRenderTime) + "ms, times over 1s = " + str(timesOver1s) + ") to do game loop. Sleeping for 100ms...")
     sleep(0.1)

@@ -19,136 +19,139 @@
 
 import threading
 
+# TODO: Rewrite this to be in line with PEP8
+
 class EventQueue:
-	def __init__(self):
-		self._queue = self.Queue()
-		self._results = self.Results()
-		self._runner = self.Runner(self._queue.dequeue)
+    def __init__(self):
+        self._queue = self.Queue()
+        self._results = self.Results()
+        self._runner = self.Runner(self._queue.dequeue)
 
-		self._runner.start()
+        self._runner.start()
 
-	def enqueue(self, func, args=[], kwargs={}, highPriority = False):
-		(setResultFunc, getResultFunc) = self._results.getResultContainer()
-		element = self.Runner.packCall(func, args, kwargs, setResultFunc)
+    def enqueue(self, func, args=[], kwargs={}, highPriority=False):
+        (setResultFunc, getResultFunc) = self._results.getResultContainer()
+        element = self.Runner.packCall(func, args, kwargs, setResultFunc)
 
-		if self._runner.isRunning():
-			self._queue.enqueue(element, highPriority)
-		else:
-			self._runner.flagError(
-				element, 
-				message="Event has been added after the stop() event.")
+        if self._runner.isRunning():
+            self._queue.enqueue(element, highPriority)
+        else:
+            self._runner.flagError(
+                element,
+                message="Event has been added after the stop() event.")
 
-		return getResultFunc
+        return getResultFunc
 
-	def stop(self, highPriority = False):
-		(setResultFunc, getResultFunc) = self._results.getResultContainer()
-		element = self._runner.getStopCall(self._flushQueue, setResultFunc)
-		self._queue.enqueue(element, highPriority)
+    def stop(self, highPriority=False):
+        (setResultFunc, getResultFunc) = self._results.getResultContainer()
+        element = self._runner.getStopCall(self._flushQueue, setResultFunc)
+        self._queue.enqueue(element, highPriority)
 
-		return getResultFunc
+        return getResultFunc
 
-	def _flushQueue(self):
-		while self._queue.hasMore():
-			element = self._queue.dequeue()
-			self._runner.flagError(element)
+    def _flushQueue(self):
+        while self._queue.hasMore():
+            element = self._queue.dequeue()
+            self._runner.flagError(element)
 
-	class Queue:
-		def __init__(self):
-			self._list = []
-			self._condition = threading.Condition()
+    class Queue:
+        def __init__(self):
+            self._list = []
+            self._condition = threading.Condition()
 
-		def enqueue(self, element, highPriority):
-			with self._condition:
-				if highPriority:
-					self._list.insert(0, element)
-				else:
-					self._list.append(element)
-				self._condition.notify()
+        def enqueue(self, element, highPriority):
+            with self._condition:
+                if highPriority:
+                    self._list.insert(0, element)
+                else:
+                    self._list.append(element)
+                self._condition.notify()
 
-		def hasMore(self):
-			with self._condition:
-				return len(self._list) > 0
+        def hasMore(self):
+            with self._condition:
+                return len(self._list) > 0
 
-		def dequeue(self):
-			with self._condition:
-				while not self.hasMore():
-					self._condition.wait()
-				return self._list.pop(0)
+        def dequeue(self):
+            with self._condition:
+                while not self.hasMore():
+                    self._condition.wait()
+                return self._list.pop(0)
 
-	class Results:
-		def getResultContainer(self):
-			container = self._Container()
-			return (container.setResult, container.getResult)
+    class Results:
+        def getResultContainer(self):
+            container = self._Container()
+            return (container.setResult, container.getResult)
 
-		class _Container:
-			def __init__(self):
-				self._condition = threading.Condition()
-				self._hasResult = False
-				self._resultIsException = False
-				self._result = None
+        class _Container:
+            def __init__(self):
+                self._condition = threading.Condition()
+                self._hasResult = False
+                self._resultIsException = False
+                self._result = None
 
-			def setResult(self, result, resultIsException):
-				with self._condition:
-					self._hasResult = True
-					self._resultIsException = resultIsException
-					self._result = result
-					self._condition.notify()
+            def setResult(self, result, resultIsException):
+                with self._condition:
+                    self._hasResult = True
+                    self._resultIsException = resultIsException
+                    self._result = result
+                    self._condition.notify()
 
-			def getResult(self):
-				with self._condition:
-					while not self._hasResult:
-						self._condition.wait()
-					if self._resultIsException:
-						raise self._result
-					else:
-						return self._result
+            def getResult(self):
+                with self._condition:
+                    while not self._hasResult:
+                        self._condition.wait()
+                    if self._resultIsException:
+                        raise self._result
+                    else:
+                        return self._result
 
-	class Runner(threading.Thread):
-		def __init__(self, getNextFunc):
-			threading.Thread.__init__(self)
-			self._running = True
-			self._getNextFunc = getNextFunc
-			self._stopLock = threading.Lock()
+    class Runner(threading.Thread):
+        def __init__(self, getNextFunc):
+            threading.Thread.__init__(self)
+            self._running = True
+            self._getNextFunc = getNextFunc
+            self._stopLock = threading.Lock()
 
-		def run(self):
-			while self.isRunning():
-				next = self._getNextFunc()
-				self._execute(next)
+        def run(self):
+            while self.isRunning():
+                next = self._getNextFunc()
+                self._execute(next)
 
-		def isRunning(self):
-			with self._stopLock:
-				return self._running
+        def isRunning(self):
+            with self._stopLock:
+                return self._running
 
-		def flagError(self, element, message="Event has not been processed."):
-			(func, args, kwargs, setResultFunc) = element
-			setResultFunc(UnprocessedEvent(message), resultIsException = True)
+        def flagError(self, element, message="Event has not been processed."):
+            (func, args, kwargs, setResultFunc) = element
+            setResultFunc(UnprocessedEvent(message), resultIsException=True)
 
-		def getStopCall(self, afterStopFunc, setResultFunc):
-			return (self._stop, [afterStopFunc], {}, setResultFunc)
+        def getStopCall(self, afterStopFunc, setResultFunc):
+            return (self._stop, [afterStopFunc], {}, setResultFunc)
 
-		@staticmethod
-		def packCall(func, args, kwargs, setResultFunc):
-			return (func, args, kwargs, setResultFunc)
+        @staticmethod
+        def packCall(func, args, kwargs, setResultFunc):
+            return (func, args, kwargs, setResultFunc)
 
-		def _execute(self, element):
-			(func, args, kwargs, setResultFunc) = element
-			try:
-				result = func(*args, **kwargs)
-				setResultFunc(result, resultIsException = False)
-			except Exception, exception:
-				setResultFunc(exception, resultIsException = True)
+        def _execute(self, element):
+            (func, args, kwargs, setResultFunc) = element
+            try:
+                result = func(*args, **kwargs)
+                setResultFunc(result, resultIsException=False)
+            except Exception, exception:
+                setResultFunc(exception, resultIsException=True)
 
-		def _stop(self, afterStopFunc):
-			with self._stopLock:
-				self._running = False
-				afterStopFunc()
+        def _stop(self, afterStopFunc):
+            with self._stopLock:
+                self._running = False
+                afterStopFunc()
+
 
 class UnprocessedEvent(Exception):
-	def __init__(self, reason):
-		self._reason = reason
+    def __init__(self, reason):
+        self._reason = reason
 
-	def __str__(self):
-		return str(self._reason)
+    def __str__(self):
+        return str(self._reason)
 
-	def __repr__(self):
-		return "UnprocessedEvent(" + repr(self._reason) + ")"
+    def __repr__(self):
+        return "UnprocessedEvent(" + repr(self._reason) + ")"
