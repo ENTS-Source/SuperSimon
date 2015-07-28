@@ -19,8 +19,8 @@ public class App extends Application {
     public void start(Stage primaryStage) throws Exception {
         Group root = new Group();
 
-        double minWidth = 1024;
-        double minHeight = 768;
+        double minWidth = 1920;
+        double minHeight = 1280;
 
         Scene scene = new Scene(root, minWidth, minHeight, Branding.BACKGROUND_COLOR);
         primaryStage.setScene(scene);
