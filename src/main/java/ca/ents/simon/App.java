@@ -17,14 +17,17 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        System.out.println("Starting application...");
         Group root = new Group();
 
         double minWidth = 1920;
         double minHeight = 1280;
 
+        System.out.println("Setting up scene...");
         Scene scene = new Scene(root, minWidth, minHeight, Branding.BACKGROUND_COLOR);
         primaryStage.setScene(scene);
 
+        System.out.println("Preparing UI...");
         // TODO: UI Code
         Text text = new Text("Test Text");
         text.setFont(EntsFont.REGULAR.size(20));
@@ -32,6 +35,7 @@ public class App extends Application {
         text.setY(100);
         root.getChildren().add(text);
 
+        System.out.println("Preparing primary stage...");
         primaryStage.setMaximized(true);
         primaryStage.setMinWidth(minWidth);
         primaryStage.setMinHeight(minHeight);
@@ -43,11 +47,16 @@ public class App extends Application {
             if (event.getCode() == KeyCode.ESCAPE)
                 primaryStage.close();
         });
+
+        System.out.println("Showing primary stage...");
         primaryStage.show();
+        System.out.println("Done startup loop!");
     }
 
 
     public static void main(String[] args) {
+        System.out.println(Branding.GAME_NAME);
+        System.out.println();
         launch(args);
     }
 }
