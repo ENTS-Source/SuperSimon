@@ -5,8 +5,6 @@ import javafx.scene.paint.Color;
 
 /**
  * Colors and fonts for branding of the application
- *
- * @author TravisR
  */
 public final class Branding {
 

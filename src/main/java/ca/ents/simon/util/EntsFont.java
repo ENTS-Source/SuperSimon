@@ -4,15 +4,13 @@ import javafx.scene.text.Font;
 
 /**
  * Represents a font for ENTS JavaFX projects
- *
- * @author TravisR
  */
 public class EntsFont {
 
-    public static final EntsFont CONDENSED_ITALIC = new EntsFont(EntsFont.class.getResource("/fonts/LeagueGothic-CondensedItalic.otf").toExternalForm());
-    public static final EntsFont CONDENSED_REGULAR = new EntsFont(EntsFont.class.getResource("/fonts/LeagueGothic-CondensedRegular.otf").toExternalForm());
-    public static final EntsFont ITALIC = new EntsFont(EntsFont.class.getResource("/fonts/LeagueGothic-Italic.otf").toExternalForm());
-    public static final EntsFont REGULAR = new EntsFont(EntsFont.class.getResource("/fonts/LeagueGothic-Regular.otf").toExternalForm());
+    public static final EntsFont CONDENSED_ITALIC = new EntsFont(getResource("/fonts/LeagueGothic-CondensedItalic.otf"));
+    public static final EntsFont CONDENSED_REGULAR = new EntsFont(getResource("/fonts/LeagueGothic-CondensedRegular.otf"));
+    public static final EntsFont ITALIC = new EntsFont(getResource("/fonts/LeagueGothic-Italic.otf"));
+    public static final EntsFont REGULAR = new EntsFont(getResource("/fonts/LeagueGothic-Regular.otf"));
 
     private String path;
 
@@ -31,4 +29,7 @@ public class EntsFont {
         return Font.loadFont(path, size);
     }
 
+    private static String getResource(String name) {
+        return EntsFont.class.getResource(name).toExternalForm();
+    }
 }

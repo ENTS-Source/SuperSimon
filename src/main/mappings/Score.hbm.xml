@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="ca.ents.simon.entities.Score" table="Scores">
+        <id name="id" type="int" column="id">
+            <generator class="native"/>
+        </id>
+        <property name="score" column="score" type="long"/>
+        <property name="playerNumber" column="player" type="int"/>
+    </class>
+</hibernate-mapping>

@@ -1,17 +1,14 @@
 package ca.ents.simon;
 
-import ca.ents.simon.util.EntsFont;
+import ca.ents.simon.repository.ScoreRepository;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
  * Main entry point for the application
- *
- * @author TravisR
  */
 public class App extends Application {
 
@@ -28,12 +25,8 @@ public class App extends Application {
         primaryStage.setScene(scene);
 
         System.out.println("Preparing UI...");
-        // TODO: UI Code
-        Text text = new Text("Test Text");
-        text.setFont(EntsFont.REGULAR.size(20));
-        text.setX(100);
-        text.setY(100);
-        root.getChildren().add(text);
+        OriginalGameMode gameMode = new OriginalGameMode();
+        gameMode.configureScene(scene, root);
 
         System.out.println("Preparing primary stage...");
         primaryStage.setMaximized(true);
@@ -42,7 +35,7 @@ public class App extends Application {
         primaryStage.setResizable(true);
         primaryStage.setTitle(Branding.GAME_NAME);
         primaryStage.setFullScreen(false); // TODO: Configurable
-        primaryStage.setFullScreenExitHint(""); // Hides the message all together
+        primaryStage.setFullScreenExitHint(""); // Hides the message
         scene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ESCAPE)
                 primaryStage.close();
@@ -50,12 +43,21 @@ public class App extends Application {
 
         System.out.println("Showing primary stage...");
         primaryStage.show();
+
+        ScoreRepository scoreRepo = new ca.ents.simon.repository.concrete.ScoreRepository();
+        System.out.println("Total scores: " + scoreRepo.findAll().size());
+
+        System.out.println("Starting game...");
+        gameMode.beginOperation();
         System.out.println("Done startup loop!");
     }
 
 
     public static void main(String[] args) {
-        System.out.println(Branding.GAME_NAME);
+        String specVersion = App.class.getPackage().getSpecificationVersion();
+        String buildVersion = App.class.getPackage().getImplementationVersion();
+        String version = "v" + specVersion + "b" + buildVersion;
+        System.out.println(Branding.GAME_NAME + " " + version);
         System.out.println();
         launch(args);
     }
