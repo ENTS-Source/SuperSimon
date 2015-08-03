@@ -12,7 +12,7 @@ import javafx.scene.text.Text;
 /**
  * Game operation for Simon
  */
-public class OriginalGameMode {
+public class GameManager {
 
     private static final String ID_TOTAL_PLAYERS_LABEL = "totalPlayersLabel";
     private static final String ID_TOTAL_PLAYERS_COUNT = "totalPlayersCount";
@@ -52,7 +52,11 @@ public class OriginalGameMode {
     }
 
     public void beginOperation() {
+        // TODO
+    }
 
+    public void shutdown() {
+        // TODO
     }
 
     private void updateTotalPlayers() {

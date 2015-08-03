@@ -2,6 +2,7 @@ package ca.ents.simon.io;
 
 import ca.ents.simon.io.command.Command;
 import ca.ents.simon.io.command.SimonCommand;
+import ca.ents.simon.io.payload.PayloadEncoderDecoder;
 import org.reflections.Reflections;
 
 import java.util.HashMap;
@@ -53,25 +54,16 @@ public final class CommandRegistry {
     }
 
     /**
-     * Command information carrier for command registry
+     * Retrieves command information for a given command. If the command is not found then
+     * an exception is raised
+     *
+     * @param command the command class to lookup
+     * @return the command info found
      */
-    public static class CommandInfo {
-
-        private Class<? extends SimonCommand> commandClass;
-        private Command annotation;
-
-        private CommandInfo(Command annotation, Class<? extends SimonCommand> clazz) {
-            this.commandClass = clazz;
-            this.annotation = annotation;
-        }
-
-        /**
-         * Determines whether or not this command requires a payload
-         *
-         * @return true if a payload is required, false otherwise
-         */
-        public boolean hasPayload() {
-            return annotation.hasPayload();
-        }
+    public static CommandInfo getCommandInfo(Class<? extends SimonCommand> command) {
+        if (!BY_CLASS.containsKey(command))
+            throw new IllegalArgumentException("Command '" + command.getName() + "' does not exist");
+        return getCommandInfo(BY_CLASS.get(command));
     }
+
 }

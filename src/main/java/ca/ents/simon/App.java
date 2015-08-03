@@ -25,8 +25,8 @@ public class App extends Application {
         primaryStage.setScene(scene);
 
         System.out.println("Preparing UI...");
-        OriginalGameMode gameMode = new OriginalGameMode();
-        gameMode.configureScene(scene, root);
+        GameManager game = new GameManager();
+        game.configureScene(scene, root);
 
         System.out.println("Preparing primary stage...");
         primaryStage.setMaximized(true);
@@ -40,15 +40,13 @@ public class App extends Application {
             if (event.getCode() == KeyCode.ESCAPE)
                 primaryStage.close();
         });
+        primaryStage.setOnCloseRequest(event -> game.shutdown());
 
         System.out.println("Showing primary stage...");
         primaryStage.show();
 
-        ScoreRepository scoreRepo = new ca.ents.simon.repository.concrete.ScoreRepository();
-        System.out.println("Total scores: " + scoreRepo.findAll().size());
-
         System.out.println("Starting game...");
-        gameMode.beginOperation();
+        game.beginOperation();
         System.out.println("Done startup loop!");
     }
 

@@ -1,17 +1,18 @@
 package ca.ents.simon.io.device;
 
-import io.netty.channel.ChannelPipeline;
+import io.netty.channel.Channel;
 
 /**
  * Represents a communication device to issue protocol statements over
  */
 public interface IODevice {
+
     /**
-     * Gets the pipeline for this IO device. Will return null if not configured
+     * Gets the channel this IO device exposes
      *
-     * @return the channel pipeline for this device
+     * @return the channel for this IO device
      */
-    ChannelPipeline getPipeline();
+    Channel getChannel();
 
     /**
      * Shuts down the IO device

@@ -1,5 +1,8 @@
 package ca.ents.simon.io.device;
 
+import ca.ents.simon.io.decoder.SimonDecoder;
+import ca.ents.simon.io.decoder.SimonEncoder;
+import ca.ents.simon.io.decoder.SimonFrameDecoder;
 import com.beauhinks.purejavacomm.PureJavaCommChannel;
 import com.beauhinks.purejavacomm.PureJavaCommDeviceAddress;
 import io.netty.bootstrap.Bootstrap;
@@ -89,7 +92,16 @@ public class SerialPort implements IODevice {
 
         group = new OioEventLoopGroup();
         Bootstrap b = new Bootstrap();
-        b.group(group).channel(PureJavaCommChannel.class);
+        b.group(group).channel(PureJavaCommChannel.class).handler(new ChannelInitializer<PureJavaCommChannel>() {
+            @Override
+            protected void initChannel(PureJavaCommChannel ch) throws Exception {
+                ch.pipeline().addLast(
+                        new SimonFrameDecoder(),
+                        new SimonEncoder(),
+                        new SimonDecoder()
+                );
+            }
+        });
         try {
             channel = b.connect(new PureJavaCommDeviceAddress(portName)).sync().channel();
         } catch (InterruptedException e) {
@@ -98,9 +110,8 @@ public class SerialPort implements IODevice {
     }
 
     @Override
-    public ChannelPipeline getPipeline() {
-        if (channel == null) return null;
-        return channel.pipeline();
+    public Channel getChannel() {
+        return channel;
     }
 
     @Override
