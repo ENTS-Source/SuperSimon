@@ -29,12 +29,12 @@ public abstract class Repository<T extends Entity> {
         // General properties
         hibernateConf.setProperty("hibernate.connection.provider_class", "com.zaxxer.hikari.hibernate.HikariConnectionProvider");
         hibernateConf.setProperty("hibernate.hikari.dataSourceClassName", "com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
-        hibernateConf.setProperty("hibernate.hikari.dataSource.url", "jdbc:mysql://172.16.0.26/simon");
-        hibernateConf.setProperty("hibernate.hikari.dataSource.user", "simon");
-        hibernateConf.setProperty("hibernate.hikari.dataSource.password", "test1234");
+        hibernateConf.setProperty("hibernate.hikari.dataSource.url", "jdbc:mysql://172.16.0.155/simon"); // TODO: Configuration
+        hibernateConf.setProperty("hibernate.hikari.dataSource.user", "simon"); // TODO: Configuration
+        hibernateConf.setProperty("hibernate.hikari.dataSource.password", "test1234"); // TODO: Configuration
         hibernateConf.setProperty("hibernate.hikari.dataSource.cachePrepStmts", "true");
-        hibernateConf.setProperty("hibernate.hikari.dataSource.prepStmtCacheSize", "250");
-        hibernateConf.setProperty("hibernate.hikari.dataSource.prepStmtCacheSqlLimit", "2048");
+        hibernateConf.setProperty("hibernate.hikari.dataSource.prepStmtCacheSize", "250"); // TODO: Configuration?
+        hibernateConf.setProperty("hibernate.hikari.dataSource.prepStmtCacheSqlLimit", "2048"); // TODO: Configuration?
 
         // Setup mappings
         Reflections reflections = new Reflections(Entity.class.getPackage().getName());

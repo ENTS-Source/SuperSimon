@@ -45,6 +45,10 @@ public class App extends Application {
         System.out.println("Showing primary stage...");
         primaryStage.show();
 
+        // TODO: Remove temporary code
+        ScoreRepository scoreRepo = new ScoreRepository();
+        System.out.println("Total scores: " + scoreRepo.findAll().size());
+
         System.out.println("Starting game...");
         game.beginOperation();
         System.out.println("Done startup loop!");
