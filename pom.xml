@@ -22,21 +22,48 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>5.0.0.CR3</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
             <version>0.9.9-RC1</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.36</version>
-            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.0.15.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sparetimelabs</groupId>
+            <artifactId>purejavacomm</artifactId>
+            <version>0.0.22</version>
+        </dependency>
+        <dependency>
+            <!-- published at repo.turt2live.com -->
+            <!-- original repo: https://github.com/steveturner/netty-transport-purejavacomm/tree/develop -->
+            <groupId>com.beauhinks</groupId>
+            <artifactId>netty-transport-purejavacomm</artifactId>
+            <version>upstream-develop@305f3ea3b45692f68424be340ea1b136356fbfba</version>
         </dependency>
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>sparetimelabs</id>
+            <name>purejavacomm repository</name>
+            <url>http://www.sparetimelabs.com/maven2</url>
+        </repository>
+        <repository>
+            <id>turt2live</id>
+            <name>turt2live repository</name>
+            <url>http://repo.turt2live.com</url>
+        </repository>
+    </repositories>
 
     <build>
         <finalName>${project.artifactId}</finalName>
