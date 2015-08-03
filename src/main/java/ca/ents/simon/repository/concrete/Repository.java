@@ -9,6 +9,9 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import org.reflections.Reflections;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -37,9 +40,16 @@ public abstract class Repository<T extends Entity> implements ca.ents.simon.repo
         Reflections reflections = new Reflections(Entity.class.getPackage().getName());
         reflections.getSubTypesOf(Entity.class).forEach(hibernateConf::addClass);
 
-        // Configure and set session factory
+        // Configure session factory
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(hibernateConf.getProperties()).build();
         SESSION_FACTORY = hibernateConf.buildSessionFactory(serviceRegistry);
+
+        // Create database structure
+        try (Session seedSession = SESSION_FACTORY.openSession()) {
+            seedSession.createSQLQuery(readInitScript()).executeUpdate();
+        } catch (IOException e) {
+            throw new RuntimeException("Could not initialize database", e);
+        }
     }
 
     protected Repository(Class<T> supportingClass) {
@@ -77,5 +87,14 @@ public abstract class Repository<T extends Entity> implements ca.ents.simon.repo
     @Override
     public void save(T entity) {
         currentSession.update(entity);
+    }
+
+    private static String readInitScript() throws IOException {
+        String output = "";
+        BufferedReader reader = new BufferedReader(new InputStreamReader(Repository.class.getResourceAsStream("/initdb.sql")));
+        String line;
+        while ((line = reader.readLine()) != null)
+            output += line + "\n";
+        return output;
     }
 }
