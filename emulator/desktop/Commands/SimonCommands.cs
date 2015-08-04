@@ -95,6 +95,10 @@ namespace SuperSimonEmulator.Commands
     public class DiscoverCommand : AddressedCommand, IResponsiveCommand
     {
         public DiscoverCommand() : base(0x09) { }
+        public DiscoverCommand(byte address) : this()
+        {
+            TargetAddress = address;
+        }
 
         public Command Response(GamePad pad)
         {
@@ -107,6 +111,14 @@ namespace SuperSimonEmulator.Commands
     public class EchoCommand : PayloadCommand, IResponsiveCommand
     {
         public EchoCommand() : base(0xF0) { }
+        public EchoCommand(byte address) : this()
+        {
+            TargetAddress = address;
+            Payload = new byte[10];
+            for (int i = 0; i < Payload.Length; i++)
+                Payload[i] = (byte)(i + 100);
+            Length = Payload.Length;
+        }
 
         public Command Response(GamePad pad)
         {

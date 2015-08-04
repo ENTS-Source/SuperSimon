@@ -1,5 +1,7 @@
 package ca.ents.simon;
 
+import ca.ents.simon.io.device.IODevice;
+import ca.ents.simon.io.device.SerialPort;
 import ca.ents.simon.util.EntsFont;
 import ca.ents.simon.util.EntsImage;
 import ca.ents.simon.util.UIGroup;
@@ -53,6 +55,8 @@ public class GameManager {
 
     public void beginOperation() {
         // TODO
+
+        IODevice device = new SerialPort("COM6");
     }
 
     public void shutdown() {

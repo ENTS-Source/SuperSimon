@@ -33,7 +33,7 @@ public class CommandInfo {
      * @return the command ID
      */
     public byte getCommandId() {
-        return annotation.value();
+        return annotation.commandId();
     }
 
     /**

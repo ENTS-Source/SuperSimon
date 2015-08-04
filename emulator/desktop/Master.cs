@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO.Ports;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace SuperSimonEmulator
@@ -129,6 +130,7 @@ namespace SuperSimonEmulator
             spTeensy.PortName = cbPort.SelectedItem.ToString();
             spTeensy.Open();
             gbNewPad.Enabled = true;
+            gbTestFunctions.Enabled = true;
             gpCommunication.Text = "Communication (Connected, " + spTeensy.PortName + ")";
             lbSpConnectionState.Text = "Connected";
             lbSpConnectionState.ForeColor = Color.DarkGreen;
@@ -155,13 +157,16 @@ namespace SuperSimonEmulator
             nudAddress.Value++;
         }
 
-        private void SendCommand(Command command)
+        private void SendCommand(Command command, bool asHost = false)
         {
             if (command == null) return;
             var bytes = new List<byte>();
 
             // Start with the magic sequence
-            bytes.AddRange(_respMagicSequence);
+            if (!asHost)
+                bytes.AddRange(_respMagicSequence);
+            else
+                bytes.AddRange(_magicSequence);
 
             bytes.Add(command.CommandId);
 
@@ -211,6 +216,23 @@ namespace SuperSimonEmulator
             tbComLogOut.Copy();
             tbComLogOut.Select(tbComLogOut.Text.Length, 0);
             MessageBox.Show("Copied to clipboard!");
+        }
+
+        private void btnTestDiscover_Click(object sender, EventArgs e)
+        {
+            SendCommand(new DiscoverCommand(0x00), asHost: true);
+            Thread.Sleep(100);
+            SendCommand(new DiscoverCommand(0x01), asHost: true);
+            Thread.Sleep(100);
+            SendCommand(new DiscoverCommand(0x02), asHost: true);
+            Thread.Sleep(100);
+            SendCommand(new DiscoverCommand(0x03), asHost: true);
+            Thread.Sleep(100);
+        }
+
+        private void btnTestEcho_Click(object sender, EventArgs e)
+        {
+            SendCommand(new EchoCommand(0x03), asHost: true);
         }
     }
 }

@@ -22,6 +22,8 @@ public class FrameInfo {
         this.commandId = commandId;
         this.address = address;
         this.payload = payload;
+
+        this.payload.readerIndex(0);
     }
 
     /**

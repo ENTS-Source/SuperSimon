@@ -34,8 +34,12 @@
             System.Windows.Forms.Label label2;
             System.Windows.Forms.Label label3;
             System.Windows.Forms.GroupBox groupBox2;
+            this.btnClearInbound = new System.Windows.Forms.Button();
+            this.btnCopyInbound = new System.Windows.Forms.Button();
             this.tbComLogIn = new System.Windows.Forms.TextBox();
+            this.btnClearOutbound = new System.Windows.Forms.Button();
             this.tbComLogOut = new System.Windows.Forms.TextBox();
+            this.btnCopyOutbound = new System.Windows.Forms.Button();
             this.spTeensy = new System.IO.Ports.SerialPort(this.components);
             this.gbNewPad = new System.Windows.Forms.GroupBox();
             this.btnNewPad = new System.Windows.Forms.Button();
@@ -44,10 +48,9 @@
             this.lbSpConnectionState = new System.Windows.Forms.Label();
             this.btnSpConfigure = new System.Windows.Forms.Button();
             this.cbPort = new System.Windows.Forms.ComboBox();
-            this.btnCopyInbound = new System.Windows.Forms.Button();
-            this.btnClearInbound = new System.Windows.Forms.Button();
-            this.btnClearOutbound = new System.Windows.Forms.Button();
-            this.btnCopyOutbound = new System.Windows.Forms.Button();
+            this.btnTestDiscover = new System.Windows.Forms.Button();
+            this.gbTestFunctions = new System.Windows.Forms.GroupBox();
+            this.btnTestEcho = new System.Windows.Forms.Button();
             groupBox1 = new System.Windows.Forms.GroupBox();
             label1 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
@@ -58,6 +61,7 @@
             this.gbNewPad.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudAddress)).BeginInit();
             this.gpCommunication.SuspendLayout();
+            this.gbTestFunctions.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -71,6 +75,26 @@
             groupBox1.TabIndex = 3;
             groupBox1.TabStop = false;
             groupBox1.Text = "Raw Communication (Inbound)";
+            // 
+            // btnClearInbound
+            // 
+            this.btnClearInbound.Location = new System.Drawing.Point(122, 19);
+            this.btnClearInbound.Name = "btnClearInbound";
+            this.btnClearInbound.Size = new System.Drawing.Size(75, 23);
+            this.btnClearInbound.TabIndex = 2;
+            this.btnClearInbound.Text = "Clear";
+            this.btnClearInbound.UseVisualStyleBackColor = true;
+            this.btnClearInbound.Click += new System.EventHandler(this.btnClearInbound_Click);
+            // 
+            // btnCopyInbound
+            // 
+            this.btnCopyInbound.Location = new System.Drawing.Point(203, 19);
+            this.btnCopyInbound.Name = "btnCopyInbound";
+            this.btnCopyInbound.Size = new System.Drawing.Size(75, 23);
+            this.btnCopyInbound.TabIndex = 1;
+            this.btnCopyInbound.Text = "Copy";
+            this.btnCopyInbound.UseVisualStyleBackColor = true;
+            this.btnCopyInbound.Click += new System.EventHandler(this.btnCopyInbound_Click);
             // 
             // tbComLogIn
             // 
@@ -122,6 +146,16 @@
             groupBox2.TabStop = false;
             groupBox2.Text = "Raw Communication (Outbound)";
             // 
+            // btnClearOutbound
+            // 
+            this.btnClearOutbound.Location = new System.Drawing.Point(123, 19);
+            this.btnClearOutbound.Name = "btnClearOutbound";
+            this.btnClearOutbound.Size = new System.Drawing.Size(75, 23);
+            this.btnClearOutbound.TabIndex = 4;
+            this.btnClearOutbound.Text = "Clear";
+            this.btnClearOutbound.UseVisualStyleBackColor = true;
+            this.btnClearOutbound.Click += new System.EventHandler(this.btnClearOutbound_Click);
+            // 
             // tbComLogOut
             // 
             this.tbComLogOut.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -132,6 +166,16 @@
             this.tbComLogOut.ReadOnly = true;
             this.tbComLogOut.Size = new System.Drawing.Size(279, 86);
             this.tbComLogOut.TabIndex = 0;
+            // 
+            // btnCopyOutbound
+            // 
+            this.btnCopyOutbound.Location = new System.Drawing.Point(204, 19);
+            this.btnCopyOutbound.Name = "btnCopyOutbound";
+            this.btnCopyOutbound.Size = new System.Drawing.Size(75, 23);
+            this.btnCopyOutbound.TabIndex = 3;
+            this.btnCopyOutbound.Text = "Copy";
+            this.btnCopyOutbound.UseVisualStyleBackColor = true;
+            this.btnCopyOutbound.Click += new System.EventHandler(this.btnCopyOutbound_Click);
             // 
             // spTeensy
             // 
@@ -216,51 +260,44 @@
             this.cbPort.Size = new System.Drawing.Size(127, 21);
             this.cbPort.TabIndex = 2;
             // 
-            // btnCopyInbound
+            // btnTestDiscover
             // 
-            this.btnCopyInbound.Location = new System.Drawing.Point(203, 19);
-            this.btnCopyInbound.Name = "btnCopyInbound";
-            this.btnCopyInbound.Size = new System.Drawing.Size(75, 23);
-            this.btnCopyInbound.TabIndex = 1;
-            this.btnCopyInbound.Text = "Copy";
-            this.btnCopyInbound.UseVisualStyleBackColor = true;
-            this.btnCopyInbound.Click += new System.EventHandler(this.btnCopyInbound_Click);
+            this.btnTestDiscover.Location = new System.Drawing.Point(6, 20);
+            this.btnTestDiscover.Name = "btnTestDiscover";
+            this.btnTestDiscover.Size = new System.Drawing.Size(198, 23);
+            this.btnTestDiscover.TabIndex = 6;
+            this.btnTestDiscover.Text = "Test Discover (P1-4)";
+            this.btnTestDiscover.UseVisualStyleBackColor = true;
+            this.btnTestDiscover.Click += new System.EventHandler(this.btnTestDiscover_Click);
             // 
-            // btnClearInbound
+            // gbTestFunctions
             // 
-            this.btnClearInbound.Location = new System.Drawing.Point(122, 19);
-            this.btnClearInbound.Name = "btnClearInbound";
-            this.btnClearInbound.Size = new System.Drawing.Size(75, 23);
-            this.btnClearInbound.TabIndex = 2;
-            this.btnClearInbound.Text = "Clear";
-            this.btnClearInbound.UseVisualStyleBackColor = true;
-            this.btnClearInbound.Click += new System.EventHandler(this.btnClearInbound_Click);
+            this.gbTestFunctions.Controls.Add(this.btnTestEcho);
+            this.gbTestFunctions.Controls.Add(this.btnTestDiscover);
+            this.gbTestFunctions.Enabled = false;
+            this.gbTestFunctions.Location = new System.Drawing.Point(593, 12);
+            this.gbTestFunctions.Name = "gbTestFunctions";
+            this.gbTestFunctions.Size = new System.Drawing.Size(210, 220);
+            this.gbTestFunctions.TabIndex = 7;
+            this.gbTestFunctions.TabStop = false;
+            this.gbTestFunctions.Text = "Test functions";
             // 
-            // btnClearOutbound
+            // btnTestEcho
             // 
-            this.btnClearOutbound.Location = new System.Drawing.Point(123, 19);
-            this.btnClearOutbound.Name = "btnClearOutbound";
-            this.btnClearOutbound.Size = new System.Drawing.Size(75, 23);
-            this.btnClearOutbound.TabIndex = 4;
-            this.btnClearOutbound.Text = "Clear";
-            this.btnClearOutbound.UseVisualStyleBackColor = true;
-            this.btnClearOutbound.Click += new System.EventHandler(this.btnClearOutbound_Click);
-            // 
-            // btnCopyOutbound
-            // 
-            this.btnCopyOutbound.Location = new System.Drawing.Point(204, 19);
-            this.btnCopyOutbound.Name = "btnCopyOutbound";
-            this.btnCopyOutbound.Size = new System.Drawing.Size(75, 23);
-            this.btnCopyOutbound.TabIndex = 3;
-            this.btnCopyOutbound.Text = "Copy";
-            this.btnCopyOutbound.UseVisualStyleBackColor = true;
-            this.btnCopyOutbound.Click += new System.EventHandler(this.btnCopyOutbound_Click);
+            this.btnTestEcho.Location = new System.Drawing.Point(6, 49);
+            this.btnTestEcho.Name = "btnTestEcho";
+            this.btnTestEcho.Size = new System.Drawing.Size(198, 23);
+            this.btnTestEcho.TabIndex = 7;
+            this.btnTestEcho.Text = "Test Echo (P4)";
+            this.btnTestEcho.UseVisualStyleBackColor = true;
+            this.btnTestEcho.Click += new System.EventHandler(this.btnTestEcho_Click);
             // 
             // Master
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(599, 244);
+            this.ClientSize = new System.Drawing.Size(815, 244);
+            this.Controls.Add(this.gbTestFunctions);
             this.Controls.Add(groupBox2);
             this.Controls.Add(this.gpCommunication);
             this.Controls.Add(this.gbNewPad);
@@ -279,6 +316,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudAddress)).EndInit();
             this.gpCommunication.ResumeLayout(false);
             this.gpCommunication.PerformLayout();
+            this.gbTestFunctions.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -299,6 +337,9 @@
         private System.Windows.Forms.Button btnCopyInbound;
         private System.Windows.Forms.Button btnClearOutbound;
         private System.Windows.Forms.Button btnCopyOutbound;
+        private System.Windows.Forms.Button btnTestDiscover;
+        private System.Windows.Forms.GroupBox gbTestFunctions;
+        private System.Windows.Forms.Button btnTestEcho;
     }
 }
 

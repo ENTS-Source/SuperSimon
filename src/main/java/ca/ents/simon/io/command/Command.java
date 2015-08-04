@@ -20,7 +20,7 @@ public @interface Command {
      *
      * @return the command ID
      */
-    byte value();
+    byte commandId();
 
     /**
      * Whether or not this command has a payload

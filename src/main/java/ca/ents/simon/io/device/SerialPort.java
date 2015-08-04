@@ -1,8 +1,8 @@
 package ca.ents.simon.io.device;
 
-import ca.ents.simon.io.decoder.SimonDecoder;
 import ca.ents.simon.io.decoder.SimonEncoder;
 import ca.ents.simon.io.decoder.SimonFrameDecoder;
+import ca.ents.simon.io.decoder.SimonInboundHandler;
 import com.beauhinks.purejavacomm.PureJavaCommChannel;
 import com.beauhinks.purejavacomm.PureJavaCommDeviceAddress;
 import io.netty.bootstrap.Bootstrap;
@@ -96,9 +96,9 @@ public class SerialPort implements IODevice {
             @Override
             protected void initChannel(PureJavaCommChannel ch) throws Exception {
                 ch.pipeline().addLast(
-                        new SimonFrameDecoder(),
                         new SimonEncoder(),
-                        new SimonDecoder()
+                        new SimonFrameDecoder(),
+                        new SimonInboundHandler()
                 );
             }
         });

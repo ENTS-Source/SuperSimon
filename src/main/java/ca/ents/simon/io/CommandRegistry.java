@@ -2,7 +2,6 @@ package ca.ents.simon.io;
 
 import ca.ents.simon.io.command.Command;
 import ca.ents.simon.io.command.SimonCommand;
-import ca.ents.simon.io.payload.PayloadEncoderDecoder;
 import org.reflections.Reflections;
 
 import java.util.HashMap;
@@ -29,9 +28,9 @@ public final class CommandRegistry {
                 // TODO: Ensure safety of casting here
                 Class<? extends SimonCommand> commandClass = (Class<? extends SimonCommand>) type;
                 Command annotation = type.getAnnotation(Command.class);
-                ANNOTATION_INSTANCES.put(annotation.value(), annotation);
-                BY_ID.put(annotation.value(), commandClass);
-                BY_CLASS.put(commandClass, annotation.value());
+                ANNOTATION_INSTANCES.put(annotation.commandId(), annotation);
+                BY_ID.put(annotation.commandId(), commandClass);
+                BY_CLASS.put(commandClass, annotation.commandId());
             }
         }
         System.out.println("Registered " + BY_ID.size() + " commands");
