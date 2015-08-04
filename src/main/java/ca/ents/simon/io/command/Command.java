@@ -43,4 +43,6 @@ public @interface Command {
      */
     Class<? extends CommandInitializer> initializer();
 
+    // TODO: Validation for a given response?
+
 }

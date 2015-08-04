@@ -1,7 +1,9 @@
-package ca.ents.simon.io.command;
+package ca.ents.simon.io.command.impl;
 
+import ca.ents.simon.io.command.Command;
+import ca.ents.simon.io.command.SimonCommand;
 import ca.ents.simon.io.command.init.EchoCommandInitializer;
-import ca.ents.simon.io.payload.EchoCommandPayloadEncoderDecoder;
+import ca.ents.simon.io.payload.impl.EchoCommandPayloadEncoderDecoder;
 
 import java.util.Arrays;
 import java.util.Random;

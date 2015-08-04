@@ -17,6 +17,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Repository for entities within the project
+ *
+ * @param <T> the type of entity to be provided by this repository
+ */
 public abstract class Repository<T extends Entity> {
 
     private final static SessionFactory SESSION_FACTORY;
@@ -57,6 +62,11 @@ public abstract class Repository<T extends Entity> {
         this.supportingClass = supportingClass;
     }
 
+    /**
+     * Retrieves a collection of all entities within the repository
+     *
+     * @return the entities within the repository
+     */
     @SuppressWarnings("unchecked")
     public Collection<T> findAll() {
         List<T> outbound = new ArrayList<>();
@@ -69,18 +79,39 @@ public abstract class Repository<T extends Entity> {
         return outbound;
     }
 
+    /**
+     * Finds an entity by the key provided
+     *
+     * @param key the key to lookup the object by
+     * @return the object, if found. Null if not found.
+     */
     public T findByKey(Serializable key) {
         return currentSession.get(supportingClass, key);
     }
 
+    /**
+     * Adds an entity to the repository
+     *
+     * @param entity the entity to add, cannot be null
+     */
     public void add(T entity) {
         currentSession.save(entity);
     }
 
+    /**
+     * Deletes an entity from the repository
+     *
+     * @param entity the entity to delete, cannot be null
+     */
     public void delete(T entity) {
         currentSession.delete(entity);
     }
 
+    /**
+     * Saves an entity that has already been added to the repository
+     *
+     * @param entity the entity to be saved, cannot be null
+     */
     public void save(T entity) {
         currentSession.update(entity);
     }

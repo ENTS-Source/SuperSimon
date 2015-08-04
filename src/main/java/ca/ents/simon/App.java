@@ -1,6 +1,5 @@
 package ca.ents.simon;
 
-import ca.ents.simon.repository.ScoreRepository;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -11,6 +10,8 @@ import javafx.stage.Stage;
  * Main entry point for the application
  */
 public class App extends Application {
+
+    // TODO (project-wide): Documentation
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -44,10 +45,6 @@ public class App extends Application {
 
         System.out.println("Showing primary stage...");
         primaryStage.show();
-
-        // TODO: Remove temporary code
-        ScoreRepository scoreRepo = new ScoreRepository();
-        System.out.println("Total scores: " + scoreRepo.findAll().size());
 
         System.out.println("Starting game...");
         game.beginOperation();

@@ -1,6 +1,7 @@
-package ca.ents.simon.io.payload;
+package ca.ents.simon.io.payload.impl;
 
-import ca.ents.simon.io.command.EchoCommand;
+import ca.ents.simon.io.command.impl.EchoCommand;
+import ca.ents.simon.io.payload.PayloadEncoderDecoder;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 

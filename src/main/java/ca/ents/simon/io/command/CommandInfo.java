@@ -1,4 +1,4 @@
-package ca.ents.simon.io;
+package ca.ents.simon.io.command;
 
 import ca.ents.simon.io.command.Command;
 import ca.ents.simon.io.command.SimonCommand;

@@ -1,7 +1,7 @@
 package ca.ents.simon.io.decoder;
 
-import ca.ents.simon.io.CommandInfo;
-import ca.ents.simon.io.CommandRegistry;
+import ca.ents.simon.io.command.CommandInfo;
+import ca.ents.simon.io.command.CommandRegistry;
 import ca.ents.simon.io.command.SimonCommand;
 import ca.ents.simon.io.payload.PayloadEncoderDecoder;
 import io.netty.buffer.ByteBuf;

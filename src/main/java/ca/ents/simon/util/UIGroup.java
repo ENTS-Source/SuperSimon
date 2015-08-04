@@ -4,7 +4,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 
 /**
- * Represents a UI group for easy of use
+ * Represents a group of UI components to provide an easy to use interface for UI building
  */
 public class UIGroup {
 
