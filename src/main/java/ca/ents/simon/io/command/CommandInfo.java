@@ -1,7 +1,5 @@
 package ca.ents.simon.io.command;
 
-import ca.ents.simon.io.command.Command;
-import ca.ents.simon.io.command.SimonCommand;
 import ca.ents.simon.io.command.init.CommandInitializer;
 import ca.ents.simon.io.payload.PayloadEncoderDecoder;
 

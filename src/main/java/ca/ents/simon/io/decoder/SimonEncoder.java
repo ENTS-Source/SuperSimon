@@ -15,7 +15,7 @@ import java.nio.ByteOrder;
  */
 public class SimonEncoder extends MessageToByteEncoder<SimonCommand> {
 
-    private final static byte[] MAGIC_SEQUENCE = {(byte)0xDE, (byte)0xAD, (byte)0xBE, (byte)0xEF}; // 0xDEADBEEF
+    private final static byte[] MAGIC_SEQUENCE = {(byte) 0xDE, (byte) 0xAD, (byte) 0xBE, (byte) 0xEF}; // 0xDEADBEEF
 
     @SuppressWarnings("unchecked")
     @Override

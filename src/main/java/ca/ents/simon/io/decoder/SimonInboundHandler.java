@@ -1,7 +1,7 @@
 package ca.ents.simon.io.decoder;
 
-import ca.ents.simon.io.command.impl.EchoCommand;
 import ca.ents.simon.io.command.SimonCommand;
+import ca.ents.simon.io.command.impl.EchoCommand;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
