@@ -19,7 +19,7 @@ public final class CommandRegistry {
 
     static {
         // Find all commands and register them
-        Reflections reflections = new Reflections();
+        Reflections reflections = new Reflections("ca.ents.simon");
         Set<Class<?>> hasAnnotation = reflections.getTypesAnnotatedWith(Command.class);
         for (Class<?> type : hasAnnotation) {
             if (!SimonCommand.class.isAssignableFrom(type)) {
