@@ -1,0 +1,238 @@
+<div class="warper container-fluid">
+  <div class="page-header">
+    <h1>Global statistics</h1>
+  </div>
+  <div class='row margn-t-sm'>
+    <div class='col-md-3'>
+    	<div class="panel panel-default clearfix dashboard-stats rounded">
+      	<i class="fa fa-laptop bg-danger transit stats-icon"></i>
+        <h3 class="transit">123</h3>
+        <p class="text-muted transit">games played</p>
+      </div>
+    </div>
+    <div class='col-md-3'>
+    	<div class="panel panel-default clearfix dashboard-stats rounded">
+      	<i class="fa fa-trophy bg-info transit stats-icon"></i>
+        <h3 class="transit">9,000</h3>
+        <p class="text-muted transit">points awarded</p>
+      </div>
+    </div>
+    <div class='col-md-3'>
+    	<div class="panel panel-default clearfix dashboard-stats rounded">
+      	<i class="fa fa-star bg-success transit stats-icon"></i>
+        <h3 class="transit">~140</h3>
+        <p class="text-muted transit">points/player</p>
+      </div>
+    </div>
+    <div class='col-md-3'>
+    	<div class="panel panel-default clearfix dashboard-stats rounded">
+      	<i class="fa fa-users bg-warning transit stats-icon"></i>
+        <h3 class="transit">500</h3>
+        <p class="text-muted transit">participants</p>
+      </div>
+    </div>
+  </div>
+  <div class='row margn-t-sm'>
+    <div class='col-md-12'>
+      <h4>Average player activity by hour</h4>
+      <hour-graph></hour-graph>
+    </div>
+  </div>
+  <div class='row margn-t-sm'>
+    <div class='col-md-6'>
+      <div class='panel panel-default'>
+        <div class='panel-heading'>
+          Most active game: <span class='text-muted'>March 29th, 2015 2:00PM</span>
+        </div>
+        <div class='panel-body'>
+          <table class='table no-margn'>
+            <thead>
+              <tr>
+                <th class='cntr'>Place</th>
+                <th>Name</th>
+                <th class='cntr'>Final score</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class='cntr'><div class='place first-place sm'></div></td>
+                <td>jkcclemens</td>
+                <td class='cntr'>45</td>
+              </tr>
+              <tr>
+                <td class='cntr'><div class='place second-place sm'></div></td>
+                <td>turt2live</td>
+                <td class='cntr'>33</td>
+              </tr>
+              <tr>
+                <td class='cntr'><div class='place third-place sm'></div></td>
+                <td>CAH_BOTZIE</td>
+                <td class='cntr'>22</td>
+              </tr>
+              <tr>
+                <td class='cntr'>4</td>
+                <td>johndoe</td>
+                <td class='cntr'>19</td>
+              </tr>
+              <tr>
+                <td class='cntr'>5</td>
+                <td>janedoe</td>
+                <td class='cntr'>9</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class='col-md-6'>
+      <div class='panel panel-default'>
+        <div class='panel-heading'>
+          Statistics
+          <span class='pull-right btn btn-primary btn-sm' style='margin-top:-5px;'><i class='fa fa-external-link'></i> View more</span>
+        </div>
+        <div class='panel-body'>
+          <table class='table no-margn'>
+            <thead>
+              <tr>
+                <th>Measurement</th>
+                <th class='cntr'>Mean</th>
+                <th class='cntr'>Median</th>
+                <th class='cntr'>Mode</th>
+                <th class='cntr'>Std. Deviation</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Total score</td>
+                <td class='cntr'>17</td>
+                <td class='cntr'>19</td>
+                <td class='cntr'>0</td>
+                <td class='cntr'>1.13</td>
+              </tr>
+              <tr>
+                <td>Final score</td>
+                <td class='cntr'>4</td>
+                <td class='cntr'>5</td>
+                <td class='cntr'>0</td>
+                <td class='cntr'>1.22</td>
+              </tr>
+              <tr>
+                <td>Player lifespan</td>
+                <td class='cntr'>10 min</td>
+                <td class='cntr'>11 min</td>
+                <td class='cntr'>15 min</td>
+                <td class='cntr'>2.45</td>
+              </tr>
+              <tr>
+                <td>Games per day</td>
+                <td class='cntr'>2</td>
+                <td class='cntr'>1</td>
+                <td class='cntr'>0</td>
+                <td class='cntr'>0.13</td>
+              </tr>
+              <tr>
+                <td>Players per game</td>
+                <td class='cntr'>12</td>
+                <td class='cntr'>15</td>
+                <td class='cntr'>3</td>
+                <td class='cntr'>1.73</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-6'>
+      <div class='panel panel-default'>
+        <div class='panel-heading'>
+          Top 5 players
+        </div>
+        <div class='panel-body'>
+          <table class='table no-margn'>
+            <thead>
+              <tr>
+                <th class='cntr'>Rank</th>
+                <th>Name</th>
+                <th class='cntr'>Points</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class='cntr'>1</td>
+                <td>jkcclemens</td>
+                <td class='cntr'>412</td>
+              </tr>
+              <tr>
+                <td class='cntr'>2</td>
+                <td>turt2live</td>
+                <td class='cntr'>391</td>
+              </tr>
+              <tr>
+                <td class='cntr'>3</td>
+                <td>CAH_BOTZIE</td>
+                <td class='cntr'>358</td>
+              </tr>
+              <tr>
+                <td class='cntr'>4</td>
+                <td>johndoe</td>
+                <td class='cntr'>331</td>
+              </tr>
+              <tr>
+                <td class='cntr'>5</td>
+                <td>janedoe</td>
+                <td class='cntr'>192</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class='col-md-6'>
+      <div class='panel panel-default'>
+        <div class='panel-heading'>
+          Most points collected in a single game
+        </div>
+        <div class='panel-body'>
+          <table class='table no-margn'>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th class='cntr'>Points</th>
+                <th>Game</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>jkcclemens</td>
+                <td class='cntr'>89</td>
+                <td>March 3rd, 2015 at 2:07PM</td>
+              </tr>
+              <tr>
+                <td>turt2live</td>
+                <td class='cntr'>85</td>
+                <td>March 3rd, 2015 at 2:07PM</td>
+              </tr>
+              <tr>
+                <td>CAH_BOTZIE</td>
+                <td class='cntr'>55</td>
+                <td>April 15th, 2014 at 11:12AM</td>
+              </tr>
+              <tr>
+                <td>johndoe</td>
+                <td class='cntr'>45</td>
+                <td>November 12th, 2014 at 4:52PM</td>
+              </tr>
+              <tr>
+                <td>janedoe</td>
+                <td class='cntr'>29</td>
+                <td>October 3rd, 2014 at 3:12PM</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

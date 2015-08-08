@@ -1,0 +1,20 @@
+<div class='hour-graph'>
+  <div class='slot' ng-repeat='point in data track by $index'>
+    <div class='bar' ng-class="{
+      'too-damn-early': $index <= 5,
+      'morning': $index > 5 && $index <= 11,
+      'afternoon': $index > 11 && $index <= 17,
+      'evening': $index > 17
+    }" ng-style="{
+      'height': getHeight($index) + '%'
+    }">
+      {{ point < 0 ? 0 : point }}
+    </div>
+    <div class='label' ng-class="{
+      'label-default': !isPrime($index),
+      'label-success': isPrime($index)
+    }">
+      {{ $index }}
+    </div>
+  </div>
+</div>

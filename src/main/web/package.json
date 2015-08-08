@@ -1,0 +1,26 @@
+{
+  "name": "ents-supersimon-webconfig",
+  "version": "1.0.0",
+  "description": "ENTS SuperSimon web interface",
+  "author": "Travis Ralston",
+  "homepage": "https://github.com/turt2live/ENTS-SuperSimon",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/turt2live/ENTS-SuperSimon.git"
+  },
+  "dependencies": {
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-coffee": "^0.12.0",
+    "grunt-contrib-concat": "^0.5.0",
+    "grunt-contrib-copy": "^0.7.0",
+    "grunt-contrib-cssmin": "^0.11.0",
+    "grunt-contrib-uglify": "^0.7.0",
+    "grunt-usemin": "^3.0.0"
+  },
+  "scripts": {
+    "install": "grunt"
+  }
+}

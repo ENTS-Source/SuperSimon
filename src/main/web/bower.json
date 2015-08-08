@@ -1,0 +1,21 @@
+{
+  "name": "ents-supersimon-webconfig",
+  "version": "1.0.0",
+  "homepage": "https://github.com/turt2live/ENTS-SuperSimon",
+  "authors": [
+    "Travis Ralston"
+  ],
+  "description": "ENTS SuperSimon web interface",
+  "private": false,
+  "dependencies": {
+    "angular-ui-router": "~0.2.13",
+    "angular": "~1.3.12",
+    "angular-bootstrap": "~0.12.0",
+    "bootstrap": "~3.3.2",
+    "animate.css": "~3.2.3",
+    "momentjs": "~2.9.0",
+    "font-awesome": "~4.3.0",
+    "angularjs-toaster": "~0.4.12",
+    "moment-timezone": "~0.3.1"
+  }
+}

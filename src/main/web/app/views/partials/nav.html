@@ -1,0 +1,16 @@
+<nav class="navigation" ng-controller='NavController as navCtrl'>
+  <ul class="list-unstyled">
+    <li ng-class="{'active': $state.includes('main')}">
+      <a ui-sref='main'>
+        <i class="fa fa-bookmark fa-fw"></i>
+        <span class="nav-label">Dashboard</span>
+      </a>
+    </li>
+    <li ng-class="{'active': $state.includes('leaderboard', {location: 'global'})}">
+      <a ui-sref='leaderboard'>
+        <i class="fa fa-line-chart fa-fw"></i>
+        <span class="nav-label">Global leaderboard</span>
+      </a>
+    </li>
+  </ul>
+</nav>

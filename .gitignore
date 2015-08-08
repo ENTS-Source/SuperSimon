@@ -1,3 +1,15 @@
+**/staged
+**/bower_components
+**/node_modules
+**/build
+**/.tmp
+**/scores
+**/logs
+npm-debug.log
+**/users.htpasswd
+**/dest
+
+
 *.class
 *.bat
 

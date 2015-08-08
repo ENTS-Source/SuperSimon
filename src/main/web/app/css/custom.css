@@ -1,0 +1,78 @@
+.hour-graph {
+  height: 200px;
+  margin: 2.5em auto;
+  margin-bottom: 0;
+  color: #464646;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hour-graph .slot {
+  height: 100%;
+  min-width: 25px;
+  flex: 1;
+  margin: 5px;
+  text-align: center;
+  position: relative;
+}
+.hour-graph .slot .label {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  -webkit-transition: background-color 1s;
+  transition: background-color 1s;
+}
+.hour-graph .slot .bar {
+  background-color: blue;
+  position: absolute;
+  bottom: 1.8em;
+  left: 0;
+  width: 100%;
+  min-height: 1.8em;
+  -webkit-transition: height 1s;
+  transition: height 1s;
+}
+.hour-graph .slot .bar.too-damn-early {
+  background-color: #4693AB;
+}
+.hour-graph .slot .bar.morning {
+  background-color: #FFAC4B;
+}
+.hour-graph .slot .bar.afternoon {
+  background-color: #E6614C;
+}
+.hour-graph .slot .bar.evening {
+  background-color: #50B690;
+}
+.place.sm {
+  width: 15px;
+  height: 15px;
+}
+.place {
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.place.first-place {
+  background-image: url('/img/gold.png');
+}
+.place.second-place {
+  background-image: url('/img/silver.png');
+}
+.place.third-place {
+  background-image: url('/img/bronze.png');
+}
+table.f-col-center tbody tr td:first-child,
+table.f-col-center thead tr th:first-child {
+  text-align: center;
+}
+.cntr{
+  text-align: center;
+}
+.flex-container-cntr {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+}

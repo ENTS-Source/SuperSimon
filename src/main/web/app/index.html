@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="utf-8">
+   <title>ENTS SuperSimon</title>
+   <link href='http://fonts.googleapis.com/css?family=Raleway:400,500,600,700,300' rel='stylesheet' type='text/css'>
+   <!-- build:css css/vendors.css -->
+   <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
+   <link rel="stylesheet" href="../bower_components/animate.css/animate.min.css">
+   <link rel="stylesheet" href="../bower_components/angularjs-toaster/toaster.min.css">
+   <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.css">
+   <!-- endbuild -->
+   <!-- build:css css/app.css -->
+   <link rel="stylesheet" href="app/css/app.css">
+   <link rel="stylesheet" href="app/css/custom.css">
+   <!-- endbuild -->
+</head>
+<body ng-app="core" ng-controller='MainController as mainCtrl'>
+  <aside class="left-panel">
+    <div class="user text-center">
+      <h4 class="user-name">ENTS SuperSimon</h4>
+    </div>
+    <ng-include src="'views/partials/nav.html'"></ng-include>
+  </aside>
+  <section class="content">
+    <toaster-container></toaster-container>
+    <div ui-view=""></div>
+    <footer class="container-fluid footer">
+      Copyright &copy; 2015 <a href="http://ents.ca/" target="_blank">ENTS</a>
+      <a href="#" class="pull-right scrollToTop"><i class="fa fa-chevron-up"></i></a>
+    </footer>
+  </section>
+  
+  <!-- build:js js/vendors.js -->
+  <script src="../bower_components/angular/angular.js"></script>
+  <script src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+  <script src="../bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+  <script src="../bower_components/momentjs/min/moment-with-locales.min.js"></script>
+  <script src="../bower_components/moment-timezone/builds/moment-timezone-with-data.js"></script>
+  <script src="../bower_components/jquery/dist/jquery.js"></script>
+  <script src="../node_modules/underscore/underscore.js"></script>
+  <script src="../bower_components/angular-animate/angular-animate.js"></script>
+  <script src="../bower_components/angularjs-toaster/toaster.min.js"></script>
+  <script src="app/js/theme.js"></script>
+  <!-- endbuild -->
+  <!-- build:js js/app.js -->
+  <script src="app/js/app.js"></script>
+  <script src="app/js/config.js"></script>
+  <script src="app/js/filters/*.js"></script>
+  <script src="app/js/directives/*.js"></script>
+  <script src="app/js/services/*.js"></script>
+  <script src="app/js/controllers/*.js"></script>
+  <!-- endbuild -->
+</body>
+</html>
