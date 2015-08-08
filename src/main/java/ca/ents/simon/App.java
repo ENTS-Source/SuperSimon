@@ -1,5 +1,7 @@
 package ca.ents.simon;
 
+import ca.ents.simon.configuration.ConfigKey;
+import ca.ents.simon.configuration.SimonConfiguration;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -35,7 +37,7 @@ public class App extends Application {
         primaryStage.setMinHeight(minHeight);
         primaryStage.setResizable(true);
         primaryStage.setTitle(Branding.GAME_NAME);
-        primaryStage.setFullScreen(false); // TODO: Configurable
+        primaryStage.setFullScreen(SimonConfiguration.getBooleanValue(ConfigKey.UI_FULLSCREEN));
         primaryStage.setFullScreenExitHint(""); // Hides the message
         scene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ESCAPE)

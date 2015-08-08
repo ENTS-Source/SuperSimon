@@ -37,7 +37,27 @@ public enum ConfigKey {
     /**
      * int - The address to end the player search at (inclusive)
      */
-    GAME_ADDRESSING_END("game.addresses.end");
+    GAME_ADDRESSING_END("game.addresses.end"),
+    /**
+     * String - The hostname of the MySQL server
+     */
+    MYSQL_HOSTNAME("storage.mysql.host"),
+    /**
+     * int - The port of the MySQL server
+     */
+    MYSQL_PORT("storage.mysql.port"),
+    /**
+     * String - The database name to connect to on the MySQL server
+     */
+    MYSQL_DATABASE("storage.mysql.database"),
+    /**
+     * String - The username to connect with on the MySQL server
+     */
+    MYSQL_USERNAME("storage.mysql.username"),
+    /**
+     * String - The password to authenticate the account on the MySQL server
+     */
+    MYSQL_PASSWORD("storage.mysql.password");
 
 
     private String systemName;

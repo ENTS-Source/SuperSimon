@@ -1,6 +1,8 @@
 package ca.ents.simon.repository;
 
 
+import ca.ents.simon.configuration.ConfigKey;
+import ca.ents.simon.configuration.SimonConfiguration;
 import ca.ents.simon.entities.Entity;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -32,14 +34,19 @@ public abstract class Repository<T extends Entity> {
         Configuration hibernateConf = new Configuration();
 
         // General properties
+        String dbHost = SimonConfiguration.getValue(ConfigKey.MYSQL_HOSTNAME);
+        String dbPort = SimonConfiguration.getValue(ConfigKey.MYSQL_PORT);
+        String dbDatabase = SimonConfiguration.getValue(ConfigKey.MYSQL_DATABASE);
+        String dbUsername = SimonConfiguration.getValue(ConfigKey.MYSQL_USERNAME);
+        String dbPassword = SimonConfiguration.getValue(ConfigKey.MYSQL_PASSWORD);
         hibernateConf.setProperty("hibernate.connection.provider_class", "com.zaxxer.hikari.hibernate.HikariConnectionProvider");
         hibernateConf.setProperty("hibernate.hikari.dataSourceClassName", "com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
-        hibernateConf.setProperty("hibernate.hikari.dataSource.url", "jdbc:mysql://localhost/simon"); // TODO: Configuration
-        hibernateConf.setProperty("hibernate.hikari.dataSource.user", "simon"); // TODO: Configuration
-        hibernateConf.setProperty("hibernate.hikari.dataSource.password", "test1234"); // TODO: Configuration
+        hibernateConf.setProperty("hibernate.hikari.dataSource.url", "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbDatabase);
+        hibernateConf.setProperty("hibernate.hikari.dataSource.user", dbUsername);
+        hibernateConf.setProperty("hibernate.hikari.dataSource.password", dbPassword);
         hibernateConf.setProperty("hibernate.hikari.dataSource.cachePrepStmts", "true");
-        hibernateConf.setProperty("hibernate.hikari.dataSource.prepStmtCacheSize", "250"); // TODO: Configuration?
-        hibernateConf.setProperty("hibernate.hikari.dataSource.prepStmtCacheSqlLimit", "2048"); // TODO: Configuration?
+        hibernateConf.setProperty("hibernate.hikari.dataSource.prepStmtCacheSize", "250");
+        hibernateConf.setProperty("hibernate.hikari.dataSource.prepStmtCacheSqlLimit", "2048");
 
         // Setup mappings
         Reflections reflections = new Reflections(Entity.class.getPackage().getName());
