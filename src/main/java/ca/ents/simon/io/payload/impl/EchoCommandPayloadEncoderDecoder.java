@@ -9,6 +9,7 @@ import io.netty.buffer.Unpooled;
  * Payload encoder/decoder for the echo command
  */
 public class EchoCommandPayloadEncoderDecoder implements PayloadEncoderDecoder<EchoCommand> {
+
     @Override
     public ByteBuf encode(EchoCommand command) {
         ByteBuf buffer = Unpooled.buffer();

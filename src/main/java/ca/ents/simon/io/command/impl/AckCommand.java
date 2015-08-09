@@ -9,6 +9,11 @@ import ca.ents.simon.io.command.init.AckCommandInitializer;
  */
 @Command(commandId = 0x00, initializer = AckCommandInitializer.class)
 public class AckCommand extends SimonCommand {
+    
+    public AckCommand() {
+        super();
+    }
+
     public AckCommand(byte receivedForAddress) {
         super(receivedForAddress);
     }
