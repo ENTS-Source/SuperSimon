@@ -58,7 +58,7 @@ public class GameManager {
     public void beginOperation() {
         // TODO
 
-        IODevice device = new SerialPort("COM6");
+        IODevice device = new SerialPort("COM8");
         Communication communication = new Communication(device);
         SimonSession session = communication.createOrFindSession((byte) 0x03);
         session.tryDiscover();

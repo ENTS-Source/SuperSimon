@@ -1,5 +1,6 @@
 package ca.ents.simon.io.decoder;
 
+import ca.ents.simon.io.command.AddressedSimonCommand;
 import ca.ents.simon.io.command.CommandInfo;
 import ca.ents.simon.io.command.CommandRegistry;
 import ca.ents.simon.io.command.SimonCommand;
@@ -17,13 +18,25 @@ public class SimonEncoder extends MessageToByteEncoder<SimonCommand> {
 
     private final static byte[] MAGIC_SEQUENCE = {(byte) 0xDE, (byte) 0xAD, (byte) 0xBE, (byte) 0xEF}; // 0xDEADBEEF
 
+    private SimonFrameDecoder decoder;
+
+    public SimonEncoder(SimonFrameDecoder decoder) {
+        if (decoder == null) throw new IllegalArgumentException("Decoder cannot be null");
+        this.decoder = decoder;
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     protected void encode(ChannelHandlerContext ctx, SimonCommand command, ByteBuf out) throws Exception {
         CommandInfo cmdInfo = CommandRegistry.getCommandInfo(command.getClass());
         out.writeBytes(MAGIC_SEQUENCE);
         out.writeByte(cmdInfo.getCommandId());
-        out.writeByte(command.getAddress());
+
+        if (command instanceof AddressedSimonCommand) {
+            byte address = ((AddressedSimonCommand) command).getAddress();
+            out.writeByte(address);
+            decoder.setLastSendAddress(address);
+        } else decoder.setLastSendAddress((byte) 0xFF);
 
         if (cmdInfo.hasPayload()) {
             PayloadEncoderDecoder payloadEncoder = cmdInfo.getPayloadEncoderDecoder();

@@ -5,5 +5,5 @@ import ca.ents.simon.io.command.impl.AckCommand;
 /**
  * Initializer for the ack command
  */
-public class AckCommandInitializer extends SimpleCommandInitializer<AckCommand> {
+public class AckCommandInitializer extends SimpleAddressedCommandInitializer<AckCommand> {
 }

@@ -95,9 +95,10 @@ public class SerialPort implements IODevice {
         b.group(group).channel(PureJavaCommChannel.class).handler(new ChannelInitializer<PureJavaCommChannel>() {
             @Override
             protected void initChannel(PureJavaCommChannel ch) throws Exception {
+                SimonFrameDecoder decoder = new SimonFrameDecoder();
                 ch.pipeline().addLast(
-                        new SimonEncoder(),
-                        new SimonFrameDecoder(),
+                        new SimonEncoder(decoder),
+                        decoder,
                         new SimonInboundHandler(SerialPort.this)
                 );
             }

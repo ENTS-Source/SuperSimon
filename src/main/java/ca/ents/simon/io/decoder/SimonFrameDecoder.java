@@ -1,5 +1,6 @@
 package ca.ents.simon.io.decoder;
 
+import ca.ents.simon.io.command.AddressedSimonCommand;
 import ca.ents.simon.io.command.CommandInfo;
 import ca.ents.simon.io.command.CommandRegistry;
 import ca.ents.simon.io.command.SimonCommand;
@@ -25,6 +26,7 @@ public class SimonFrameDecoder extends ReplayingDecoder<SimonFrameDecoder.Decode
     private int length;
     private int currentPayloadLength;
     private ByteBuf payload;
+    private byte lastSendAddress;
 
     public SimonFrameDecoder() {
         super(DecoderState.MAGIC_CHECKPOINT);
@@ -53,15 +55,14 @@ public class SimonFrameDecoder extends ReplayingDecoder<SimonFrameDecoder.Decode
                         }
 
                         if (continueRead) {
-
                             // Header validated, read address and command ID
                             commandId = in.readByte();
                             CommandInfo currentCommand = CommandRegistry.getCommandInfo(commandId);
 
-                            if (commandId != 0)
+                            if (currentCommand.getCommandClass().isAssignableFrom(AddressedSimonCommand.class))
                                 address = in.readByte();
                             else
-                                address = 0x03; // TODO: Remove workaround and actually implement something proper for this scenario
+                                address = lastSendAddress;
 
                             if (currentCommand.hasPayload()) {
                                 checkpoint(DecoderState.LENGTH_CHECKPOINT);
@@ -114,6 +115,10 @@ public class SimonFrameDecoder extends ReplayingDecoder<SimonFrameDecoder.Decode
         }
 
         out.add(command);
+    }
+
+    void setLastSendAddress(byte lastSendAddress) {
+        this.lastSendAddress = lastSendAddress;
     }
 
     enum DecoderState {MAGIC_CHECKPOINT, LENGTH_CHECKPOINT, PAYLOAD_CHECKPOINT}

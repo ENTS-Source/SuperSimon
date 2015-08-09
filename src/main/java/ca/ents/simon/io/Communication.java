@@ -36,7 +36,7 @@ public class Communication { // TODO: Better name?
         return sessions.get(address);
     }
 
-    public static Communication forDevice(IODevice device){
+    public static Communication forDevice(IODevice device) {
         return DEVICE_MAP.get(device);
     }
 

@@ -5,5 +5,5 @@ import ca.ents.simon.io.command.impl.DiscoverCommand;
 /**
  * Initializer for the discover command
  */
-public class DiscoverCommandInitializer extends SimpleCommandInitializer<DiscoverCommand> {
+public class DiscoverCommandInitializer extends SimpleAddressedCommandInitializer<DiscoverCommand> {
 }

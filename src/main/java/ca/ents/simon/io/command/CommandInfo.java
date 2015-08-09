@@ -77,4 +77,8 @@ public class CommandInfo {
     public List<Class<? extends SimonCommand>> getValidResponseClasses() {
         return Collections.unmodifiableList(responseCommandClasses);
     }
+
+    public Class<? extends SimonCommand> getCommandClass() {
+        return commandClass;
+    }
 }

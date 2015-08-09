@@ -20,7 +20,6 @@ public class SimonSession {
 
     private byte address;
     private boolean validSession = false;
-    private Thread networkingThread;
     private final Object lockObject = new Object();
 
     private Queue<SimonCommand> inboundCommands = new ConcurrentLinkedQueue<>();
@@ -30,16 +29,19 @@ public class SimonSession {
         if (channel == null) throw new IllegalArgumentException("Channel cannot be null for a session");
         this.address = address;
 
-        networkingThread = new Thread(() -> {
+        Thread networkingThread = new Thread(() -> {
             //noinspection StatementWithEmptyBody
             while (!channel.isActive()) ;
             while (outboundCommands.peek() != null) {
                 SimonCommand command = outboundCommands.poll();
                 System.out.println("Sending command to player " + address + ": " + command.getClass().getName());
 
+                inboundCommands.clear(); // Clear extra received commands before we send
+
                 try {
                     ChannelFuture future = channel.writeAndFlush(command).sync();
                     if (!future.isSuccess())
+                        //noinspection ThrowableResultOfMethodCallIgnored
                         future.cause().printStackTrace();
                 } catch (InterruptedException e) {
                     e.printStackTrace();

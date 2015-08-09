@@ -20,7 +20,7 @@ public class SimonInboundHandler extends SimpleChannelInboundHandler<SimonComman
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, SimonCommand simonCommand) throws Exception {
         System.out.println("GOT COMMAND: " + simonCommand);
-        Communication.forDevice(device).createOrFindSession(simonCommand.getAddress()).handleCommand(simonCommand);
+        Communication.forDevice(device).createOrFindSession(simonCommand.getReceivingAddress()).handleCommand(simonCommand);
     }
 
     @Override
