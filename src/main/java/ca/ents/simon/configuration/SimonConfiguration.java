@@ -44,9 +44,6 @@ public final class SimonConfiguration {
         fromFile.store(new FileOutputStream(targetConfiguration), "ENTS SuperSimon Configuration");
     }
 
-    // TODO: Allow default values
-    // TODO: Other getValue methods (int, double, etc)
-
     /**
      * Gets the raw String value for a given configuration key, returning null if the key is not found
      *
@@ -70,4 +67,15 @@ public final class SimonConfiguration {
         return Objects.equals(getValue(key), "true");
     }
 
+    /**
+     * Gets the byte value for a given configuration key, returning 0 if the key is not found
+     *
+     * @param key the key to lookup, should not be null
+     * @return the byte value of the key, or null if not found
+     */
+    public static byte getByteValue(ConfigKey key) {
+        String value = getValue(key);
+        if (value == null) return 0;
+        return Byte.valueOf(value);
+    }
 }

@@ -117,6 +117,7 @@ public class SerialPort implements IODevice {
 
     @Override
     public void shutdown() throws InterruptedException {
+        channel.close().sync();
         group.shutdownGracefully().sync();
     }
 

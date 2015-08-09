@@ -48,4 +48,13 @@ public class SessionManager {
         return DEVICE_MAP.get(device);
     }
 
+    /**
+     * Shuts down the session manager
+     */
+    public void shutdown() {
+        try {
+            device.shutdown();
+        } catch (InterruptedException ignored) {
+        }
+    }
 }

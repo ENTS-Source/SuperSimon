@@ -1,9 +1,10 @@
 package ca.ents.simon;
 
-import ca.ents.simon.io.session.SessionManager;
+import ca.ents.simon.configuration.ConfigKey;
+import ca.ents.simon.configuration.SimonConfiguration;
 import ca.ents.simon.io.device.IODevice;
 import ca.ents.simon.io.device.SerialPort;
-import ca.ents.simon.io.session.SimonSession;
+import ca.ents.simon.io.session.SessionManager;
 import ca.ents.simon.util.EntsFont;
 import ca.ents.simon.util.EntsImage;
 import ca.ents.simon.util.UIGroup;
@@ -22,6 +23,10 @@ public class GameManager {
     private static final String ID_TOTAL_PLAYERS_COUNT = "totalPlayersCount";
 
     private UIGroup ui;
+    private SessionManager sessionManager;
+
+    private byte playerAddrStart = SimonConfiguration.getByteValue(ConfigKey.GAME_ADDRESSING_START);
+    private byte playerAddrEnd = SimonConfiguration.getByteValue(ConfigKey.GAME_ADDRESSING_END);
 
     public void configureScene(Scene scene, Group root) {
         ui = new UIGroup(root);
@@ -56,19 +61,27 @@ public class GameManager {
     }
 
     public void beginOperation() {
-        // TODO
+        String deviceName = SimonConfiguration.getValue(ConfigKey.IO_DEVICE_SERIALPORT_PORTNAME);
+        IODevice device;
+        if (deviceName == null || deviceName.equalsIgnoreCase("discover"))
+            device = new SerialPort();
+        else device = new SerialPort(deviceName);
+        sessionManager = SessionManager.forDevice(device);
 
-        IODevice device = new SerialPort("COM8");
-        SessionManager sessions = SessionManager.forDevice(device);
-        SimonSession session = sessions.createOrFindSession((byte) 0x03);
-        session.tryDiscover();
+        disoverPlayers();
     }
 
     public void shutdown() {
-        // TODO
+        sessionManager.shutdown();
     }
 
     private void updateTotalPlayers() {
         // TODO
+    }
+
+    private void disoverPlayers() {
+        for (byte address = playerAddrStart; address <= playerAddrEnd; address++) {
+            sessionManager.createOrFindSession(address).tryDiscover();
+        }
     }
 }

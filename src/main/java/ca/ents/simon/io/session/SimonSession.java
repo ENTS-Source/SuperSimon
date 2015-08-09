@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class SimonSession {
 
-    private static long TIMEOUT = 2500; // milliseconds
+    private static long TIMEOUT = 500; // milliseconds
 
     private byte address;
     private boolean validSession = false;
