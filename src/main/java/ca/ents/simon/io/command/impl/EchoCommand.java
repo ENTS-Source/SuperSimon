@@ -3,7 +3,7 @@ package ca.ents.simon.io.command.impl;
 import ca.ents.simon.io.command.AddressedSimonCommand;
 import ca.ents.simon.io.command.Command;
 import ca.ents.simon.io.command.RequiresResponse;
-import ca.ents.simon.io.command.init.EchoCommandInitializer;
+import ca.ents.simon.io.command.init.impl.EchoCommandInitializer;
 import ca.ents.simon.io.payload.impl.EchoCommandPayloadEncoderDecoder;
 
 import java.util.Arrays;

@@ -12,7 +12,7 @@ import io.netty.handler.codec.MessageToByteEncoder;
 import java.nio.ByteOrder;
 
 /**
- * Simon command encoder
+ * Protocol encoder for "SuperSimon" protocol defined by ENTS
  */
 public class SimonEncoder extends MessageToByteEncoder<SimonCommand> {
 
@@ -33,7 +33,7 @@ public class SimonEncoder extends MessageToByteEncoder<SimonCommand> {
         out.writeByte(cmdInfo.getCommandId());
 
         if (command instanceof AddressedSimonCommand) {
-            byte address = ((AddressedSimonCommand) command).getAddress();
+            byte address = ((AddressedSimonCommand) command).getTargetAddress();
             out.writeByte(address);
             decoder.setLastSendAddress(address);
         } else decoder.setLastSendAddress((byte) 0xFF);

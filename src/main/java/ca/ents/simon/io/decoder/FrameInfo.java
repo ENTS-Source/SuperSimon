@@ -6,7 +6,7 @@ import io.netty.buffer.Unpooled;
 /**
  * A frame of data from the IO device representing one Simon command
  */
-public class FrameInfo {
+class FrameInfo {
 
     private byte commandId;
     private byte address;

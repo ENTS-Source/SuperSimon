@@ -25,7 +25,7 @@ public class SimonSession {
     private Queue<SimonCommand> inboundCommands = new ConcurrentLinkedQueue<>();
     private Queue<SimonCommand> outboundCommands = new ConcurrentLinkedQueue<>();
 
-    public SimonSession(byte address, Channel channel) {
+    SimonSession(byte address, Channel channel) {
         if (channel == null) throw new IllegalArgumentException("Channel cannot be null for a session");
         this.address = address;
 
@@ -95,6 +95,11 @@ public class SimonSession {
         return address;
     }
 
+    /**
+     * Processes a SimonCommand for handling. May not be processed immediately. This is non-blocking.
+     *
+     * @param command the command to process, cannot be null
+     */
     public void handleCommand(SimonCommand command) {
         if (command == null) throw new IllegalArgumentException("Command to handle cannot be null");
         inboundCommands.add(command);

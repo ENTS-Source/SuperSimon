@@ -1,8 +1,8 @@
 package ca.ents.simon.io.command;
 
 import ca.ents.simon.io.command.init.CommandInitializer;
-import ca.ents.simon.io.payload.NoPayloadEncoderDecoder;
 import ca.ents.simon.io.payload.PayloadEncoderDecoder;
+import ca.ents.simon.io.payload.impl.NoPayloadEncoderDecoder;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -42,7 +42,4 @@ public @interface Command {
      * @return the initializer for this command
      */
     Class<? extends CommandInitializer> initializer();
-
-    // TODO: Validation for a given response?
-
 }

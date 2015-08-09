@@ -78,6 +78,11 @@ public class CommandInfo {
         return Collections.unmodifiableList(responseCommandClasses);
     }
 
+    /**
+     * Gets the class of this command
+     *
+     * @return the class of the command
+     */
     public Class<? extends SimonCommand> getCommandClass() {
         return commandClass;
     }

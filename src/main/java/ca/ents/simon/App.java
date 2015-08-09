@@ -13,8 +13,6 @@ import javafx.stage.Stage;
  */
 public class App extends Application {
 
-    // TODO (project-wide): Documentation
-
     @Override
     public void start(Stage primaryStage) throws Exception {
         System.out.println("Starting application...");

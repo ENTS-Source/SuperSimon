@@ -1,6 +1,6 @@
 package ca.ents.simon;
 
-import ca.ents.simon.io.Communication;
+import ca.ents.simon.io.session.SessionManager;
 import ca.ents.simon.io.device.IODevice;
 import ca.ents.simon.io.device.SerialPort;
 import ca.ents.simon.io.session.SimonSession;
@@ -59,8 +59,8 @@ public class GameManager {
         // TODO
 
         IODevice device = new SerialPort("COM8");
-        Communication communication = new Communication(device);
-        SimonSession session = communication.createOrFindSession((byte) 0x03);
+        SessionManager sessions = SessionManager.forDevice(device);
+        SimonSession session = sessions.createOrFindSession((byte) 0x03);
         session.tryDiscover();
     }
 

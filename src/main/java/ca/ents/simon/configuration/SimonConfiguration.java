@@ -47,12 +47,25 @@ public final class SimonConfiguration {
     // TODO: Allow default values
     // TODO: Other getValue methods (int, double, etc)
 
+    /**
+     * Gets the raw String value for a given configuration key, returning null if the key is not found
+     *
+     * @param key the key to lookup, should not be null
+     * @return the String value of the key, or null if not found
+     */
     public static String getValue(ConfigKey key) {
-        Object value = settings.get(key);
+        Object value = settings.get(key.getSystemName());
         if (value == null) return null;
         return value.toString();
     }
 
+    /**
+     * Gets the interpreted boolean value for the given configuration key, returning false if the key is not
+     * found.
+     *
+     * @param key the key to lookup, should not be null
+     * @return the interpreted boolean value of the key, or null if not found
+     */
     public static boolean getBooleanValue(ConfigKey key) {
         return Objects.equals(getValue(key), "true");
     }

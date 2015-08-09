@@ -1,7 +1,6 @@
-package ca.ents.simon.io;
+package ca.ents.simon.io.session;
 
 import ca.ents.simon.io.device.IODevice;
-import ca.ents.simon.io.session.SimonSession;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,16 +8,16 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 /**
- * Central communication platform for communication between players
+ * Session manager for dealing with SimonSessions
  */
-public class Communication { // TODO: Better name?
+public class SessionManager {
 
-    private static ConcurrentMap<IODevice, Communication> DEVICE_MAP = new ConcurrentHashMap<>();
+    private static ConcurrentMap<IODevice, SessionManager> DEVICE_MAP = new ConcurrentHashMap<>();
 
     private IODevice device;
     private Map<Byte, SimonSession> sessions = new HashMap<>();
 
-    public Communication(IODevice device) {
+    SessionManager(IODevice device) {
         if (device == null) throw new IllegalArgumentException("IO Device cannot be null");
         this.device = device;
         DEVICE_MAP.put(device, this);
@@ -36,7 +35,16 @@ public class Communication { // TODO: Better name?
         return sessions.get(address);
     }
 
-    public static Communication forDevice(IODevice device) {
+    /**
+     * Creates or finds a SessionManager for the given communication device
+     *
+     * @param device the device to lookup, cannot be null
+     * @return the existing SessionManager or a new session manager for the device
+     */
+    public static SessionManager forDevice(IODevice device) {
+        if (device == null) throw new IllegalArgumentException("Communication device is required");
+        if (!DEVICE_MAP.containsKey(device))
+            DEVICE_MAP.put(device, new SessionManager(device));
         return DEVICE_MAP.get(device);
     }
 
