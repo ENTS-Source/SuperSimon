@@ -3,6 +3,11 @@ package ca.ents.simon.io.command;
 import ca.ents.simon.io.command.init.CommandInitializer;
 import ca.ents.simon.io.payload.PayloadEncoderDecoder;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Command information carrier for command registry
  */
@@ -10,10 +15,12 @@ public class CommandInfo {
 
     private Class<? extends SimonCommand> commandClass;
     private Command annotation;
+    private List<Class<? extends SimonCommand>> responseCommandClasses = new ArrayList<>();
 
-    CommandInfo(Command annotation, Class<? extends SimonCommand> clazz) {
+    CommandInfo(Command annotation, Class<? extends SimonCommand> clazz, Collection<Class<? extends SimonCommand>> requiredResponses) {
         this.commandClass = clazz;
         this.annotation = annotation;
+        this.responseCommandClasses.addAll(requiredResponses);
     }
 
     /**
@@ -60,5 +67,14 @@ public class CommandInfo {
         } catch (InstantiationException | IllegalAccessException e) {
             throw new RuntimeException("Could not create payload encoder/decoder", e);
         }
+    }
+
+    /**
+     * Gets the response command classes that are valid to receive when this command is sent
+     *
+     * @return an immutable collection of command response classes that are valid to receive back, may be empty
+     */
+    public List<Class<? extends SimonCommand>> getValidResponseClasses() {
+        return Collections.unmodifiableList(responseCommandClasses);
     }
 }

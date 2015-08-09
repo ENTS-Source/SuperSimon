@@ -1,22 +1,87 @@
 package ca.ents.simon.io.session;
 
+import ca.ents.simon.io.command.CommandInfo;
+import ca.ents.simon.io.command.CommandRegistry;
 import ca.ents.simon.io.command.SimonCommand;
+import ca.ents.simon.io.command.impl.DiscoverCommand;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
+
+import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * A session on the communication device
  */
 public class SimonSession {
 
+    private static long TIMEOUT = 2500; // milliseconds
+
     private byte address;
-    private Channel channel;
-    private boolean validSession = true;
-    private long lastSend = 0; // Non-zero if pending response
+    private boolean validSession = false;
+    private Thread networkingThread;
+    private final Object lockObject = new Object();
+
+    private Queue<SimonCommand> inboundCommands = new ConcurrentLinkedQueue<>();
+    private Queue<SimonCommand> outboundCommands = new ConcurrentLinkedQueue<>();
 
     public SimonSession(byte address, Channel channel) {
         if (channel == null) throw new IllegalArgumentException("Channel cannot be null for a session");
         this.address = address;
-        this.channel = channel;
+
+        networkingThread = new Thread(() -> {
+            //noinspection StatementWithEmptyBody
+            while (!channel.isActive()) ;
+            while (outboundCommands.peek() != null) {
+                SimonCommand command = outboundCommands.poll();
+                System.out.println("Sending command to player " + address + ": " + command.getClass().getName());
+
+                try {
+                    ChannelFuture future = channel.writeAndFlush(command).sync();
+                    if (!future.isSuccess())
+                        future.cause().printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                long sendTime = System.currentTimeMillis();
+
+                CommandInfo commandInfo = CommandRegistry.getCommandInfo(command.getClass());
+                List<Class<? extends SimonCommand>> responseCommandClasses = commandInfo.getValidResponseClasses();
+                if (responseCommandClasses.size() <= 0) {
+                    System.out.println("No response required by player " + address);
+                    continue;
+                }
+
+                //noinspection StatementWithEmptyBody
+                while (inboundCommands.peek() == null && System.currentTimeMillis() - sendTime < TIMEOUT) ;
+
+                if (inboundCommands.peek() == null) {
+                    System.out.println("Player " + address + " kicked offline: Timeout");
+                    validSession = false;
+                    // TODO: Player offline event
+                    continue;
+                }
+
+                SimonCommand response = inboundCommands.poll();
+                System.out.println("Got response from player " + address + ": " + response);
+                if (responseCommandClasses.contains(response.getClass())) {
+                    System.out.println("Valid response by player " + address);
+                    // TODO: Event for handling
+                } else {
+                    System.out.println("Player " + address + " kicked offline: Invalid response to command '" + command.getClass().getName() + "'");
+                    validSession = false;
+                    // TODO: Player offline event
+                }
+            }
+            try {
+                synchronized (lockObject) {
+                    lockObject.wait();
+                }
+            } catch (InterruptedException ignored) {
+            }
+        });
+        networkingThread.start();
     }
 
     /**
@@ -28,21 +93,32 @@ public class SimonSession {
         return address;
     }
 
+    public void handleCommand(SimonCommand command) {
+        if (command == null) throw new IllegalArgumentException("Command to handle cannot be null");
+        inboundCommands.add(command);
+        synchronized (lockObject) {
+            lockObject.notify();
+        }
+    }
+
     /**
      * Sends a command to this session
      *
      * @param command the command to send to the session, cannot be null
      */
     public void sendCommand(SimonCommand command) {
-        // TODO: Some kind of (non-)blocking queue?
         if (command == null) throw new IllegalArgumentException("Command to send cannot be null");
-        lastSend = System.currentTimeMillis();
-        channel.writeAndFlush(command);
+        outboundCommands.add(command);
+        synchronized (lockObject) {
+            lockObject.notify();
+        }
     }
 
-    // TODO: Hook up sessions to actual IO processing
-    // TODO: Handle incoming commands for this address
-    // TODO: Handle timeout for response (if applicable)
-    // TODO: Handle responses to commands (and lack of compliance)
+    /**
+     * Attempts a discovery on this session
+     */
+    public void tryDiscover() {
+        sendCommand(new DiscoverCommand(address));
+    }
 
 }

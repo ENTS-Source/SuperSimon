@@ -1,6 +1,7 @@
 package ca.ents.simon.io.command.impl;
 
 import ca.ents.simon.io.command.Command;
+import ca.ents.simon.io.command.RequiresResponse;
 import ca.ents.simon.io.command.SimonCommand;
 import ca.ents.simon.io.command.init.EchoCommandInitializer;
 import ca.ents.simon.io.payload.impl.EchoCommandPayloadEncoderDecoder;
@@ -13,6 +14,7 @@ import java.util.Random;
  * byte of the payload.
  */
 @Command(commandId = (byte) 0xF0, hasPayload = true, initializer = EchoCommandInitializer.class, payloadEncoder = EchoCommandPayloadEncoderDecoder.class)
+@RequiresResponse(EchoCommand.class)
 public class EchoCommand extends SimonCommand {
 
     private byte[] payload;

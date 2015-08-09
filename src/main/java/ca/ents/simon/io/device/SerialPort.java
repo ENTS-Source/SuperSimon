@@ -98,7 +98,7 @@ public class SerialPort implements IODevice {
                 ch.pipeline().addLast(
                         new SimonEncoder(),
                         new SimonFrameDecoder(),
-                        new SimonInboundHandler()
+                        new SimonInboundHandler(SerialPort.this)
                 );
             }
         });

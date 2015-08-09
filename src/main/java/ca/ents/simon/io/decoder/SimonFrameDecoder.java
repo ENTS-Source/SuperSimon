@@ -53,16 +53,22 @@ public class SimonFrameDecoder extends ReplayingDecoder<SimonFrameDecoder.Decode
                         }
 
                         if (continueRead) {
+
                             // Header validated, read address and command ID
                             commandId = in.readByte();
-                            address = in.readByte();
-
                             CommandInfo currentCommand = CommandRegistry.getCommandInfo(commandId);
+
+                            if (commandId != 0)
+                                address = in.readByte();
+                            else
+                                address = 0x03; // TODO: Remove workaround and actually implement something proper for this scenario
+
                             if (currentCommand.hasPayload()) {
                                 checkpoint(DecoderState.LENGTH_CHECKPOINT);
                             } else {
                                 frames.add(new FrameInfo(commandId, address));
                                 checkpoint(DecoderState.MAGIC_CHECKPOINT);
+                                continueRead = false; // TODO: Need to figure out why setting the checkpoint causes an exception in the magic read code
                             }
                         }
                     }
