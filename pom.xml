@@ -66,6 +66,7 @@
     </repositories>
 
     <build>
+        <defaultGoal>clean install antrun:run</defaultGoal>
         <finalName>${project.artifactId}</finalName>
         <resources>
             <resource>
@@ -73,7 +74,7 @@
             </resource>
             <resource>
                 <directory>src/main/mappings</directory>
-                <targetPath>${basedir}/target/classes/ca/ents/simon/entities</targetPath>
+                <targetPath>${project.build.directory}/classes/ca/ents/simon/entities</targetPath>
                 <filtering>false</filtering>
             </resource>
         </resources>
@@ -128,6 +129,57 @@
                         </manifestEntries>
                     </archive>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>pl.allegro</groupId>
+                <artifactId>grunt-maven-plugin</artifactId>
+                <version>1.5.0</version>
+                <configuration>
+                    <sourceDirectory>${basedir}/src/main/web</sourceDirectory>
+                    <jsSourceDirectory>.</jsSourceDirectory>
+                    <gruntBuildDirectory>${project.build.directory}/grunt</gruntBuildDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>clean</goal>
+                            <goal>create-resources</goal>
+                            <goal>npm</goal>
+                            <goal>bower</goal>
+                            <goal>grunt</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.4</version>
+                <executions>
+                    <execution>
+                        <id>copy-dist-jar</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <tasks>
+                                <copy file="${project.build.directory}/${project.artifactId}.jar"
+                                      tofile="${project.build.directory}/dist/${project.artifactId}.jar"/>
+                                <copy todir="${project.build.directory}/dist/web">
+                                    <fileset dir="${project.build.directory}/grunt/dest">
+                                        <include name="**/*.*"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="${project.build.directory}/dist/lib">
+                                    <fileset dir="${project.build.directory}/lib">
+                                        <include name="**/*.*"/>
+                                    </fileset>
+                                </copy>
+                            </tasks>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

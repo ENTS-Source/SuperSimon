@@ -8,7 +8,7 @@
 npm-debug.log
 **/users.htpasswd
 **/dest
-
+**/target-grunt
 
 *.class
 *.bat
