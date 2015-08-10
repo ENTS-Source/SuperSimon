@@ -41,7 +41,10 @@ public class App extends Application {
             if (event.getCode() == KeyCode.ESCAPE)
                 primaryStage.close();
         });
-        primaryStage.setOnCloseRequest(event -> game.shutdown());
+        primaryStage.setOnCloseRequest(event -> {
+            primaryStage.hide();
+            game.shutdown();
+        });
 
         System.out.println("Showing primary stage...");
         primaryStage.show();
