@@ -22,7 +22,7 @@ public class App extends Application {
         double minHeight = 1280;
 
         System.out.println("Setting up scene...");
-        Scene scene = new Scene(root, minWidth, minHeight, Branding.BACKGROUND_COLOR);
+        Scene scene = new Scene(root, minWidth, minHeight);
         primaryStage.setScene(scene);
 
         System.out.println("Preparing UI...");
@@ -34,7 +34,7 @@ public class App extends Application {
         primaryStage.setMinWidth(minWidth);
         primaryStage.setMinHeight(minHeight);
         primaryStage.setResizable(true);
-        primaryStage.setTitle(Branding.GAME_NAME);
+        primaryStage.setTitle("ENTS SuperSimon");
         primaryStage.setFullScreen(SimonConfiguration.getBooleanValue(ConfigKey.UI_FULLSCREEN));
         primaryStage.setFullScreenExitHint(""); // Hides the message
         scene.setOnKeyPressed(event -> {
@@ -58,7 +58,7 @@ public class App extends Application {
         String specVersion = App.class.getPackage().getSpecificationVersion();
         String buildVersion = App.class.getPackage().getImplementationVersion();
         String version = "v" + specVersion + "b" + buildVersion;
-        System.out.println(Branding.GAME_NAME + " " + version);
+        System.out.println("ENTS SuperSimon " + version);
         System.out.println();
         launch(args);
     }

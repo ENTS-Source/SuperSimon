@@ -1,0 +1,34 @@
+@font-face {
+  font-family: "League Gothic";
+  src: url("/fonts/LeagueGothic-Regular.otf");
+}
+@font-face {
+  font-family: "League Gothic";
+  src: url("/fonts/LeagueGothic-Italic.otf");
+}
+@font-face {
+  font-family: "League Gothic";
+  src: url("/fonts/LeagueGothic-CondensedRegular.otf");
+}
+@font-face {
+  font-family: "League Gothic";
+  src: url("/fonts/LeagueGothic-CondensedItalic.otf");
+}
+
+.root {
+  MUTED: #0A5189;
+  GRAY: #C8C8C8;
+}
+
+#totalPlayersLabel, #totalPlayersCount {
+  -fx-fill: MUTED;
+  -fx-font: 50px "League Gothic";
+}
+
+#divider {
+  -fx-fill: GRAY;
+}
+
+#gameName {
+  -fx-font: 144px "League Gothic";
+}
