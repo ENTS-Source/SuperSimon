@@ -54,7 +54,6 @@ public class App extends Application {
         System.out.println("Done startup loop!");
     }
 
-
     public static void main(String[] args) {
         String specVersion = App.class.getPackage().getSpecificationVersion();
         String buildVersion = App.class.getPackage().getImplementationVersion();
