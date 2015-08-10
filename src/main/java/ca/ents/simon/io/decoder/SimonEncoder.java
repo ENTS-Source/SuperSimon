@@ -28,6 +28,8 @@ public class SimonEncoder extends MessageToByteEncoder<SimonCommand> {
     @SuppressWarnings("unchecked")
     @Override
     protected void encode(ChannelHandlerContext ctx, SimonCommand command, ByteBuf out) throws Exception {
+        System.out.println("[Netty] Writing command: " + command);
+
         CommandInfo cmdInfo = CommandRegistry.getCommandInfo(command.getClass());
         out.writeBytes(MAGIC_SEQUENCE);
         out.writeByte(cmdInfo.getCommandId());

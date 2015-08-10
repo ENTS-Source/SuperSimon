@@ -63,6 +63,7 @@ public class SerialPort implements IODevice {
                     .handler(new ChannelInitializer<PureJavaCommChannel>() {
                         @Override
                         public void initChannel(PureJavaCommChannel ch) throws Exception {
+                            ch.config().setBaudrate(9600);
                             ch.pipeline().addLast(
                                     new LineBasedFrameDecoder(32768),
                                     new StringEncoder(),
@@ -95,6 +96,7 @@ public class SerialPort implements IODevice {
         b.group(group).channel(PureJavaCommChannel.class).handler(new ChannelInitializer<PureJavaCommChannel>() {
             @Override
             protected void initChannel(PureJavaCommChannel ch) throws Exception {
+                ch.config().setBaudrate(9600);
                 SimonFrameDecoder decoder = new SimonFrameDecoder();
                 ch.pipeline().addLast(
                         new SimonEncoder(decoder),
