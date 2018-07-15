@@ -7,7 +7,7 @@ fontEntsRegularPath = "fonts/LeagueGothic-Regular.otf"
 
 # Generic
 SMALL_FONT = pygame.font.Font(fontEntsRegularPath, 12)
-THIN_FONT = pygame.font.Font(fontEntsRegularPath, 35)
+THIN_FONT = pygame.font.Font(fontEntsRegularPath, 25)
 REGULAR_FONT = pygame.font.Font(fontEntsRegularPath, 45)
 MEDIUM_FONT = pygame.font.Font(fontEntsRegularPath, 55)
 LARGE_FONT = pygame.font.Font(fontEntsRegularPath, 65)
