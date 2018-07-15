@@ -5,8 +5,8 @@ setup(name='ents-supersimon',
       description='ENTS SuperSimon master game controller',
       url='https://github.com/ENTS-Source/SuperSimon',
       install_requires=[
-          'configobj'
-          'pygame'
-          'RPi.GPIO'
+          'configobj',
+          'pygame',
+          'RPi.GPIO',
       ],
       zip_safe=False)

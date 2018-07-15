@@ -18,7 +18,7 @@ class ScreenRenderer:
         self._register_components()
         self.__margin = 10
         self.__headerHeight = 160  # Calculated - change if header code changes
-        self.__leaderboardHeight = 155 + self.__margin + self.__leaderboardLbl.get_rect().height  # Calculated - change if leaderboard code changes
+        self.__leaderboardHeight = 125 + self.__margin + self.__leaderboardLbl.get_rect().height  # Calculated - change if leaderboard code changes
         self.__leaderboard = ScreenLeaderboard()
         self.__players = ScreenPlayers()
         self.__totals = ScreenTotal()

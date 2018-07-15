@@ -9,6 +9,8 @@ This is the Raspberry Pi (master game controller) code and game UI. The communic
 
 ## Running
 
+You'll need a Python 2.7 environment (the default on the Raspberry Pi).
+
 1. Clone the repository
 2. `cd` into the `src\` folder
 3. Run `python setup.py install`
