@@ -40,6 +40,8 @@ pygame.display.set_caption("ENTS SuperSimon Game")
 if config.game.fullscreen:
     pygame.display.toggle_fullscreen()
 
+pygame.mouse.set_visible(False)
+
 # Start loading the actual game
 print("Starting communications...")
 from communication.simon import SuperSimon
