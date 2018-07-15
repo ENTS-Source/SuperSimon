@@ -96,7 +96,8 @@ while gameRunning:
     if forceExit:
         closeAll()
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+        alt_f4 = (event.type == pygame.KEYDOWN and event.key == pygame.K_F4 and event.mod == pygame.KMOD_ALT)
+        if event.type == pygame.QUIT or alt_f4:
             closeAll()
     renderer.tick()
     now = millis()
