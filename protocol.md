@@ -56,6 +56,7 @@ The following commands are supported by the protocol:
 | `0000 1000` / `0x08` / `8`   | No          | No          | To Pi     | Joined                     |
 | `0000 1001` / `0x09` / `9`   | Yes         | No          | To Client | Discover                   |
 | `0000 1010` / `0x0A` / `10`  | Yes         | No          | To Client | End game now               |
+| `0000 1011` / `0x0B` / `11`  | Yes         | No          | To Client | Reset state (reboot)       |
 | `1111 0000` / `0xF0` / `240` | Yes         | Yes         | Any       | Echo                       |
 
 #### Payload specifications for commands
