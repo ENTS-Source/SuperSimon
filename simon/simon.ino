@@ -14,6 +14,8 @@
 #define RSP_NOT_JOINING 0x7
 #define RSP_JOINING 0x8
 #define CMD_DISCOVER 0x9
+#define CMD_END_NOW 0x0A
+#define CMD_RESET 0x0B
 #define CMD_ECHO 0xF0
 
 #define SHOWING_PATTERN_START 0
