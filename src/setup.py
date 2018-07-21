@@ -8,5 +8,6 @@ setup(name='ents-supersimon',
           'configobj',
           'pygame',
           'RPi.GPIO',
+          'requests',
       ],
       zip_safe=False)

@@ -2,6 +2,7 @@ from communication.utils import *
 from basicTimer import BasicTimer
 import math
 import random
+import matrix
 
 POINTS_PER_ROUND = 200.0
 POINTS_PER_MS = 0.085
@@ -153,6 +154,15 @@ class GameManager:
             player.gameOver = True
             print("Recording player score...")
             self.__scoreTracker.record_score(player.score)
+            matrix.send_event("m.room.message", {
+                "msgtype": "m.text",
+                "body": "Player score: %s" % player.score,
+                "ca.ents.supersimon": {
+                    "score": player.score,
+                    "address": player.address,
+                    "round_number": player.roundNumber,
+                }
+            })
             self._reload_leaderboard()
             print("Updating player ranks...")
             player_scores = []
