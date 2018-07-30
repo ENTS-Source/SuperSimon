@@ -47,7 +47,10 @@ class GameManager:
         self.__sequence = []
         max_round = 200
         for i in range(0, max_round):
-            self.__sequence.append(random.randint(1, 5))  # 5 buttons
+            val = None
+            while val == None or (i > 0 and self.__sequence[i - 1] == val):
+                val = random.randint(1, 5)  # 5 buttons
+            self.__sequence.append(val)
 
     def tick(self, delta):
         self.__gameTimer.tick(delta)
