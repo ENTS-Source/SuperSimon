@@ -18,7 +18,7 @@ def find_server():
     msg_length, = struct.unpack("<L", msg[0:4])
     msg = msg[4:]
     if len(msg) != msg_length:
-        print("Error: invalid message length. Reported %s but got %s" % (msg_length, len(msg)))
+        print(f"Error: invalid message length. Reported {msg_length} but got {len(msg)}")
         return
     vals = {}
     key = ""
@@ -56,9 +56,9 @@ def send_event_thread(event_type, body):
         print("Locating server...")
         discovered_server = find_server()
         print("Found server: %r" % discovered_server)
-    r = requests.put("%s://%s:%s/_matrix/client/r0/rooms/%s/send/%s/%s?access_token=%s&user_id=%s" % (
+    r = requests.put("{}://{}:{}/_matrix/client/r0/rooms/{}/send/{}/{}?access_token={}&user_id={}".format(
         discovered_server['S'], discovered_server['A'], discovered_server['P'],
         discovered_server['ents_rid_ss'], event_type, 'SuperSimon_txn_', discovered_server['ents_as_token'],
         discovered_server['ents_as_prefix']+"supersimon:"+discovered_server['ents_hs_domain'],
     ), json.dumps(body))
-    print("Matrix request sent. Status: %s, content: %s" % (r.status_code, r.content))
+    print(f"Matrix request sent. Status: {r.status_code}, content: {r.content}")
