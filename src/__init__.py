@@ -1,7 +1,7 @@
 # ENTS SuperSimon Raspberry Pi
 # ------------------------------------------------------------------------------
 # Master game controller for game pad coordination and functionality.
-import RPi.GPIO as GPIO
+#import RPi.GPIO as GPIO
 import subprocess
 
 # Start by spinning up the configuration
@@ -9,10 +9,10 @@ from config import Configuration
 
 config = Configuration()
 
-print("Setting up buttons")
-GPIO.setmode(GPIO.BOARD);
-GPIO.setup(config.buttons.btn1_pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-GPIO.setup(config.buttons.btn2_pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+# print("Setting up buttons")
+# GPIO.setmode(GPIO.BOARD);
+# GPIO.setup(config.buttons.btn1_pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+# GPIO.setup(config.buttons.btn2_pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 print("Game fullscreen = " + str(config.game.fullscreen))
 print("Serial device = " + config.protocol.device)
@@ -117,6 +117,6 @@ while gameRunning:
     sleep(0.1)
 
     # check for shutdown buttons
-    if(GPIO.input(config.buttons.btn1_pin) == 1):
-        print("Shutdown button pressed, forcing exit on next loop")
-        forceExit = True
+    # if(GPIO.input(config.buttons.btn1_pin) == 1):
+    #     print("Shutdown button pressed, forcing exit on next loop")
+    #     forceExit = True

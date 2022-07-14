@@ -7,7 +7,7 @@ setup(name='ents-supersimon',
       install_requires=[
           'configobj',
           'pygame',
-          'RPi.GPIO',
+          #'RPi.GPIO',
           'requests',
       ],
       zip_safe=False)
