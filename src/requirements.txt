@@ -1,0 +1,5 @@
+configobj
+pygame
+#RPi.GPIO
+requests
+pyserial

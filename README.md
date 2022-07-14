@@ -13,5 +13,5 @@ You'll need a Python 2.7 environment (the default on the Raspberry Pi).
 
 1. Clone the repository
 2. `cd` into the `src\` folder
-3. Run `python setup.py install`
+3. Run `pip install -r requirements.txt`
 4. Run `python __init__.py` from a graphical environment

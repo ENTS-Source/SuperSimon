@@ -3,9 +3,9 @@ from time import sleep
 import struct
 
 from serial import Serial
-from utils import *
-from player import Player
-from enqueuer import EventQueue
+from . utils import *
+from . player import Player
+from . enqueuer import EventQueue
 
 
 # TODO: Need to add byte dumping (last byte > 150ms? Dump buffer)
