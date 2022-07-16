@@ -7,9 +7,9 @@ void setup(){
   int i = 0;
   while(i < 5){
     digitalWrite(13, HIGH);
-    delay(100);
+    delay(25);
     digitalWrite(13, LOW);
-    delay(100);
+    delay(25);
     
     i++;
   }
@@ -23,10 +23,12 @@ void loop(){
   // Host -> Com
   if(HOST.available() > 0){
     COM.write(HOST.read());
+    digitalWrite(13, HIGH);
   }
   
   // Com -> Host
   if(COM.available() > 0){
     HOST.write(COM.read());
+    digitalWrite(13, HIGH);
   }
 }

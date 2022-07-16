@@ -19,7 +19,7 @@ class SuperSimon:
         self.__queue = EventQueue()
 
     def _init_port(self):
-        self.__port = Serial(self.__conf.device, baudrate=9600)
+        self.__port = Serial(port=self.__conf.device, baudrate=9600, timeout=0.1)
 
     def check_joins(self):
         self.__queue.enqueue(self.__protocol_join_state)
@@ -78,7 +78,7 @@ class SuperSimon:
             discovered = self.__protocol_send_discover(addr)
             player = self._find_or_create_player(addr)
             player.online = discovered
-            # print("Address " + str(addr) + " discovered = " + str(discovered))
+            print("Address " + str(addr) + " discovered = " + str(discovered))
         self.__protocol_end_turn()
 
     def __protocol_join_state(self):
@@ -151,6 +151,7 @@ class SuperSimon:
     def __protocol_send_magic(self):
         sequence = '\xDE\xAD\xBE\xEF'
         self.__port.write(sequence)
+        #time.sleep(0.1)
 
     def __protocol_read_magic(self):
         sequence = ['\xCA', '\xFE', '\xBA', '\xBE']
@@ -182,6 +183,7 @@ class SuperSimon:
 
     def __protocol_write_int(self, i):
         self.__port.write(struct.pack(">I", i))
+        #time.sleep(0.1)
 
     def __protocol_read_ack(self):
         self.__protocol_read_magic()
@@ -229,47 +231,53 @@ class SuperSimon:
                 "Failed to read game information response: Invalid byte received (got " + self._format_byte(b) + ")")
 
     def __protocol_send_discover(self, address):
-        self.__protocol_send_magic()
-        self.__port.write('\x09')
-        self.__port.write(chr(address))
-        prev_timeout = self.__port.timeout
-        self.__port.timeout = self.__magicTimeout / 1000.0
+        i = 0
+        while i < 100000:
+            print("WRITE")
+            self.__protocol_send_magic()
+            self.__port.write('\x09')
+            #time.sleep(0.1)
+            self.__port.write(chr(address))
+        # prev_timeout = self.__port.timeout
+        # self.__port.timeout = self.__magicTimeout / 1000.0
         received = True
         try:
             self.__protocol_read_ack()
         except ValueError as e:
             print(str(e))
             received = False
-        self.__port.timeout = prev_timeout
+        # self.__port.timeout = prev_timeout
         return received
 
     def __protocol_request_join_state(self, address):
         self.__protocol_send_magic()
         self.__port.write('\x06')
+        #time.sleep(0.1)
         self.__port.write(chr(address))
-        prev_timeout = self.__port.timeout
-        self.__port.timeout = self.__magicTimeout / 1000.0
+        # prev_timeout = self.__port.timeout
+        # self.__port.timeout = self.__magicTimeout / 1000.0
         try:
             joining = self.__protocol_read_join_response()
         except ValueError as e:
             print(str(e))
             joining = None
-        self.__port.timeout = prev_timeout
+        # self.__port.timeout = prev_timeout
         return joining
 
     def __protocol_request_game_info(self, address):
         self.__protocol_send_magic()
         self.__port.write('\x03')
+        #time.sleep(0.1)
         self.__port.write(chr(address))
-        prev_timeout = self.__port.timeout
-        self.__port.timeout = self.__magicTimeout / 1000.0
+        # prev_timeout = self.__port.timeout
+        # self.__port.timeout = self.__magicTimeout / 1000.0
         val = None
         err = None
         try:
             val = self.__protocol_read_game_info_request()
         except ValueError as e:
             err = e
-        self.__port.timeout = prev_timeout
+        # self.__port.timeout = prev_timeout
         if err:
             raise err
         return val
@@ -277,25 +285,30 @@ class SuperSimon:
     def __protocol_send_game_info(self, address, sequence):
         self.__protocol_send_magic()
         self.__port.write('\x01')
+        #time.sleep(0.1)
         self.__port.write(chr(address))
+        #time.sleep(0.1)
         self.__protocol_write_int(len(sequence))
         for i in sequence:
             self.__port.write(chr(i))
-        prev_timeout = self.__port.timeout
-        self.__port.timeout = self.__magicTimeout / 1000.0
+            #time.sleep(0.1)
+        # prev_timeout = self.__port.timeout
+        # self.__port.timeout = self.__magicTimeout / 1000.0
         err = None
         try:
             self.__protocol_read_ack()
         except ValueError as e:
             err = e
-        self.__port.timeout = prev_timeout
+        # self.__port.timeout = prev_timeout
         if err is not None:
             raise err
 
     def __protocol_send_start_game(self, address):
         self.__protocol_send_magic()
         self.__port.write('\x02')
+        #time.sleep(0.1)
         self.__port.write(chr(address))
+        #time.sleep(0.1)
 
 
 class PressedButton:
