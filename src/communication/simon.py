@@ -171,7 +171,6 @@ class SuperSimon:
             if b is None:
                 raise ValueError('Could not read magic value: Timeout')
             now = millis()
-            print('@@' + b.hex())
             if (now - last_read) > self.__readDumpTimeout:
                 curr_index = 0
             if b == sequence[curr_index]:
