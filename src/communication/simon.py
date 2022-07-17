@@ -2,7 +2,7 @@
 from time import sleep
 import struct
 
-from serial import Serial
+from serial import Serial, PARITY_NONE, STOPBITS_ONE, EIGHTBITS
 from . utils import *
 from . player import Player
 from . enqueuer import EventQueue
@@ -12,14 +12,23 @@ from . enqueuer import EventQueue
 class SuperSimon:
     def __init__(self, configuration):
         self.__conf = configuration
-        self._init_port()
         self.__readDumpTimeout = 250  # ms
         self.__magicTimeout = 250  # ms
         self.players = []
         self.__queue = EventQueue()
+        self._init_port()
 
     def _init_port(self):
-        self.__port = Serial(port=self.__conf.device, baudrate=9600, timeout=0.1)
+        self.__port = Serial(
+            port= self.__conf.device,
+            baudrate=9600,
+            parity=PARITY_NONE,
+            stopbits=STOPBITS_ONE,
+            bytesize=EIGHTBITS,
+            timeout=self.__magicTimeout / 1000,
+        )
+        print('Using port: ' + self.__port.name)
+        # self.__port.open()
 
     def check_joins(self):
         self.__queue.enqueue(self.__protocol_join_state)
@@ -149,12 +158,12 @@ class SuperSimon:
         return v
 
     def __protocol_send_magic(self):
-        sequence = '\xDE\xAD\xBE\xEF'
+        sequence = b'\xDE\xAD\xBE\xEF'
         self.__port.write(sequence)
         #time.sleep(0.1)
 
     def __protocol_read_magic(self):
-        sequence = ['\xCA', '\xFE', '\xBA', '\xBE']
+        sequence = [b'\xCA', b'\xFE', b'\xBA', b'\xBE']
         curr_index = 0
         last_read = millis()
         while curr_index < len(sequence):
@@ -188,15 +197,15 @@ class SuperSimon:
     def __protocol_read_ack(self):
         self.__protocol_read_magic()
         b = self.__protocol_read()
-        if b != '\x00':
+        if b != b'\x00':
             raise ValueError("Failed to read acknowledge: Invalid byte received (got " + self._format_byte(b) + ")")
 
     def __protocol_read_join_response(self):
         self.__protocol_read_magic()
         b = self.__protocol_read()
-        if b == '\x07':
+        if b == b'\x07':
             return False
-        elif b == '\x08':
+        elif b == b'\x08':
             return True
         else:
             raise ValueError("Failed to read join response: Invalid byte received (got " + self._format_byte(b) + ")")
@@ -204,9 +213,9 @@ class SuperSimon:
     def __protocol_read_game_info_request(self):
         self.__protocol_read_magic()
         b = self.__protocol_read()
-        if b == '\x04':
+        if b == b'\x04':
             return None  # No game info
-        elif b == '\x05':
+        elif b == b'\x05':
             # Has game information
             # noinspection PyUnusedLocal
             address = self.__protocol_read(True)  # Ignored address - not important
@@ -231,13 +240,10 @@ class SuperSimon:
                 "Failed to read game information response: Invalid byte received (got " + self._format_byte(b) + ")")
 
     def __protocol_send_discover(self, address):
-        i = 0
-        while i < 100000:
-            print("WRITE")
-            self.__protocol_send_magic()
-            self.__port.write('\x09')
-            #time.sleep(0.1)
-            self.__port.write(chr(address))
+        self.__protocol_send_magic()
+        self.__port.write(b'\x09')
+        #time.sleep(0.1)
+        self.__port.write(chr(address))
         # prev_timeout = self.__port.timeout
         # self.__port.timeout = self.__magicTimeout / 1000.0
         received = True
@@ -251,7 +257,7 @@ class SuperSimon:
 
     def __protocol_request_join_state(self, address):
         self.__protocol_send_magic()
-        self.__port.write('\x06')
+        self.__port.write(b'\x06')
         #time.sleep(0.1)
         self.__port.write(chr(address))
         # prev_timeout = self.__port.timeout
@@ -266,7 +272,7 @@ class SuperSimon:
 
     def __protocol_request_game_info(self, address):
         self.__protocol_send_magic()
-        self.__port.write('\x03')
+        self.__port.write(b'\x03')
         #time.sleep(0.1)
         self.__port.write(chr(address))
         # prev_timeout = self.__port.timeout
@@ -284,7 +290,7 @@ class SuperSimon:
 
     def __protocol_send_game_info(self, address, sequence):
         self.__protocol_send_magic()
-        self.__port.write('\x01')
+        self.__port.write(b'\x01')
         #time.sleep(0.1)
         self.__port.write(chr(address))
         #time.sleep(0.1)
@@ -305,7 +311,7 @@ class SuperSimon:
 
     def __protocol_send_start_game(self, address):
         self.__protocol_send_magic()
-        self.__port.write('\x02')
+        self.__port.write(b'\x02')
         #time.sleep(0.1)
         self.__port.write(chr(address))
         #time.sleep(0.1)
