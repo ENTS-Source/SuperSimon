@@ -588,6 +588,10 @@
     [
       "ddee2cd6-d9ff-4ead-bb0d-e7b6b1f0005b",
       "USB-C"
+    ],
+    [
+      "fd669500-a33f-40fa-a9a4-bc6831f26919",
+      "ESP32-C3-WROOM-02-N4"
     ]
   ],
   "text_variables": {}

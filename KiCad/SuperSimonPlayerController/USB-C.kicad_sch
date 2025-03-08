@@ -81,10 +81,12 @@
 						(type background)
 					)
 				)
+			)
+			(symbol "0603WAF5101T5E_1_1"
 				(pin input line
 					(at -5.08 0 0)
 					(length 2.54)
-					(name "1"
+					(name ""
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -102,7 +104,7 @@
 				(pin input line
 					(at 5.08 0 180)
 					(length 2.54)
-					(name "2"
+					(name ""
 						(effects
 							(font
 								(size 1.27 1.27)
