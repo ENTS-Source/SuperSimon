@@ -1489,6 +1489,38 @@
 		)
 		(uuid "fbc4cbc0-65a0-46b9-8e4b-ae83329c8589")
 	)
+	(text "5.1k pull-down resistors on CC1 and CC2\nrequest 5V up to 3A from the USB host."
+		(exclude_from_sim no)
+		(at 89.408 127 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "2a996c55-7d63-49af-8919-feabca9f5b7a")
+	)
+	(text "3A PTC Fuse"
+		(exclude_from_sim no)
+		(at 134.874 52.578 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "4862c42f-73db-45a3-bebd-b2050b32c77e")
+	)
+	(text "TVS diodes protect devices from\nover voltage events e.g. static discharge."
+		(exclude_from_sim no)
+		(at 174.244 103.886 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "d331efef-7530-4391-b259-3e9d2c323d32")
+	)
 	(label "UNPROTECTED5VBUS"
 		(at 100.33 63.5 0)
 		(fields_autoplaced yes)
