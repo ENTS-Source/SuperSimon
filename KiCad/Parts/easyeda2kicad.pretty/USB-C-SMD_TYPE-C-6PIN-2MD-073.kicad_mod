@@ -276,7 +276,7 @@
 		(remove_unused_layers no)
 		(uuid "70f6acbe-c6af-41fd-aec7-22417cd8eb8a")
 	)
-	(model "C:/Github/SuperSimon/KiCad/Parts/easyeda2kicad.3dshapes/USB-C-SMD_TYPE-C-6PIN-2MD-073.wrl"
+	(model "${ENTS_SUPERSIMON_GITHUB_PATH}/KiCad/Parts/easyeda2kicad.3dshapes/USB-C-SMD_TYPE-C-6PIN-2MD-073.wrl"
 		(offset
 			(xyz 0 -1.199999988 1.651)
 		)

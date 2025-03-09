@@ -200,7 +200,7 @@
 		(layers "F.Cu" "F.Paste" "F.Mask")
 		(uuid "facc8349-1369-48d9-ae27-5bdc5f2d2eab")
 	)
-	(model "C:/Github/SuperSimon/KiCad/Parts/easyeda2kicad.3dshapes/C0603_L1.6-W0.8-H0.8.wrl"
+	(model "${ENTS_SUPERSIMON_GITHUB_PATH}/KiCad/Parts/easyeda2kicad.3dshapes/C0603_L1.6-W0.8-H0.8.wrl"
 		(offset
 			(xyz 0 0 -0)
 		)
