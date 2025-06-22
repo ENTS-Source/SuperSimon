@@ -8,7 +8,7 @@ HEIGHT = 600
 db.init()
 
 def draw():
-  window.make_fullscreen()
+  window.make_fullscreen(WIDTH, HEIGHT)
 
 def update():
   # TODO
