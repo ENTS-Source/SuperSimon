@@ -32,7 +32,7 @@ def draw():
   # Base setup
   screen.clear()
   screen.fill((0, 0, 128))
-  screen.blit('logo', (10, 0))
+  screen.blit('logo', (0, 10))
   screen.draw.text("ENTS SuperSimon 2.0", (160, 30), fontsize=60, shadow=(2, 2), scolor="#202020", color="#FFFFFF")
 
   # Render game objects
@@ -74,7 +74,7 @@ def draw_game_mode():
   elif CURRENT_GAME_MODE == GM_MUSIC:
     gm_text = "Music"
 
-  screen.draw.text("Game mode: " + gm_text, topright=(WIDTH - 10, 10), fontsize=12, color="orange")
+  screen.draw.text("Game mode: " + gm_text, topright=(WIDTH - 100, 100), fontsize=12, color="orange")
 
 def draw_game_state():
   # TODO
