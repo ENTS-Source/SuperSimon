@@ -1,6 +1,25 @@
 import pygame
 import db
 
+# ---- SuperSimon Constants ----
+
+GS_INTRO = 1
+GS_STARTING = 2
+GS_PLAYING = 3
+GS_FINISH = 4
+
+GM_NORMAL = 1
+GM_CHASE = 2
+GM_MUSIC = 3
+GAME_MODES = [GM_NORMAL, GM_CHASE, GM_MUSIC]  # used for cycling
+
+# ---- SuperSimon Variables ----
+
+CURRENT_GAME_MODE = GM_NORMAL
+CURRENT_GAME_STATE = GS_INTRO
+
+# ---- Pygame Zero Setup/Game Start ----
+
 TITLE = "SuperSimon 2.0"
 WIDTH = 800
 HEIGHT = 600
@@ -13,7 +32,12 @@ def draw():
   # Base setup
   screen.clear()
   screen.fill((0, 0, 128))
-  screen.blit('logo', (10, 10))
+  screen.blit('logo', (0, 10))
+  screen.draw.text("ENTS SuperSimon 2.0", (50, 160), fontsize=60, shadow=(2, 2), scolor="#202020", color="#FFFFFF")
+
+  # Render game objects
+  draw_game_mode()
+  draw_game_state()
 
   # Draw assets
   # TODO
@@ -22,12 +46,34 @@ def update():
   # TODO
   pass
 
-# ------------------------------------------------------------------------------
+def on_key_down(key):
+  if key == keys.M:
+    if CURRENT_GAME_STATE != GS_INTRO:
+      return
+    idx = GAME_MODES.index(CURRENT_GAME_MODE)
+    idx += 1
+    if idx >= len(GAME_MODES):
+      idx = 0
+    CURRENT_GAME_MODE = GAME_MODES[idx]
 
-is_fullscreen = False
+IS_FULLSCREEN = False
 def make_fullscreen():
-  global is_fullscreen
-  if is_fullscreen:
+  if IS_FULLSCREEN:
     return
   screen.surface = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
-  is_fullscreen = True
+  IS_FULLSCREEN = True
+
+def draw_game_mode():
+  gm_text = "UNKNOWN"
+  if CURRENT_GAME_MODE == GM_NORMAL:
+    gm_text = "Normal"
+  elif CURRENT_GAME_MODE == GM_CHASE:
+    gm_text = "Chase"
+  elif CURRENT_GAME_MODE == GM_MUSIC:
+    gm_text = "Music"
+
+  screen.draw.text("Game mode: " + gm_text, topright=(10, 10), fontsize=12, color="orange")
+
+def draw_game_state():
+  # TODO
+  pass
