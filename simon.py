@@ -1,3 +1,4 @@
+import pygame
 import db
 
 TITLE = "SuperSimon 2.0"
