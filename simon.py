@@ -133,7 +133,7 @@ def enable_game_mode():
 
   if CURRENT_GAME_MODE == GM_MUSIC:
     music.play('backing_track')
-    music.set_volume(0.3)
+    music.set_volume(0.45)
 
 def start_game():
   print("Start game")
