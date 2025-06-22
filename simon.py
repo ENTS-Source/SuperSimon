@@ -8,7 +8,15 @@ HEIGHT = 600
 db.init()
 
 def draw():
-  make_fullscreen()
+  make_fullscreen()  # internally handles duplicate calls
+
+  # Base setup
+  screen.clear()
+  screen.fill((0, 0, 128))
+  screen.blit('logo', (10, 10))
+
+  # Draw assets
+  # TODO
 
 def update():
   # TODO
