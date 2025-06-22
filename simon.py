@@ -24,16 +24,19 @@ TITLE = "SuperSimon 2.0"
 WIDTH = 1920
 HEIGHT = 1080
 
+PADDING = 20
+LOGO_R = 150 + PADDING
+
 db.init()
 
 def draw():
-  make_fullscreen()  # internally handles duplicate calls
+  window_setup()  # internally handles duplicate calls
 
   # Base setup
   screen.clear()
   screen.fill((0, 0, 128))
   screen.blit('logo', (0, 10))
-  screen.draw.text("ENTS SuperSimon 2.0", (160, 30), fontsize=60, shadow=(2, 2), scolor="#202020", color="#FFFFFF")
+  screen.draw.text("ENTS SuperSimon 2.0", (LOGO_R, PADDING), fontsize=100, shadow=(2, 2), scolor="#202020", color="#FFFFFF")
 
   # Render game objects
   draw_game_mode()
@@ -57,13 +60,14 @@ def on_key_down(key):
       idx = 0
     CURRENT_GAME_MODE = GAME_MODES[idx]
 
-FULLSCREEN = False
-def make_fullscreen():
-  global FULLSCREEN
-  if FULLSCREEN:
+DID_WINDOW_SETUP = False
+def window_setup():
+  global DID_WINDOW_SETUP
+  if DID_WINDOW_SETUP:
     return
   screen.surface = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
-  FULLSCREEN = True
+  pygame.mouse.set_visible(False)
+  DID_WINDOW_SETUP = True
 
 def draw_game_mode():
   gm_text = "UNKNOWN"
@@ -74,7 +78,7 @@ def draw_game_mode():
   elif CURRENT_GAME_MODE == GM_MUSIC:
     gm_text = "Music"
 
-  screen.draw.text("Game mode: " + gm_text, topright=(WIDTH - 100, 100), fontsize=12, color="orange")
+  screen.draw.text("Game mode: " + gm_text, (LOGO_R, 75 + PADDING), fontsize=30, color="orange")
 
 def draw_game_state():
   # TODO
