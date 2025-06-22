@@ -56,12 +56,13 @@ def on_key_down(key):
       idx = 0
     CURRENT_GAME_MODE = GAME_MODES[idx]
 
-IS_FULLSCREEN = False
+FULLSCREEN = False
 def make_fullscreen():
-  if IS_FULLSCREEN:
+  global FULLSCREEN
+  if FULLSCREEN:
     return
   screen.surface = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
-  IS_FULLSCREEN = True
+  FULLSCREEN = True
 
 def draw_game_mode():
   gm_text = "UNKNOWN"
