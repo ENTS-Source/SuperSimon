@@ -21,8 +21,8 @@ CURRENT_GAME_STATE = GS_INTRO
 # ---- Pygame Zero Setup/Game Start ----
 
 TITLE = "SuperSimon 2.0"
-WIDTH = 800
-HEIGHT = 600
+WIDTH = 1920
+HEIGHT = 1080
 
 db.init()
 
@@ -32,8 +32,8 @@ def draw():
   # Base setup
   screen.clear()
   screen.fill((0, 0, 128))
-  screen.blit('logo', (0, 10))
-  screen.draw.text("ENTS SuperSimon 2.0", (50, 160), fontsize=60, shadow=(2, 2), scolor="#202020", color="#FFFFFF")
+  screen.blit('logo', (10, 0))
+  screen.draw.text("ENTS SuperSimon 2.0", (160, 30), fontsize=60, shadow=(2, 2), scolor="#202020", color="#FFFFFF")
 
   # Render game objects
   draw_game_mode()
@@ -48,6 +48,7 @@ def update():
 
 def on_key_down(key):
   if key == keys.M:
+    global CURRENT_GAME_MODE
     if CURRENT_GAME_STATE != GS_INTRO:
       return
     idx = GAME_MODES.index(CURRENT_GAME_MODE)
@@ -73,7 +74,7 @@ def draw_game_mode():
   elif CURRENT_GAME_MODE == GM_MUSIC:
     gm_text = "Music"
 
-  screen.draw.text("Game mode: " + gm_text, topright=(10, 10), fontsize=12, color="orange")
+  screen.draw.text("Game mode: " + gm_text, topright=(WIDTH - 10, HEIGHT - 10), fontsize=12, color="orange")
 
 def draw_game_state():
   # TODO
