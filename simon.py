@@ -74,7 +74,7 @@ def on_key_down(key):
     if idx >= len(GAME_MODES):
       idx = 0
     CURRENT_GAME_MODE = GAME_MODES[idx]
-    stop_all_tones()
+    enable_game_mode()
 
   key_char = key.name[-1]
   if key_char.isdigit():
@@ -125,9 +125,15 @@ def stop_tone(tone_id):
     ACTIVE_MUSIC[tone_id].stop()
     del ACTIVE_MUSIC[tone_id]
 
-def stop_all_tones():
+def enable_game_mode():
   for i in range(10):
     stop_tone(i)
+
+  music.stop()
+
+  if CURRENT_GAME_MODE == GM_MUSIC:
+    music.play('backing_track')
+    music.set_volume(0.3)
 
 def start_game():
   print("Start game")
