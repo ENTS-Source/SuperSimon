@@ -74,7 +74,7 @@ def draw_game_mode():
   elif CURRENT_GAME_MODE == GM_MUSIC:
     gm_text = "Music"
 
-  screen.draw.text("Game mode: " + gm_text, topright=(WIDTH - 10, HEIGHT - 10), fontsize=12, color="orange")
+  screen.draw.text("Game mode: " + gm_text, topright=(WIDTH - 10, 10), fontsize=12, color="orange")
 
 def draw_game_state():
   # TODO
