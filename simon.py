@@ -21,16 +21,16 @@ CURRENT_GAME_STATE = GS_INTRO
 
 ACTIVE_MUSIC = {}  # used in music game mode
 MUSIC_SOUNDS = [
-  sounds.c5,
-  sounds.d5,
-  sounds.e5,
-  sounds.g5,
-  sounds.a5,
-  sounds.c6,
-  sounds.d6,
-  sounds.e6,
-  sounds.g6,
-  sounds.a6,
+  sounds.c3,
+  sounds.d3,
+  sounds.e3,
+  sounds.g3,
+  sounds.a3,
+  sounds.c4,
+  sounds.d4,
+  sounds.e4,
+  sounds.g4,
+  sounds.a4,
 ]
 
 # ---- Pygame Zero Setup/Game Start ----
