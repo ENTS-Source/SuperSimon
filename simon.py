@@ -33,21 +33,6 @@ MUSIC_SOUNDS = [
   sounds.a6,
 ]
 
-MUSIC_SOUNDS_LOW = [
-  sounds.c4,
-  sounds.d4,
-  sounds.e4,
-  sounds.g4,
-  sounds.a4,
-
-  sounds.c5,
-  sounds.d5,
-  sounds.e5,
-  sounds.g5,
-  sounds.a5,
-]
-MUSIC_SOUNDS = MUSIC_SOUNDS_LOW
-
 # ---- Pygame Zero Setup/Game Start ----
 
 TITLE = "SuperSimon 2.0"
