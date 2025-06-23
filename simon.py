@@ -32,6 +32,13 @@ MUSIC_SOUNDS = [
   sounds.ddr_8,
   sounds.ddr_9,
 ]
+BUTTON_SOUNDS = {
+  'white': sounds.white,
+  'green': sounds.green,
+  'red': sounds.red,
+  'yellow': sounds.yellow,
+  'blue': sounds.blue,
+}
 
 # ---- Pygame Zero Setup/Game Start ----
 
