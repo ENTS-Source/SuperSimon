@@ -5,9 +5,10 @@ import db
 
 GS_INTRO = 1
 GS_STARTING = 2
-GS_PLAYING_SHOW = 3
-GS_PLAYING_TELL = 4
-GS_FINISH = 5
+GS_PLAYING_NONSPECIFIC = 3  # general case for global state
+GS_PLAYING_SHOW = 4
+GS_PLAYING_TELL = 5
+GS_PLAYING_FINISH = 6
 
 GM_NORMAL = 1
 GM_CHASE = 2
@@ -17,7 +18,19 @@ GAME_MODES = [GM_NORMAL, GM_CHASE, GM_MUSIC]  # used for cycling
 # ---- SuperSimon Variables ----
 
 CURRENT_GAME_MODE = GM_NORMAL
-CURRENT_GAME_STATE = GS_INTRO
+
+PLAYER_GAME_STATES = [
+  GS_INTRO,
+  GS_INTRO,
+]
+
+def set_global_game_state(new_state):
+  PLAYER_GAME_STATES[0] = new_state
+  PLAYER_GAME_STATES[1] = new_state
+
+def get_global_game_state():
+  state = PLAYER_GAME_STATES[0]
+  return min(GS_PLAYING_NONSPECIFIC, state)
 
 ACTIVE_MUSIC = {}  # used in music game mode
 MUSIC_SOUNDS = [
@@ -32,13 +45,14 @@ MUSIC_SOUNDS = [
   sounds.ddr_8,
   sounds.ddr_9,
 ]
-BUTTON_SOUNDS = {
-  'white': sounds.white,
-  'green': sounds.green,
-  'red': sounds.red,
-  'yellow': sounds.yellow,
-  'blue': sounds.blue,
-}
+
+BUTTON_SOUNDS = [
+  sounds.red,     # top
+  sounds.blue,    # left
+  sounds.white,   # center
+  sounds.green,   # right
+  sounds.yellow,  # bottom
+]
 
 # ---- Pygame Zero Setup/Game Start ----
 
@@ -71,41 +85,78 @@ def update():
   # TODO
   pass
 
-def on_key_down(key):
-  if key == keys.M:
-    global CURRENT_GAME_MODE
-    if CURRENT_GAME_STATE != GS_INTRO:
-      return
-    idx = GAME_MODES.index(CURRENT_GAME_MODE)
-    idx += 1
-    if idx >= len(GAME_MODES):
-      idx = 0
-    CURRENT_GAME_MODE = GAME_MODES[idx]
-    enable_game_mode()
+# ---- game functions ----
 
-  key_char = key.name[-1]
-  if key_char.isdigit():
-    num = int(key_char)
-    if CURRENT_GAME_MODE == GM_MUSIC:
-      play_tone(num)
-    elif CURRENT_GAME_STATE == GS_INTRO:
-      start_game()
+def try_game_mode_cycle():
+  global CURRENT_GAME_MODE
 
-def on_key_up(key):
-  key_char = key.name[-1]
-  if key_char.isdigit():
-    num = int(key_char)
-    if CURRENT_GAME_MODE == GM_MUSIC:
-      stop_tone(num)
+  if get_global_game_state() != GS_INTRO:
+      return  # not allowed to switch right now
 
-DID_WINDOW_SETUP = False
-def window_setup():
-  global DID_WINDOW_SETUP
-  if DID_WINDOW_SETUP:
-    return
-  screen.surface = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
-  pygame.mouse.set_visible(False)
-  DID_WINDOW_SETUP = True
+  idx = (GAME_MODES.index(CURRENT_GAME_MODE) + 1) % len(GAME_MODES)
+  CURRENT_GAME_MODE = GAME_MODES[idx]
+
+  # Clean up after previous game modes
+  music.stop()
+  for i in range(10):
+    stop_tone(i)
+
+  # Enable things depending on game mode
+  if CURRENT_GAME_MODE == GM_MUSIC:
+    music.play('backing_track')
+    music.set_volume(0.45)
+
+def try_button_press(player, button):
+    if get_global_game_state() == GS_INTRO:
+      begin_countdown()
+    elif get_global_game_state() == GS_PLAYING_NONSPECIFIC:
+      record_player_button(player, button)
+
+def record_player_button(player, button):
+  if CURRENT_GAME_MODE == GM_MUSIC:
+    play_tone((player * 5) + button)
+  elif get_global_game_state() == GS_INTRO:
+    begin_countdown()
+  elif PLAYER_GAME_STATES[player] == GS_PLAYING_TELL:
+    demo_button(player, button)
+    # TODO: Record button press
+
+def try_button_release(player, button):
+  if CURRENT_GAME_MODE == GM_MUSIC:
+      stop_tone((player * 5) + button)
+
+def begin_countdown():
+  sounds.countdown.play()
+  clock.schedule_unique(start_game, 3.1)  # 3 seconds plus a bit for lag
+
+def start_game():
+  print("Debug: start game")
+  set_global_game_state(GS_PLAYING_SHOW)
+
+def demo_button(player, button):
+  print("Debug: demo button ", player, button)
+  BUTTON_SOUNDS[button].play()  # 1 second
+  # TODO: Show button LED
+
+# ---- normal mode functions ----
+
+# ---- chase mode functions ----
+
+# ---- music mode functions ----
+
+def play_tone(tone_id):
+  print("Debug: play tone ", tone_id)
+  if tone_id not in ACTIVE_MUSIC:
+    ACTIVE_MUSIC[tone_id] = MUSIC_SOUNDS[tone_id]
+    ACTIVE_MUSIC[tone_id].play(-1)  # loop forever
+
+def stop_tone(tone_id):
+  print("Debug: stop tone ", tone_id)
+  if tone_id in ACTIVE_MUSIC:
+    ACTIVE_MUSIC[tone_id].stop()
+    del ACTIVE_MUSIC[tone_id]
+
+# ---- game render ----
 
 def draw_game_mode():
   gm_text = "UNKNOWN"
@@ -122,25 +173,38 @@ def draw_game_state():
   # TODO
   pass
 
-def play_tone(tone_id):
-  if tone_id not in ACTIVE_MUSIC:
-    ACTIVE_MUSIC[tone_id] = MUSIC_SOUNDS[tone_id]
-    ACTIVE_MUSIC[tone_id].play(-1)  # loop forever
+# ---- pygame keyboard interface ----
 
-def stop_tone(tone_id):
-  if tone_id in ACTIVE_MUSIC:
-    ACTIVE_MUSIC[tone_id].stop()
-    del ACTIVE_MUSIC[tone_id]
+def on_key_down(key):
+  if key == keys.M:
+    try_game_mode_cycle()
 
-def enable_game_mode():
-  for i in range(10):
-    stop_tone(i)
+  key_char = key.name[-1]
+  if key_char.isdigit():
+    num = int(key_char)
+    if num == 0:
+      num = 10
+    player = 0 if num <= 5 else 1
+    button = (num - 1) % 5
+    try_button_press(player, button)
 
-  music.stop()
+def on_key_up(key):
+  key_char = key.name[-1]
+  if key_char.isdigit():
+    num = int(key_char)
+    if num == 0:
+      num = 10
+    player = 0 if num <= 5 else 1
+    button = (num - 1) % 5
+    try_button_press(player, button)
 
-  if CURRENT_GAME_MODE == GM_MUSIC:
-    music.play('backing_track')
-    music.set_volume(0.45)
+# ---- pygame setup ----
 
-def start_game():
-  print("Start game")
+DID_WINDOW_SETUP = False
+def window_setup():
+  global DID_WINDOW_SETUP
+  if DID_WINDOW_SETUP:
+    return
+  screen.surface = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
+  pygame.mouse.set_visible(False)
+  DID_WINDOW_SETUP = True
