@@ -1,6 +1,5 @@
 from consts import GS_INTRO, GS_PLAYING_SHOW, GS_PLAYING_TELL, GS_PLAYING_FINISH, BUTTON_IDLE_TIME, BUTTON_SHOW_TIME
 from pgzero.clock import clock
-from functools import partial
 
 class Player:
   def __init__(self, index):
@@ -13,7 +12,7 @@ class Player:
     if self.state != GS_PLAYING_TELL:
       return  # not in a game
 
-    self._button_functions(button)
+    self._button_functions[button](True)
 
     if self._game.is_next(self._index, button):
       self._show()
@@ -36,7 +35,12 @@ class Player:
     self.state = GS_PLAYING_SHOW
     self._sequence = self._game.get_sequence(self._index)
     print("Debug: player sequence ", self._index, self._sequence)
-    clock.schedule(self._show_sequence, BUTTON_IDLE_TIME)
+    clock.schedule(self._clear_buttons, BUTTON_IDLE_TIME)
+    clock.schedule(self._show_sequence, BUTTON_IDLE_TIME * 2)
+
+  def _clear_buttons(self):
+    for i in range(5):
+      self._button_functions[i](False)  # turn off any player-pressed buttons
 
   def _go_to_tell(self):
       print("Debug: -> tell ", self._index)
