@@ -44,6 +44,7 @@ class Player:
       self.state = GS_PLAYING_TELL
 
     def show_sequence():
+      print("Debug: starting show sequence on player")
       print("Debug: showing sequence ", self._index, sequence)
       for i in range(len(sequence)):
         print("Debug: sequence ", self._index, i, sequence[i])
