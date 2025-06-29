@@ -4,8 +4,8 @@ _conn = sqlite3.connect('simon.db')
 _cursor = _conn.cursor()
 
 def init():
-  _cursor.execute('CREATE TABLE IF NOT EXISTS scores (score NUMERIC, recorded DATETIME);')
-  _cursor.execute('ALTER TABLE scores ADD COLUMN IF NOT EXISTS game_mode (TEXT);')
+  _cursor.execute('CREATE TABLE IF NOT EXISTS scores (game_mode TEXT, score NUMERIC, recorded DATETIME);')
+  _cursor.execute('CREATE INDEX IF NOT EXISTS idx_scores ON scores (game_mode, score);')
   _conn.commit()
 
 def save_score(game_mode: str, score: int):
