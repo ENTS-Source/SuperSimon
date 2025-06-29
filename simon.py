@@ -138,6 +138,7 @@ def try_button_release(player, button):
   PLAYERS[player].try_record_button_up(button)
 
 def begin_countdown():
+  print("Debug: countdown")
   sounds.countdown.play()
   clock.schedule_unique(start_game, 3.1)  # 3 seconds plus a bit for lag
 
