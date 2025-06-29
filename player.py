@@ -44,6 +44,7 @@ class Player:
       self.state = GS_PLAYING_TELL
 
     def show_sequence():
+      print("Debug: showing sequence ", self._index, sequence)
       for i in range(len(sequence)):
         print("Debug: sequence ", self._index, i, sequence[i])
         clock.schedule_unique(lambda i=i: self._button_functions[sequence[i]](True), i * (BUTTON_SHOW_TIME + BUTTON_IDLE_TIME))
