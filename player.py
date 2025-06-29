@@ -9,7 +9,7 @@ class Player:
   _button_functions = []
 
   def __init__(self, index):
-    self.index = index
+    self._index = index
 
   def try_record_button_down(self, button):
     if self.state != GS_PLAYING_TELL:
@@ -37,6 +37,7 @@ class Player:
     print("Debug: -> show ", self._index)
     self.state = GS_PLAYING_SHOW
     sequence = self._game.get_sequence(self._index)
+    print("Debug: player sequence ", self._index, sequence)
     clock.schedule_unique(lambda: self._show_sequence(sequence), BUTTON_IDLE_TIME)
 
   def _show_sequence(self, sequence):

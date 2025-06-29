@@ -5,7 +5,7 @@ from game_mode_game import GameModeGame
 
 class GameModeNormal(GameModeGame):
   _sequence: list[int] = []
-  _player_positions = [-1, -1]  # first round increments to zero
+  _player_positions = [0, 0]
 
   def __init__(self):
     print("Debug: created normal game")
@@ -17,7 +17,7 @@ class GameModeNormal(GameModeGame):
       print("Debug: extending sequence")
       self._sequence.append(random.randint(0, 4))
       print(self._sequence)
-    return self._sequence[:pos + 1]
+    return self._sequence[:pos]
 
   def is_next(self, player, button):
     return self._sequence[self._player_positions[player]] == button
