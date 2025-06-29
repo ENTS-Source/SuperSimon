@@ -1,35 +1,25 @@
 import pygame
 import db
 
-# ---- SuperSimon Constants ----
-
-GS_INTRO = 1
-GS_STARTING = 2
-GS_PLAYING_NONSPECIFIC = 3  # general case for global state
-GS_PLAYING_SHOW = 4
-GS_PLAYING_TELL = 5
-GS_PLAYING_FINISH = 6
-
-GM_NORMAL = 1
-GM_CHASE = 2
-GM_MUSIC = 3
-GAME_MODES = [GM_NORMAL, GM_CHASE, GM_MUSIC]  # used for cycling
+from consts import GM_NORMAL, GM_CHASE, GM_MUSIC, GS_PLAYING_NONSPECIFIC, GS_INTRO, GS_PLAYING_SHOW, GAME_MODES
+from player import Player
+from game_mode_normal import GameModeNormal
 
 # ---- SuperSimon Variables ----
 
 CURRENT_GAME_MODE = GM_NORMAL
 
-PLAYER_GAME_STATES = [
-  GS_INTRO,
-  GS_INTRO,
+PLAYERS = [
+  Player(0),
+  Player(1),
 ]
 
 def set_global_game_state(new_state):
-  PLAYER_GAME_STATES[0] = new_state
-  PLAYER_GAME_STATES[1] = new_state
+  for player in PLAYERS:
+    player.state = new_state
 
 def get_global_game_state():
-  state = PLAYER_GAME_STATES[0]
+  state = PLAYERS[0].state
   return min(GS_PLAYING_NONSPECIFIC, state)
 
 ACTIVE_MUSIC = {}  # used in music game mode
@@ -53,6 +43,30 @@ BUTTON_SOUNDS = [
   sounds.green,   # right
   sounds.yellow,  # bottom
 ]
+
+BUTTON_FUNCTIONS = [
+  # Player 1
+  lambda show: set_button_state(0, 0, show),
+  lambda show: set_button_state(0, 1, show),
+  lambda show: set_button_state(0, 2, show),
+  lambda show: set_button_state(0, 3, show),
+  lambda show: set_button_state(0, 4, show),
+
+  # Player 2
+  lambda show: set_button_state(1, 0, show),
+  lambda show: set_button_state(1, 1, show),
+  lambda show: set_button_state(1, 2, show),
+  lambda show: set_button_state(1, 3, show),
+  lambda show: set_button_state(1, 4, show),
+]
+
+def set_button_state(player, button, show):
+  if show:
+    BUTTON_SOUNDS[button].play()
+    # TODO: Button LED
+  else:
+    BUTTON_SOUNDS[button].stop()
+    # TODO: Button LED
 
 # ---- Pygame Zero Setup/Game Start ----
 
@@ -117,13 +131,11 @@ def record_player_button(player, button):
     play_tone((player * 5) + button)
   elif get_global_game_state() == GS_INTRO:
     begin_countdown()
-  elif PLAYER_GAME_STATES[player] == GS_PLAYING_TELL:
-    demo_button(player, button)
-    # TODO: Record button press
+  else:
+    PLAYERS[player].try_record_button_down(button)
 
 def try_button_release(player, button):
-  if CURRENT_GAME_MODE == GM_MUSIC:
-      stop_tone((player * 5) + button)
+  PLAYERS[player].try_record_button_up(button)
 
 def begin_countdown():
   sounds.countdown.play()
@@ -131,16 +143,11 @@ def begin_countdown():
 
 def start_game():
   print("Debug: start game")
-  set_global_game_state(GS_PLAYING_SHOW)
-
-def demo_button(player, button):
-  print("Debug: demo button ", player, button)
-  BUTTON_SOUNDS[button].play()  # 1 second
-  # TODO: Show button LED
-
-# ---- normal mode functions ----
-
-# ---- chase mode functions ----
+  if CURRENT_GAME_MODE == GM_NORMAL:
+    game = GameModeNormal()
+    for i in range(len(PLAYERS)):
+      player = PLAYERS[i]
+      player.start_game(game, BUTTON_FUNCTIONS[i*5:(i*5)+5])
 
 # ---- music mode functions ----
 
