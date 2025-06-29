@@ -50,14 +50,15 @@ class Player:
   def _show_sequence(self):
     sequence = self._sequence
     print("Debug: show sequence ", self._index)
-
+    self._sequence_i = 0
     for i in range(len(sequence)):
       print("Debug: sequence ", self._index, i, sequence[i])
-      clock.schedule(partial(self._set_button, sequence[i], True), i * (BUTTON_SHOW_TIME + BUTTON_IDLE_TIME))
-      clock.schedule(partial(self._set_button, sequence[i], False), (i * (BUTTON_SHOW_TIME + BUTTON_IDLE_TIME)) + BUTTON_SHOW_TIME)
+      clock.schedule(self._show_sequence_i, i * (BUTTON_SHOW_TIME + BUTTON_IDLE_TIME))
+      clock.schedule(self._clear_buttons, (i * (BUTTON_SHOW_TIME + BUTTON_IDLE_TIME)) + BUTTON_SHOW_TIME)
 
     clock.schedule(self._go_to_tell, (len(sequence) - 1) * (BUTTON_SHOW_TIME + BUTTON_IDLE_TIME) + BUTTON_SHOW_TIME)
 
-  def _set_button(self, i, state):
-    print("Debug: set_button ", self._index, i, state)
-    self._button_functions[i](state)
+  def _show_sequence_i(self):
+    print("Debug: sequence_i_set ", self._index, self._sequence_i, self._sequence[self._sequence_i])
+    self._button_functions[self._sequence_i](True)
+    self._sequence_i += 1
