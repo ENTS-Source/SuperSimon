@@ -13,6 +13,7 @@ class Player:
     if self.state != GS_PLAYING_TELL:
       return  # not in a game
 
+    print("Debug: btn ", self._index, button)
     self._button_functions[button](True)
 
     if self._game.is_next(self._index, button):
