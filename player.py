@@ -49,6 +49,6 @@ class Player:
         print("Debug: sequence ", self._index, i, sequence[i])
         clock.schedule(lambda i=i: self._button_functions[sequence[i]](True), i * (BUTTON_SHOW_TIME + BUTTON_IDLE_TIME))
         clock.schedule(lambda i=i: self._button_functions[sequence[i]](False), (i * (BUTTON_SHOW_TIME + BUTTON_IDLE_TIME)) + BUTTON_SHOW_TIME)
-      clock.schedule(go_to_tell, (len(sequence) - 1) * (BUTTON_SHOW_TIME + BUTTON_IDLE_TIME) + BUTTON_SHOW_TIME)
+      clock.schedule(lambda: go_to_tell(), (len(sequence) - 1) * (BUTTON_SHOW_TIME + BUTTON_IDLE_TIME) + BUTTON_SHOW_TIME)
 
-    clock.schedule(show_sequence, BUTTON_IDLE_TIME)
+    clock.schedule(lambda: show_sequence(), BUTTON_IDLE_TIME)
