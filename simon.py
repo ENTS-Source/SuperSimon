@@ -141,12 +141,8 @@ def begin_countdown():
   sounds.countdown.play()
   clock.schedule_unique(start_game, 3.1)  # 3 seconds plus a bit for lag
 
-def clock_works():
-  print("Clock works")
-
 def start_game():
   print("Debug: start game")
-  clock.schedule(clock_works, 0.5)
   if CURRENT_GAME_MODE == GM_NORMAL:
     game = GameModeNormal()
     for i in range(len(PLAYERS)):
