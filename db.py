@@ -9,5 +9,5 @@ def init():
   _conn.commit()
 
 def save_score(game_mode: str, score: int):
-  _cursor.execute("INSERT INTO scores (game_mode, score, recorded) VALUES (?, ?, NOW());", (game_mode, score))
+  _cursor.execute("INSERT INTO scores (game_mode, score, recorded) VALUES (?, ?, CURRENT_TIMESTAMP);", (game_mode, score))
   _conn.commit()
