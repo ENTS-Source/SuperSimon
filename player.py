@@ -20,8 +20,7 @@ class Player:
     else:
       self._game.player_died(self._index)
       self.state = GS_PLAYING_FINISH
-
-    return
+      print("Debug: died ", self._index)
 
   def try_record_button_up(self, button):
     return
