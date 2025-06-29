@@ -38,15 +38,16 @@ class Player:
     self.state = GS_PLAYING_SHOW
     sequence = self._game.get_sequence(self._index)
     print("Debug: player sequence ", self._index, sequence)
-    clock.schedule_unique(lambda: self._show_sequence(sequence), BUTTON_IDLE_TIME)
 
-  def _show_sequence(self, sequence):
-    for i in range(len(sequence)):
-      print("Debug: sequence ", self._index, i, sequence[i])
-      clock.schedule_unique(lambda i=i: self._button_functions[sequence[i]](True), i * (BUTTON_SHOW_TIME + BUTTON_IDLE_TIME))
-      clock.schedule_unique(lambda i=i: self._button_functions[sequence[i]](False), (i * (BUTTON_SHOW_TIME + BUTTON_IDLE_TIME)) + BUTTON_SHOW_TIME)
-    clock.schedule_unique(self._set_state_to_tell, (len(sequence) - 1) * (BUTTON_SHOW_TIME + BUTTON_IDLE_TIME) + BUTTON_SHOW_TIME)
+    def go_to_tell():
+      print("Debug: -> tell ", self._index)
+      self.state = GS_PLAYING_TELL
 
-  def _set_state_to_tell(self):
-    print("Debug: -> tell ", self._index)
-    self.state = GS_PLAYING_TELL
+    def show_sequence():
+      for i in range(len(sequence)):
+        print("Debug: sequence ", self._index, i, sequence[i])
+        clock.schedule_unique(lambda i=i: self._button_functions[sequence[i]](True), i * (BUTTON_SHOW_TIME + BUTTON_IDLE_TIME))
+        clock.schedule_unique(lambda i=i: self._button_functions[sequence[i]](False), (i * (BUTTON_SHOW_TIME + BUTTON_IDLE_TIME)) + BUTTON_SHOW_TIME)
+      clock.schedule_unique(go_to_tell, (len(sequence) - 1) * (BUTTON_SHOW_TIME + BUTTON_IDLE_TIME) + BUTTON_SHOW_TIME)
+
+    clock.schedule_unique(show_sequence, BUTTON_IDLE_TIME)
