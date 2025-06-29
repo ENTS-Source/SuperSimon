@@ -2,14 +2,11 @@ from consts import GS_INTRO, GS_PLAYING_SHOW, GS_PLAYING_TELL, GS_PLAYING_FINISH
 from pgzero.clock import clock
 
 class Player:
-  state = GS_INTRO
-
-  _index = 0
-  _game = None
-  _button_functions = []
-
   def __init__(self, index):
+    self.state = GS_INTRO
     self._index = index
+    self._game = None
+    self._button_functions = []
 
   def try_record_button_down(self, button):
     if self.state != GS_PLAYING_TELL:
