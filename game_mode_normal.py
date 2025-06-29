@@ -16,7 +16,7 @@ class GameModeNormal(GameModeGame):
     if pos >= len(self._sequence):
       print("Debug: extending sequence")
       self._sequence.append(random.randint(0, 4))
-      print(self._sequence)
+      print("Debug: total sequence: ", self._sequence)
     return self._sequence[:pos]
 
   def is_next(self, player, button):
