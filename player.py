@@ -1,5 +1,6 @@
 from consts import GS_INTRO, GS_PLAYING_SHOW, GS_PLAYING_TELL, GS_PLAYING_FINISH, BUTTON_IDLE_TIME, BUTTON_SHOW_TIME
 from pgzero.clock import clock
+from functools import partial
 
 class Player:
   def __init__(self, index):
@@ -52,7 +53,11 @@ class Player:
 
     for i in range(len(sequence)):
       print("Debug: sequence ", self._index, i, sequence[i])
-      clock.schedule(lambda i=i: self._button_functions[sequence[i]](True), i * (BUTTON_SHOW_TIME + BUTTON_IDLE_TIME))
-      clock.schedule(lambda i=i: self._button_functions[sequence[i]](False), (i * (BUTTON_SHOW_TIME + BUTTON_IDLE_TIME)) + BUTTON_SHOW_TIME)
+      clock.schedule(partial(self._set_button, sequence[i], True), i * (BUTTON_SHOW_TIME + BUTTON_IDLE_TIME))
+      clock.schedule(partial(self._set_button, sequence[i], False), (i * (BUTTON_SHOW_TIME + BUTTON_IDLE_TIME)) + BUTTON_SHOW_TIME)
 
     clock.schedule(self._go_to_tell, (len(sequence) - 1) * (BUTTON_SHOW_TIME + BUTTON_IDLE_TIME) + BUTTON_SHOW_TIME)
+
+  def _set_button(self, i, state):
+    print("Debug: set_button ", self._index, i, state)
+    self._button_functions[i](state)
