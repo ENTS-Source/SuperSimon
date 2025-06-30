@@ -1,7 +1,7 @@
 import pygame
 import db
 
-from consts import GM_NORMAL, GM_CHASE, GM_MUSIC, GS_PLAYING_NONSPECIFIC, GS_INTRO, GAME_MODES, GS_PLAYING_FINISH, GS_STARTING
+from consts import GM_NORMAL, GM_CHASE, GM_MUSIC, GS_PLAYING_NONSPECIFIC, GS_INTRO, GAME_MODES, GS_PLAYING_FINISH, GS_STARTING, GS_PLAYING_END
 from player import Player
 from game_mode_normal import GameModeNormal
 
@@ -105,10 +105,11 @@ def check_all_dead():
     if player.state != GS_PLAYING_FINISH:
       return
   print("Debug: all players dead -> end_game soon")
+  set_global_game_state(GS_PLAYING_END)
   clock.schedule_unique(end_game, 5.0)
 
 def end_game():
-  print("Debug: Game end -> INTRO")
+  print("Debug: -> intro")
   set_global_game_state(GS_INTRO)
 
 def try_game_mode_cycle():
