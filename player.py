@@ -17,7 +17,10 @@ class Player:
     self._button_functions[button](True)
 
     if self._game.is_next(self._index, button):
-      self._show()
+      if self._game.can_advance(self._index):
+        self._show()
+      else:
+        print("Debug: player sequence not complete ", self._index)
     else:
       self._game.player_died(self._index)
       self.state = GS_PLAYING_FINISH

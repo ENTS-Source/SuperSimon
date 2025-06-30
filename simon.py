@@ -104,6 +104,7 @@ def check_all_dead():
   for player in PLAYERS:
     if player.state != GS_PLAYING_FINISH:
       return
+  print("Debug: all players dead -> end_game soon")
   clock.schedule_unique(end_game, 5.0)
 
 def end_game():

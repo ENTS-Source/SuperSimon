@@ -14,6 +14,12 @@ class GameModeGame(ABC):
     pass
 
   @abstractmethod
+  def can_advance(self, player: int) -> bool:
+    '''Checks that a player has completed the sequence.
+    '''
+    pass
+
+  @abstractmethod
   def player_died(self, player: int) -> None:
     '''Records that the player failed the game.
     '''
