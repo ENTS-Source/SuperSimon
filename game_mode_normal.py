@@ -23,6 +23,7 @@ class GameModeNormal(GameModeGame):
   def is_next(self, player, button):
     pos = self._player_tell_positions[player]
     self._player_tell_positions[player] += 1
+    print("Debug: CHECK ", player, button, pos, self._sequence[pos])
     return self._sequence[pos] == button
 
   def can_advance(self, player):
