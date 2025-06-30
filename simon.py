@@ -1,7 +1,7 @@
 import pygame
 import db
 
-from consts import GM_NORMAL, GM_CHASE, GM_MUSIC, GS_PLAYING_NONSPECIFIC, GS_INTRO, GS_PLAYING_SHOW, GAME_MODES
+from consts import GM_NORMAL, GM_CHASE, GM_MUSIC, GS_PLAYING_NONSPECIFIC, GS_INTRO, GAME_MODES, GS_PLAYING_FINISH, GS_STARTING
 from player import Player
 from game_mode_normal import GameModeNormal
 
@@ -96,10 +96,19 @@ def draw():
   # TODO
 
 def update():
-  # TODO
-  pass
+  check_all_dead()
 
 # ---- game functions ----
+
+def check_all_dead():
+  for player in PLAYERS:
+    if player.state != GS_PLAYING_FINISH:
+      return
+  clock.schedule_unique(end_game, 5.0)
+
+def end_game():
+  print("Debug: Game end -> INTRO")
+  set_global_game_state(GS_INTRO)
 
 def try_game_mode_cycle():
   global CURRENT_GAME_MODE
@@ -139,6 +148,7 @@ def try_button_release(player, button):
 
 def begin_countdown():
   print("Debug: countdown")
+  set_global_game_state(GS_STARTING)
   sounds.countdown.play()
   clock.schedule_unique(start_game, 3.1)  # 3 seconds plus a bit for lag
 
