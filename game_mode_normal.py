@@ -4,12 +4,11 @@ import db
 from game_mode_game import GameModeGame
 
 class GameModeNormal(GameModeGame):
-  _sequence: list[int] = []
-  _player_positions = [0, 0]
-  _player_tell_positions = [0, 0]
-
   def __init__(self):
     print("Debug: created normal game")
+    self._sequence: list[int] = []
+    self._player_positions = [0, 0]
+    self._player_tell_positions = [0, 0]
 
   def get_sequence(self, player):
     self._player_positions[player] += 1
