@@ -27,3 +27,6 @@ def do_press(i, on):
 
 for i in range(len(buttons)):
   set_press(i)
+
+print("Sleeping forever - Ctrl+C to exit")
+sleep(9999999999999)
