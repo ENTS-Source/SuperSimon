@@ -9,7 +9,7 @@ class Player:
     self._game = None
     self._button_functions = []
 
-  def try_record_button_down(self, button):
+  def check_button(self, button: int):
     if self.state != GS_PLAYING_TELL:
       return  # not in a game
 
@@ -25,9 +25,6 @@ class Player:
       self._game.player_died(self._index)
       self.state = GS_PLAYING_FINISH
       print("Debug: died ", self._index)
-
-  def try_record_button_up(self, button):
-    return
 
   def start_game(self, game, button_functions):
     self._game = game

@@ -4,6 +4,7 @@ import db
 from consts import GM_NORMAL, GM_CHASE, GM_MUSIC, GS_PLAYING_NONSPECIFIC, GS_INTRO, GAME_MODES, GS_PLAYING_FINISH, GS_STARTING, GS_PLAYING_END
 from player import Player
 from game_mode_normal import GameModeNormal
+from gpio import set_led, is_newly_pressed
 
 # ---- SuperSimon Variables ----
 
@@ -61,12 +62,11 @@ BUTTON_FUNCTIONS = [
 ]
 
 def set_button_state(player, button, show):
+  set_led(player, button, show)
   if show:
     BUTTON_SOUNDS[button].play()
-    # TODO: Button LED
   else:
     BUTTON_SOUNDS[button].stop()
-    # TODO: Button LED
 
 # ---- Pygame Zero Setup/Game Start ----
 
@@ -97,6 +97,7 @@ def draw():
 
 def update():
   check_all_dead()
+  check_all_buttons()
 
 # ---- game functions ----
 
@@ -131,22 +132,22 @@ def try_game_mode_cycle():
     music.play('backing_track')
     music.set_volume(0.45)
 
-def try_button_press(player, button):
-    if get_global_game_state() == GS_INTRO:
-      begin_countdown()
-    elif get_global_game_state() == GS_PLAYING_NONSPECIFIC:
-      record_player_button(player, button)
+def check_all_buttons():
+  # TODO: Check mode button
+  for player in range(2):
+    for button in range(5):
+      if is_newly_pressed(player, button):
+        if get_global_game_state() == GS_INTRO:
+          begin_countdown()
+          return
+        elif get_global_game_state() == GS_PLAYING_NONSPECIFIC:
+          record_player_button(player, button)
 
 def record_player_button(player, button):
   if CURRENT_GAME_MODE == GM_MUSIC:
     play_tone((player * 5) + button)
-  elif get_global_game_state() == GS_INTRO:
-    begin_countdown()
   else:
-    PLAYERS[player].try_record_button_down(button)
-
-def try_button_release(player, button):
-  PLAYERS[player].try_record_button_up(button)
+    PLAYERS[player].check_button(button)
 
 def begin_countdown():
   print("Debug: countdown")
@@ -192,31 +193,6 @@ def draw_game_mode():
 def draw_game_state():
   # TODO
   pass
-
-# ---- pygame keyboard interface ----
-
-def on_key_down(key):
-  if key == keys.M:
-    try_game_mode_cycle()
-
-  key_char = key.name[-1]
-  if key_char.isdigit():
-    num = int(key_char)
-    if num == 0:
-      num = 10
-    player = 0 if num <= 5 else 1
-    button = (num - 1) % 5
-    try_button_press(player, button)
-
-def on_key_up(key):
-  key_char = key.name[-1]
-  if key_char.isdigit():
-    num = int(key_char)
-    if num == 0:
-      num = 10
-    player = 0 if num <= 5 else 1
-    button = (num - 1) % 5
-    try_button_press(player, button)
 
 # ---- pygame setup ----
 
