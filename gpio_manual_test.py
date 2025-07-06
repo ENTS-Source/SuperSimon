@@ -21,9 +21,9 @@ def set_press(i):
   buttons[i].when_pressed = lambda: do_press(i, True)
   buttons[i].when_released = lambda: do_press(i, False)
 
-def do_press(i, on):
+def do_press(i: int, on: bool):
   leds[i].value = on
-  print(f"Button %d pressed %v" % (i, on))
+  print(f"Button {i} pressed? {on}")
 
 for i in range(len(buttons)):
   set_press(i)
