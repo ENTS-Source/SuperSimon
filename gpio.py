@@ -20,9 +20,9 @@ class LocalButton:
     if self._btn.is_pressed:
       self._activate_time = time.time()
       self._state = True
+      self.press_event *= -1
     else:
       self._state = False
-      self.press_event *= -1
     return self._state
 
 
