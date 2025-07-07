@@ -1,7 +1,7 @@
 import pygame
 import db
 
-from consts import GM_NORMAL, GM_CHASE, GM_MUSIC, GS_PLAYING_NONSPECIFIC, GS_INTRO, GAME_MODES, GS_PLAYING_FINISH, GS_STARTING, GS_PLAYING_END
+from consts import GM_NORMAL, GM_CHASE, GM_MUSIC, GS_PLAYING_NONSPECIFIC, GS_INTRO, GAME_MODES, GS_PLAYING_FINISH, GS_STARTING, GS_PLAYING_END, BTN_ON_NO_SOUND, BTN_ON
 from player import Player
 from game_mode_normal import GameModeNormal
 from gpio import set_led, is_newly_pressed
@@ -47,23 +47,23 @@ BUTTON_SOUNDS = [
 
 BUTTON_FUNCTIONS = [
   # Player 1
-  lambda show: set_button_state(0, 0, show),
-  lambda show: set_button_state(0, 1, show),
-  lambda show: set_button_state(0, 2, show),
-  lambda show: set_button_state(0, 3, show),
-  lambda show: set_button_state(0, 4, show),
+  lambda state: set_button_state(0, 0, state),
+  lambda state: set_button_state(0, 1, state),
+  lambda state: set_button_state(0, 2, state),
+  lambda state: set_button_state(0, 3, state),
+  lambda state: set_button_state(0, 4, state),
 
   # Player 2
-  lambda show: set_button_state(1, 0, show),
-  lambda show: set_button_state(1, 1, show),
-  lambda show: set_button_state(1, 2, show),
-  lambda show: set_button_state(1, 3, show),
-  lambda show: set_button_state(1, 4, show),
+  lambda state: set_button_state(1, 0, state),
+  lambda state: set_button_state(1, 1, state),
+  lambda state: set_button_state(1, 2, state),
+  lambda state: set_button_state(1, 3, state),
+  lambda state: set_button_state(1, 4, state),
 ]
 
-def set_button_state(player, button, show):
-  set_led(player, button, show)
-  if show:
+def set_button_state(player, button, state):
+  set_led(player, button, state == BTN_ON or state == BTN_ON_NO_SOUND)
+  if state == BTN_ON:
     BUTTON_SOUNDS[button].play()
   else:
     BUTTON_SOUNDS[button].stop()

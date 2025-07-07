@@ -1,4 +1,4 @@
-from consts import GS_INTRO, GS_PLAYING_SHOW, GS_PLAYING_TELL, GS_PLAYING_FINISH, BUTTON_IDLE_TIME, BUTTON_SHOW_TIME, BUTTON_GAME_OVER_TIME
+from consts import GS_INTRO, GS_PLAYING_SHOW, GS_PLAYING_TELL, GS_PLAYING_FINISH, BUTTON_IDLE_TIME, BUTTON_SHOW_TIME, BUTTON_GAME_OVER_TIME, BTN_ON, BTN_OFF, BTN_ON_NO_SOUND
 from pgzero.clock import clock
 from functools import partial
 
@@ -14,7 +14,7 @@ class Player:
       return  # not in a game
 
     print("Debug: btn ", self._index, button)
-    self._button_functions[button](True)
+    self._button_functions[button](BTN_ON)
 
     # Ensure we clear the user's press for them
     clock.schedule(self._clear_buttons, BUTTON_IDLE_TIME)
@@ -31,7 +31,7 @@ class Player:
 
       # "Decorate" their game board
       for fn in self._button_functions:
-        fn(True)
+        fn(BTN_ON_NO_SOUND)
       clock.schedule(self._clear_buttons, BUTTON_GAME_OVER_TIME)
 
   def start_game(self, game, button_functions):
@@ -49,7 +49,7 @@ class Player:
 
   def _clear_buttons(self):
     for i in range(5):
-      self._button_functions[i](False)  # turn off any player-pressed buttons
+      self._button_functions[i](BTN_OFF)  # turn off any player-pressed buttons
 
   def _go_to_tell(self):
       print("Debug: -> tell ", self._index)
@@ -68,5 +68,5 @@ class Player:
 
   def _show_sequence_i(self):
     print("Debug: sequence_i_set ", self._index, self._sequence_i, self._sequence[self._sequence_i])
-    self._button_functions[self._sequence[self._sequence_i]](True)
+    self._button_functions[self._sequence[self._sequence_i]](BTN_ON)
     self._sequence_i += 1
