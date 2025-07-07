@@ -60,5 +60,5 @@ class Player:
 
   def _show_sequence_i(self):
     print("Debug: sequence_i_set ", self._index, self._sequence_i, self._sequence[self._sequence_i])
-    self._button_functions[self._sequence_i](True)
+    self._button_functions[self._sequence[self._sequence_i]](True)
     self._sequence_i += 1
