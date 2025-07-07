@@ -37,7 +37,7 @@ class Player:
     self._sequence = self._game.get_sequence(self._index)
     print("Debug: player sequence ", self._index, self._sequence)
     clock.schedule(self._clear_buttons, BUTTON_IDLE_TIME)
-    clock.schedule(self._show_sequence, BUTTON_IDLE_TIME * 2)
+    clock.schedule(self._show_sequence, BUTTON_IDLE_TIME * 8)
 
   def _clear_buttons(self):
     for i in range(5):
