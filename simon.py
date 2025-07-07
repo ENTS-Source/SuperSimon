@@ -158,7 +158,7 @@ def begin_countdown():
 def start_game():
   print("Debug: start game")
   if CURRENT_GAME_MODE == GM_NORMAL:
-    game = GameModeNormal()
+    game = GameModeNormal(sounds.game_over)
     for i in range(len(PLAYERS)):
       player = PLAYERS[i]
       player.start_game(game, BUTTON_FUNCTIONS[i*5:(i*5)+5])

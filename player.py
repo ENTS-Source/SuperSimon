@@ -1,4 +1,4 @@
-from consts import GS_INTRO, GS_PLAYING_SHOW, GS_PLAYING_TELL, GS_PLAYING_FINISH, BUTTON_IDLE_TIME, BUTTON_SHOW_TIME
+from consts import GS_INTRO, GS_PLAYING_SHOW, GS_PLAYING_TELL, GS_PLAYING_FINISH, BUTTON_IDLE_TIME, BUTTON_SHOW_TIME, BUTTON_GAME_OVER_TIME
 from pgzero.clock import clock
 from functools import partial
 
@@ -16,17 +16,23 @@ class Player:
     print("Debug: btn ", self._index, button)
     self._button_functions[button](True)
 
+    # Ensure we clear the user's press for them
+    clock.schedule(self._clear_buttons, BUTTON_IDLE_TIME)
+
     if self._game.is_next(self._index, button):
       if self._game.can_advance(self._index):
         self._show()
       else:
         print("Debug: player sequence not complete ", self._index)
-        # Ensure we clear the user's press for them
-        clock.schedule(self._clear_buttons, BUTTON_IDLE_TIME)
     else:
-      self._game.player_died(self._index)
+      self._game.player_died(self._index)  # plays sound internally
       self.state = GS_PLAYING_FINISH
       print("Debug: died ", self._index)
+
+      # "Decorate" their game board
+      for fn in self._button_functions:
+        fn(True)
+      clock.schedule(self._clear_buttons, BUTTON_GAME_OVER_TIME)
 
   def start_game(self, game, button_functions):
     self._game = game
