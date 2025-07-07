@@ -21,6 +21,8 @@ class Player:
         self._show()
       else:
         print("Debug: player sequence not complete ", self._index)
+        # Ensure we clear the user's press for them
+        clock.schedule(self._clear_buttons, BUTTON_IDLE_TIME)
     else:
       self._game.player_died(self._index)
       self.state = GS_PLAYING_FINISH
@@ -37,7 +39,7 @@ class Player:
     self._sequence = self._game.get_sequence(self._index)
     print("Debug: player sequence ", self._index, self._sequence)
     clock.schedule(self._clear_buttons, BUTTON_IDLE_TIME)
-    clock.schedule(self._show_sequence, BUTTON_IDLE_TIME * 8)
+    clock.schedule(self._show_sequence, BUTTON_IDLE_TIME * 2)
 
   def _clear_buttons(self):
     for i in range(5):
