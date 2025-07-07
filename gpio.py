@@ -43,15 +43,13 @@ lights = [
 ]
 
 def is_newly_pressed(player: int, button: int) -> bool:
-  if player == 1:
-    return True  # TODO: Remove
+  player = 0  # TODO: Remove
 
   btn = buttons[(player * 5) + button]
   return btn.is_newly_pressed()
 
 def set_led(player: int, button: int, on: bool):
-  if player == 1:
-    return  # TODO: Remove
+  player = 0  # TODO: Remove
 
   led = lights[(player * 5) + button]
   led.value = on
