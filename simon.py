@@ -207,6 +207,11 @@ def draw_normal_game_state():
     player2_box = Rect(((WIDTH / 2) + PADDING, y_start), ((WIDTH / 2) - (PADDING * 2), HEIGHT - y_start - PADDING))
     screen.draw.filled_rect(player1_box, box_color)
     screen.draw.filled_rect(player2_box, box_color)
+    p1_score_prefix = "Final " if PLAYERS[0].state == GS_PLAYING_FINISH or PLAYERS[0].state == GS_PLAYING_END else ""
+    p2_score_prefix = "Final " if PLAYERS[1].state == GS_PLAYING_FINISH or PLAYERS[1].state == GS_PLAYING_END else ""
+    screen.draw.text(p1_score_prefix + "Score", center=((WIDTH / 4) + PADDING, y_start + (PADDING * 4)), fontsize=50, color="#FFFFFF")
+    screen.draw.text(p2_score_prefix + "Score", center=((WIDTH - (WIDTH / 4)) + PADDING, y_start + (PADDING * 4)), fontsize=50, color="#FFFFFF")
+    screen.draw.text(f"{PLAYERS[0].game.get_sequence_len(0)}", center=((WIDTH / 4) + PADDING, ((HEIGHT - y_start - PADDING) / 2) + (y_start + (PADDING * 8))), fontsize=120, shadow=(1, 1), scolor="#202020", color="#FFFFFF")
 
 # ---- pygame setup ----
 

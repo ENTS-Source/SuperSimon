@@ -33,3 +33,6 @@ class GameModeNormal(GameModeGame):
   def player_died(self, player):
     db.save_score('normal', self._player_positions[player])
     self._death_sound.play()
+
+  def get_sequence_len(self, player):
+    return self._player_positions[player] + 1

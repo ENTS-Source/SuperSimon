@@ -6,7 +6,7 @@ class Player:
   def __init__(self, index):
     self.state = GS_INTRO
     self._index = index
-    self._game = None
+    self.game = None
     self._button_functions = []
 
   def check_button(self, button: int):
@@ -19,13 +19,13 @@ class Player:
     # Ensure we clear the user's press for them
     clock.schedule(self._clear_buttons, BUTTON_IDLE_TIME)
 
-    if self._game.is_next(self._index, button):
-      if self._game.can_advance(self._index):
+    if self.game.is_next(self._index, button):
+      if self.game.can_advance(self._index):
         self._show()
       else:
         print("Debug: player sequence not complete ", self._index)
     else:
-      self._game.player_died(self._index)  # plays sound internally
+      self.game.player_died(self._index)  # plays sound internally
       self.state = GS_PLAYING_FINISH
       print("Debug: died ", self._index)
 
@@ -35,14 +35,14 @@ class Player:
       clock.schedule(self._clear_buttons, BUTTON_GAME_OVER_TIME)
 
   def start_game(self, game, button_functions):
-    self._game = game
+    self.game = game
     self._button_functions = button_functions
     self._show()
 
   def _show(self):
     print("Debug: -> show ", self._index)
     self.state = GS_PLAYING_SHOW
-    self._sequence = self._game.get_sequence(self._index)
+    self._sequence = self.game.get_sequence(self._index)
     print("Debug: player sequence ", self._index, self._sequence)
     clock.schedule(self._clear_buttons, BUTTON_IDLE_TIME)
     clock.schedule(self._show_sequence, BUTTON_IDLE_TIME * 2)
