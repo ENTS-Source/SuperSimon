@@ -195,7 +195,8 @@ def draw_normal_game_state():
   if get_global_game_state() == GS_INTRO:
     r = Rect((PADDING, y_start), (WIDTH - (PADDING * 3), HEIGHT - y_start - PADDING))
     screen.draw.filled_rect(r, (66, 120, 245))
-    screen.draw.text("Press any button to start", center=(WIDTH / 2, y_start + (PADDING * 2)), fontsize=80, shadow=(2, 2), scolor="#202020", color="#FFFFFF")
+    screen.draw.text("Press any button to start", center=(WIDTH / 2, y_start + (PADDING * 4)), fontsize=80, shadow=(1, 1), scolor="#202020", color="#FFFFFF")
+    screen.draw.text("Then copy the ever-increasing pattern", center=(WIDTH / 2, y_start + (PADDING * 8)), fontsize=60, color="#FFFFFF")
 
 # ---- pygame setup ----
 
