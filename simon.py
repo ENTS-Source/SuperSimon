@@ -192,11 +192,16 @@ def draw_game_mode():
 
 def draw_normal_game_state():
   y_start = 75 + PADDING + (PADDING * 8)
+  full_box = Rect((PADDING, y_start), (WIDTH - (PADDING * 2), HEIGHT - y_start - PADDING))
+  box_color = (66, 120, 245)
   if get_global_game_state() == GS_INTRO:
-    r = Rect((PADDING, y_start), (WIDTH - (PADDING * 3), HEIGHT - y_start - PADDING))
-    screen.draw.filled_rect(r, (66, 120, 245))
+    screen.draw.filled_rect(full_box, box_color)
     screen.draw.text("Press any button to start", center=(WIDTH / 2, y_start + (PADDING * 4)), fontsize=80, shadow=(1, 1), scolor="#202020", color="#FFFFFF")
     screen.draw.text("Then copy the ever-increasing pattern", center=(WIDTH / 2, y_start + (PADDING * 8)), fontsize=60, color="#FFFFFF")
+  elif get_global_game_state() == GS_STARTING:
+    screen.draw.filled_rect(full_box, box_color)
+    screen.draw.text("Look down at your game board!", center=(WIDTH / 2, y_start + (PADDING * 4)), fontsize=80, shadow=(1, 1), scolor="#202020", color="#FFFFFF")
+    screen.draw.text("The game will start shortly", center=(WIDTH / 2, y_start + (PADDING * 8)), fontsize=60, color="#FFFFFF")
 
 # ---- pygame setup ----
 
