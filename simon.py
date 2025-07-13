@@ -212,7 +212,7 @@ def draw_normal_game_state():
     screen.draw.text(p1_score_prefix + "Score", center=((WIDTH / 4) + PADDING, y_start + (PADDING * 4)), fontsize=50, color="#FFFFFF")
     screen.draw.text(p2_score_prefix + "Score", center=((WIDTH - (WIDTH / 4)) + PADDING, y_start + (PADDING * 4)), fontsize=50, color="#FFFFFF")
     screen.draw.text(f"{PLAYERS[0].game.get_sequence_len(0)}", center=((WIDTH / 4) + PADDING, y_start + (PADDING * 12)), fontsize=170, shadow=(1, 1), scolor="#202020", color="#FFFFFF")
-    screen.draw.text(f"{PLAYERS[1].game.get_sequence_len(1)}", center=((WIDTH / 2) + PADDING, y_start + (PADDING * 12)), fontsize=170, shadow=(1, 1), scolor="#202020", color="#FFFFFF")
+    screen.draw.text(f"{PLAYERS[1].game.get_sequence_len(1)}", center=((WIDTH / 2) - (PADDING * 2), y_start + (PADDING * 12)), fontsize=170, shadow=(1, 1), scolor="#202020", color="#FFFFFF")
 
 # ---- pygame setup ----
 
