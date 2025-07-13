@@ -71,7 +71,7 @@ def set_button_state(player, button, state):
 # ---- Pygame Zero Setup/Game Start ----
 
 TITLE = "SuperSimon 2.0"
-WIDTH = 1080
+WIDTH = 1280
 HEIGHT = 720
 
 PADDING = 20
