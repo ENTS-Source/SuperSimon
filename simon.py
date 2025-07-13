@@ -193,7 +193,7 @@ def draw_game_mode():
 def draw_normal_game_state():
   y_start = 75 + PADDING + (PADDING * 4)
   if get_global_game_state() == GS_INTRO:
-    r = Rect((PADDING, y_start), (1080 - (PADDING * 2), 720 - y_start - (PADDING * 4)))
+    r = Rect((PADDING, y_start), (WIDTH - (PADDING * 2), HEIGHT - y_start - PADDING))
     screen.draw.filled_rect(r, (191, 66, 245))
 
 # ---- pygame setup ----
