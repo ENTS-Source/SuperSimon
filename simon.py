@@ -191,10 +191,11 @@ def draw_game_mode():
   screen.draw.text("Game mode: " + gm_text, (LOGO_R, 75 + PADDING), fontsize=30, color="orange")
 
 def draw_normal_game_state():
-  y_start = 75 + PADDING + (PADDING * 4)
+  y_start = 75 + PADDING + (PADDING * 8)
   if get_global_game_state() == GS_INTRO:
-    r = Rect((PADDING, y_start), (WIDTH - (PADDING * 2), HEIGHT - y_start - PADDING))
-    screen.draw.filled_rect(r, (191, 66, 245))
+    r = Rect((PADDING, y_start), (WIDTH - (PADDING * 3), HEIGHT - y_start - PADDING))
+    screen.draw.filled_rect(r, (66, 120, 245))
+    screen.draw.text("Press any button to start", center=(WIDTH / 2, y_start + (PADDING * 2)), fontsize=80, shadow=(2, 2), scolor="#202020", color="#FFFFFF")
 
 # ---- pygame setup ----
 
