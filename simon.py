@@ -90,7 +90,6 @@ def draw():
 
   # Render game objects
   draw_game_mode()
-  draw_game_state()
 
   # Draw assets
   # TODO
@@ -183,6 +182,7 @@ def draw_game_mode():
   gm_text = "UNKNOWN"
   if CURRENT_GAME_MODE == GM_NORMAL:
     gm_text = "Normal"
+    draw_normal_game_state()
   elif CURRENT_GAME_MODE == GM_CHASE:
     gm_text = "Chase"
   elif CURRENT_GAME_MODE == GM_MUSIC:
@@ -190,9 +190,10 @@ def draw_game_mode():
 
   screen.draw.text("Game mode: " + gm_text, (LOGO_R, 75 + PADDING), fontsize=30, color="orange")
 
-def draw_game_state():
-  # TODO
-  pass
+def draw_normal_game_state():
+  if get_global_game_state() == GS_INTRO:
+    r = Rect((0, 10), (1060, 700))
+    screen.draw.filled_rect(r, (191, 66, 245))
 
 # ---- pygame setup ----
 
