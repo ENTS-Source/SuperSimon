@@ -35,4 +35,4 @@ class GameModeNormal(GameModeGame):
     self._death_sound.play()
 
   def get_sequence_len(self, player):
-    return self._player_positions[player] + 1
+    return self._player_positions[player]
